@@ -179,7 +179,7 @@ set y2tics border
 unset key
 
 # ***************************************************************** Output *****
-set arrow from graph 1,graph 0 to graph 1,graph 1 nohead lc rgb "#cc00bb00" front
+set arrow from graph 1,graph 0 to graph 1,graph 1 nohead lc rgb "#ccbb0000" front
 set lmargin at screen MRPOS+0.001
 set rmargin at screen RMARG
 
