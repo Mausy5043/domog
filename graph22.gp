@@ -148,7 +148,7 @@ set rmargin at screen MRPOS
 
 # ***** PLOT *****
 plot ifnamed \
-      using ($2+utc_offset):4 axes x1y2 with points pt 5 ps 0.2 fc rgb "##ccbb0000" \
+      using ($2+utc_offset):4 axes x1y2 with points pt 5 ps 0.2 fc rgb "#ccbb0000" \
   ,'' using ($2+utc_offset):3 with points pt 5 ps 0.2 fc rgb "#cc0000bb" \
 
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -180,13 +180,13 @@ set y2tics border
 unset key
 
 # ***************************************************************** Output *****
-set arrow from graph 1,graph 0 to graph 1,graph 1 nohead lc rgb "ccbb0000" front
+set arrow from graph 1,graph 0 to graph 1,graph 1 nohead lc rgb "#ccbb0000" front
 set lmargin at screen MRPOS+0.001
 set rmargin at screen RMARG
 
 # ***** PLOT *****
 plot ifnameh \
-      using ($2+utc_offset):4 axes x1y2 with points pt 5 ps 0.2 fc rgb "##ccbb0000" \
+      using ($2+utc_offset):4 axes x1y2 with points pt 5 ps 0.2 fc rgb "#ccbb0000" \
   ,'' using ($2+utc_offset):3 with points pt 5 ps 0.2 fc rgb "#cc0000bb" \
 
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
