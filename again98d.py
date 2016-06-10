@@ -107,10 +107,9 @@ def write_lftp(script):
     f.write('# DO NOT EDIT\n')
     f.write('# This file is created automatically by ' + MYAPP + '\n\n')
     f.write('# lftp script\n\n')
-    f.write('open hendrixnet.nl;\n')
     f.write('set cmd:fail-exit yes;\n')
+    f.write('open hendrixnet.nl;\n')
     f.write('cd 03.again/;\n')
-    f.write('set cmd:fail-exit no;\n')
     f.write('mirror --reverse --delete --verbose=3 -c /tmp/' + MYAPP + '/site/ . ;\n')
     f.write('\n')
 
