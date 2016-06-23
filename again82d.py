@@ -1,8 +1,8 @@
-#!/usr/bin/env python3.4
+#!/usr/bin/env python2.7
 
 # daemon82d.py creates an MD-file.
 
-import configparser
+import ConfigParser
 import os
 import shutil
 import sys
@@ -15,13 +15,13 @@ from libdaemon import Daemon
 # constants
 DEBUG       = False
 IS_JOURNALD = os.path.isfile('/bin/journalctl')
-MYID        = "".join(list(filter(str.isdigit, os.path.realpath(__file__).split('/')[-1])))
+MYID        = filter(str.isdigit, os.path.realpath(__file__).split('/')[-1])
 MYAPP       = os.path.realpath(__file__).split('/')[-2]
 NODE        = os.uname()[1]
 
 class MyDaemon(Daemon):
   def run(self):
-    iniconf         = configparser.ConfigParser()
+    iniconf         = ConfigParser.ConfigParser()
     inisection      = MYID
     home            = os.path.expanduser('~')
     s               = iniconf.read(home + '/' + MYAPP + '/config.ini')
