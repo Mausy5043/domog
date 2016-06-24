@@ -1,8 +1,8 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python3.4
 
 # daemon98.py file post-processor.
 
-import ConfigParser
+import configparser
 import os
 import subprocess
 import sys
@@ -16,7 +16,7 @@ from random import randrange as rnd
 # constants
 DEBUG       = False
 IS_JOURNALD = os.path.isfile('/bin/journalctl')
-MYID        = filter(str.isdigit, os.path.realpath(__file__).split('/')[-1])
+MYID        = "".join(list(filter(str.isdigit, os.path.realpath(__file__).split('/')[-1])))
 MYAPP       = os.path.realpath(__file__).split('/')[-2]
 NODE        = os.uname()[1]
 SQLMNT      = rnd(0, 59)
@@ -24,7 +24,7 @@ SQLHR       = rnd(0, 23)
 
 class MyDaemon(Daemon):
   def run(self):
-    iniconf         = ConfigParser.ConfigParser()
+    iniconf         = configparser.ConfigParser()
     inisection      = MYID
     home            = os.path.expanduser('~')
     s               = iniconf.read(home + '/' + MYAPP + '/config.ini')

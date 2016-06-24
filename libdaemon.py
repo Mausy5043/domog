@@ -57,8 +57,8 @@ class Daemon:
     sys.stdout.flush()
     sys.stderr.flush()
     si = open(self.stdin, 'r')
-    so = open(self.stdout, 'a+')
-    se = open(self.stderr, 'a+', 0)
+    so = open(self.stdout, 'ab+')
+    se = open(self.stderr, 'ab+', 0)
     os.dup2(si.fileno(), sys.stdin.fileno())
     os.dup2(so.fileno(), sys.stdout.fileno())
     os.dup2(se.fileno(), sys.stderr.fileno())
@@ -66,7 +66,7 @@ class Daemon:
     # write pidfile
     atexit.register(self.delpid)
     pid = str(os.getpid())
-    open(self.pidfile, 'w+').write("{0!s}\n".format(pid))
+    open(self.pidfile, 'wb+').write("{0!s}\n".format(pid))
 
   def delpid(self):
     os.remove(self.pidfile)
