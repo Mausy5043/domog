@@ -9,7 +9,7 @@ ifnamew = "/tmp/domog/mysql/sql23w.csv"
 set output ofname = "/tmp/domog/site/img/day23.png"
 
 # ******************************************************* General settings *****
-set terminal png truecolor enhanced font "Vera" 9 size 1280,320
+set terminal png enhanced font "Vera" 9 size 1280,320
 set datafile separator ';'
 set datafile missing "NaN"    # Ignore missing values
 set grid
