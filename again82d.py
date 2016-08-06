@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.4
+#!/usr/bin/env python3
 
 # daemon82d.py creates an MD-file.
 
