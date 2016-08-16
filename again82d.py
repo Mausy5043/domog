@@ -4,6 +4,7 @@
 
 import configparser
 import os
+import platform
 import shutil
 import sys
 import syslog
