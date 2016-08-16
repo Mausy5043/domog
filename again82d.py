@@ -51,6 +51,11 @@ class MyDaemon(Daemon):
 
 def do_markdown(flock, fdata):
   home              = os.path.expanduser('~')
+  uname             = os.uname()
+
+  fi = home + "/.domog.branch"
+  with open(fi, 'r') as f:
+    domogbranch  = f.read().strip('\n')
 
   lock(flock)
   shutil.copyfile(home + '/' + MYAPP + '/default.md', fdata)
@@ -61,6 +66,13 @@ def do_markdown(flock, fdata):
     f.write('![A GNUplot image should be here: day24.png](img/day24.png?classes=zoomer)\n')
     f.write('![A GNUplot image should be here: day23.png](img/day23.png?classes=zoomer)\n')
     f.write('![A GNUplot image should be here: day25.png](img/day25.png?classes=zoomer)\n')
+
+    # System ID
+    f.write('!!! ')
+    f.write(uname[0] + ' ' + uname[1] + ' ' + uname[2] + ' ' + uname[3] + ' ' + uname[4] + ' ' + platform.platform() + '  \n')
+
+    # branch
+    f.write('!!! domog   on: ' + domogbranch + '\n\n')
 
   unlock(flock)
 
