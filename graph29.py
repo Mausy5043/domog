@@ -7,8 +7,16 @@ from matplotlib.dates import strpdate2num
 import numpy as np
 import pylab as pl
 
+def bytespdate2num(fmt, encoding='utf-8'):
+    strconverter = strpdate2num(fmt)
+
+    def bytesconverter(b):
+        s = b.decode(encoding)
+        return strconverter(s)
+    return bytesconverter
+
 def graphs():
-  C = np.loadtxt('/tmp/domog/mysql/sql29.csv', delimiter=';', converters={0: strpdate2num("%Y-%m-%d %H:%M:%S")})
+  C = np.loadtxt('/tmp/domog/mysql/sql29.csv', delimiter=';', converters={0: bytespdate2num("%Y-%m-%d %H:%M:%S")})
 
   # 2=13= windspeed (Gilze-Rijen)
   # 3=14= winddirection (Gilze-Rijen)
