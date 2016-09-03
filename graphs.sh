@@ -18,4 +18,9 @@ pushd "$HOME/domog" >/dev/null
   if [ $(wc -l < /tmp/domog/mysql/sql23d.csv) -gt 30 ]; then
     gnuplot -e "utc_offset='${UTCOFFSET}'" ./graph23.gp
   fi
+
+  if [ $(wc -l < /tmp/domog/mysql/sql29.csv) -gt 30 ]; then
+    # gnuplot -e "utc_offset='${UTCOFFSET}'" ./graph29.gp
+    ./graph29.py
+  fi
 popd >/dev/null

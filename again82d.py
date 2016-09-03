@@ -66,7 +66,7 @@ def do_markdown(flock, fdata):
     f.write('![A GNUplot image should be here: day22.png](img/day22.png?classes=zoomer)\n')
     f.write('![A GNUplot image should be here: day24.png](img/day24.png?classes=zoomer)\n')
     f.write('![A GNUplot image should be here: day23.png](img/day23.png?classes=zoomer)\n')
-    f.write('![A GNUplot image should be here: day25.png](img/day25.png?classes=zoomer)\n')
+    f.write('![A GNUplot image should be here: day29roos.png](img/day29roos.png?classes=zoomer)\n')
 
     # System ID
     f.write('!!! ')
