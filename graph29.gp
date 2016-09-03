@@ -87,7 +87,7 @@ set format x "%a %d"            # Display time in 24 hour notation on the X axis
 set xrange [ Xw_min : Xw_max ]
 
 # ***************************************************************** Y-axis *****
-set ylabel "Speed [m/s]"
+set ylabel "Speed [km/h]"
 set yrange [0:]
 set format y "%4.1f"
 
@@ -115,7 +115,7 @@ set rmargin at screen LMPOS
 # ***** PLOT *****
 plot ifnamew \
       using ($2+utc_offset):4 title " Direction [deg]" axes x1y2  with points pt 5 ps 0.2 fc rgb "#ccbb0000" \
-  ,'' using ($2+utc_offset):(kmh($3)) title " Speed [m/s]"        with impulses fc rgb "#cc00bb00" \
+  ,'' using ($2+utc_offset):(kmh($3)) title " Speed [km/h]"        with impulses fc rgb "#cc00bb00" \
 
 
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
