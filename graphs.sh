@@ -22,5 +22,6 @@ pushd "$HOME/domog" >/dev/null
   if [ $(wc -l < /tmp/domog/mysql/sql29.csv) -gt 30 ]; then
     # gnuplot -e "utc_offset='${UTCOFFSET}'" ./graph29.gp
     ./graph29.py
+    chmod 644 /tmp/domog/site/img/day29roos.png
   fi
 popd >/dev/null
