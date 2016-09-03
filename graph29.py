@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 import matplotlib
 matplotlib.use("Agg")
 
@@ -65,7 +65,7 @@ def graphs():
   ax.set_theta_direction(-1)
   bars = ax.bar(theta, radii, width=width, bottom=0.0)
   # Use custom colors and opacity
-  for r, bar in zip(range(N), bars):
+  for r, bar in zip(list(range(N)), bars):
     bar.set_facecolor(pl.cm.hot((r / float(N))))
     bar.set_alpha(ahpla)
   # highlight the last bar (most recent value) by giving it a different color
