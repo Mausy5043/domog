@@ -114,8 +114,8 @@ set rmargin at screen LMPOS
 
 # ***** PLOT *****
 plot ifnamew \
-      using ($2+utc_offset):4 title " Direction [deg]" axes x1y2  with points pt 5 ps 0.2 fc rgb "#ccbb0000" \
-  ,'' using ($2+utc_offset):(kmh($3)) title " Speed [km/h]"        with impulses fc rgb "#cc00bb00" \
+      using ($2+utc_offset):(kmh($3)) title " Speed [km/h]"        with impulses fc rgb "#cc00bb00" \
+  ,'' using ($2+utc_offset):4 title " Direction [deg]" axes x1y2  with points pt 5 ps 0.2 fc rgb "#ccbb0000" \
 
 
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -151,8 +151,8 @@ set rmargin at screen MRPOS
 
 # ***** PLOT *****
 plot ifnamed \
-      using ($2+utc_offset):4 axes x1y2 with points pt 5 ps 0.2 fc rgb "#ccbb0000" \
-  ,'' using ($2+utc_offset):(kmh($3))   with impulses fc rgb "#cc00bb00" \
+      using ($2+utc_offset):(kmh($3))   with impulses fc rgb "#cc00bb00" \
+  ,'' using ($2+utc_offset):4 axes x1y2 with points pt 5 ps 0.2 fc rgb "#ccbb0000" \
 
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -189,8 +189,8 @@ set rmargin at screen RMARG
 
 # ***** PLOT *****
 plot ifnameh \
-      using ($2+utc_offset):4 axes x1y2 with points pt 5 ps 0.2 fc rgb "#ccbb0000" \
-  ,'' using ($2+utc_offset):(kmh($3))   with impulses fc rgb "#cc00bb00" \
+      using ($2+utc_offset):(kmh($3))   with impulses fc rgb "#cc00bb00" \
+  ,'' using ($2+utc_offset):4 axes x1y2 with points pt 5 ps 0.2 fc rgb "#ccbb0000" \
 
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #                                                                 FINALIZING
