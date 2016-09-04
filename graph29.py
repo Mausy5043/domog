@@ -2,12 +2,13 @@
 import matplotlib
 matplotlib.use("Agg")
 
-from cmath import rect, phase
-from matplotlib.dates import strpdate2num
-import numpy as np
-import pylab as pl
+from cmath import rect, phase               # noqa
+from matplotlib.dates import strpdate2num   # noqa
+import numpy as np                          # noqa
+import pylab as pl                          # noqa
 
 def bytespdate2num(fmt, encoding='utf-8'):
+    # convert datestring to proper format for numpy.loadtext()
     strconverter = strpdate2num(fmt)
 
     def bytesconverter(b):
@@ -26,7 +27,7 @@ def graphs():
   Wdir = np.array(C[:, 3])                 # windvector [deg]
 
   # convert dates in C[:,0] to something matplotlib understands
-  D = matplotlib.dates.num2date(C[:, 0])
+  # D = matplotlib.dates.num2date(C[:, 0])
 
   d2r = (1/360.) * np.pi * 2.             # constant to convert from degrees to radians
   ms2kmh = 3.6                            # constant to convert from m/s to km/h
@@ -35,7 +36,7 @@ def graphs():
   Wspd[:] = [(x * ms2kmh) for x in Wspd]
 
   hrsmpls = 60                              # data contains this number of samples per hour
-                                            # the graph will show one slice per hour
+                                            # the graph will show one slice per hour  # noqa
   lenWdir = len(Wdir)
   last14  = Wdir[lenWdir - 1]
   last13  = Wspd[lenWdir - 1]
