@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python
 
 import atexit
 import os
@@ -18,9 +18,9 @@ class Daemon:
                stdin='/dev/null',
                stdout='/dev/null',
                stderr='/dev/null'):
-    self.stdin = stdin
-    self.stdout = stdout
-    self.stderr = stderr
+    self.stdin   = stdin
+    self.stdout  = stdout
+    self.stderr  = stderr
     self.pidfile = pidfile
 
   def daemonize(self):
@@ -34,7 +34,7 @@ class Daemon:
       if pid > 0:
         # exit first parent
         sys.exit(0)
-    except OSError, e:
+    except OSError as e:
       sys.stderr.write("fork no.1 failed: {0:d} ({1!s})\n".format(e.errno, e.strerror))
       sys.exit(1)
 
@@ -49,7 +49,7 @@ class Daemon:
       if pid > 0:
         # exit from second parent
         sys.exit(0)
-    except OSError, e:
+    except OSError as e:
       sys.stderr.write("fork no.2 failed: {0:d} ({1!s})\n".format(e.errno, e.strerror))
       sys.exit(1)
 
@@ -57,8 +57,8 @@ class Daemon:
     sys.stdout.flush()
     sys.stderr.flush()
     si = open(self.stdin, 'r')
-    so = open(self.stdout, 'a+')
-    se = open(self.stderr, 'a+', 0)
+    so = open(self.stdout, 'ab+')
+    se = open(self.stderr, 'ab+', 0)
     os.dup2(si.fileno(), sys.stdin.fileno())
     os.dup2(so.fileno(), sys.stdout.fileno())
     os.dup2(se.fileno(), sys.stderr.fileno())
@@ -120,12 +120,12 @@ class Daemon:
         os.kill(pid, SIGTERM)
         time.sleep(0.1)
 
-    except OSError, err:
+    except OSError as err:
       if err.errno == 3:
         if os.path.exists(self.pidfile):
           os.remove(self.pidfile)
       else:
-        print str(err)
+        print(str(err))
         sys.exit(1)
 
   def restart(self):

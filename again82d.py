@@ -1,9 +1,10 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python3
 
 # daemon82d.py creates an MD-file.
 
-import ConfigParser
+import configparser
 import os
+import platform
 import shutil
 import sys
 import syslog
@@ -15,13 +16,13 @@ from libdaemon import Daemon
 # constants
 DEBUG       = False
 IS_JOURNALD = os.path.isfile('/bin/journalctl')
-MYID        = filter(str.isdigit, os.path.realpath(__file__).split('/')[-1])
+MYID        = "".join(list(filter(str.isdigit, os.path.realpath(__file__).split('/')[-1])))
 MYAPP       = os.path.realpath(__file__).split('/')[-2]
 NODE        = os.uname()[1]
 
 class MyDaemon(Daemon):
   def run(self):
-    iniconf         = ConfigParser.ConfigParser()
+    iniconf         = configparser.ConfigParser()
     inisection      = MYID
     home            = os.path.expanduser('~')
     s               = iniconf.read(home + '/' + MYAPP + '/config.ini')
@@ -44,15 +45,18 @@ class MyDaemon(Daemon):
           syslog_trace("Waiting  : {0}s".format(waitTime), False, DEBUG)
           syslog_trace("................................", False, DEBUG)
           time.sleep(waitTime)
-      except Exception as e:
+      except Exception:  # Gotta catch em all
         syslog_trace("Unexpected error in run()", syslog.LOG_CRIT, DEBUG)
-        syslog_trace("e.message : {0}".format(e.message), syslog.LOG_CRIT, DEBUG)
-        syslog_trace("e.__doc__ : {0}".format(e.__doc__), syslog.LOG_CRIT, DEBUG)
         syslog_trace(traceback.format_exc(), syslog.LOG_CRIT, DEBUG)
         raise
 
 def do_markdown(flock, fdata):
   home              = os.path.expanduser('~')
+  uname             = os.uname()
+
+  fi = home + "/.domog.branch"
+  with open(fi, 'r') as f:
+    domogbranch  = f.read().strip('\n')
 
   lock(flock)
   shutil.copyfile(home + '/' + MYAPP + '/default.md', fdata)
@@ -60,9 +64,16 @@ def do_markdown(flock, fdata):
   with open(fdata, 'a') as f:
     f.write('![A GNUplot image should be here: day21.png](img/day21.png?classes=zoomer)\n')
     f.write('![A GNUplot image should be here: day22.png](img/day22.png?classes=zoomer)\n')
-    f.write('![A GNUplot image should be here: day24.png](img/day24.png?classes=zoomer)\n')
     f.write('![A GNUplot image should be here: day23.png](img/day23.png?classes=zoomer)\n')
-    f.write('![A GNUplot image should be here: day25.png](img/day25.png?classes=zoomer)\n')
+    f.write('![A GNUplot image should be here: day29.png](img/day29.png?classes=zoomer)\n')
+    f.write('![A GNUplot image should be here: day29roos.png](img/day29roos.png?classes=zoomer)\n')
+
+    # System ID
+    f.write('!!! ')
+    f.write(uname[0] + ' ' + uname[1] + ' ' + uname[2] + ' ' + uname[3] + ' ' + uname[4] + ' ' + platform.platform() + '  \n')
+
+    # branch
+    f.write('!!! domog   on: ' + domogbranch + '\n\n')
 
   unlock(flock)
 
@@ -80,7 +91,7 @@ def syslog_trace(trace, logerr, out2console):
     if line and logerr:
       syslog.syslog(logerr, line)
     if line and out2console:
-      print line
+      print(line)
 
 if __name__ == "__main__":
   daemon = MyDaemon('/tmp/' + MYAPP + '/' + MYID + '.pid')
@@ -93,14 +104,14 @@ if __name__ == "__main__":
       daemon.restart()
     elif 'foreground' == sys.argv[1]:
       # assist with debugging.
-      print "Debug-mode started. Use <Ctrl>+C to stop."
+      print("Debug-mode started. Use <Ctrl>+C to stop.")
       DEBUG = True
       syslog_trace("Daemon logging is ON", syslog.LOG_DEBUG, DEBUG)
       daemon.run()
     else:
-      print "Unknown command"
+      print("Unknown command")
       sys.exit(2)
     sys.exit(0)
   else:
-    print "usage: {0!s} start|stop|restart|foreground".format(sys.argv[0])
+    print("usage: {0!s} start|stop|restart|foreground".format(sys.argv[0]))
     sys.exit(2)

@@ -9,12 +9,13 @@ ifnamew = "/tmp/domog/mysql/sql22w.csv"
 set output ofname = "/tmp/domog/site/img/day22.png"
 
 # ******************************************************* General settings *****
-set terminal png truecolor enhanced font "Vera" 9 size 1280,320
+set terminal png enhanced font "Vera" 9 size 1280,320
 set datafile separator ';'
 set datafile missing "NaN"    # Ignore missing values
 set grid
 tz_offset = utc_offset / 3600 # GNUplot only works with UTC. Need to compensate
                               # for timezone ourselves.
+if (GPVAL_VERSION == 4.6) {epoch_compensate = 946684800} else {if (GPVAL_VERSION == 5.0) {epoch_compensate = 0}}
 # Positions of split between graphs
 LMARG = 0.056
 LMPOS = 0.403
@@ -28,8 +29,8 @@ max(x,y) = (x > y) ? x : y
 # stats to be calculated here of column 2 (UX-epoch)
 stats ifnameh using 2 name "X" nooutput
 
-Xh_min = X_min + utc_offset - 946684800
-Xh_max = X_max + utc_offset - 946684800
+Xh_min = X_min + utc_offset - epoch_compensate
+Xh_max = X_max + utc_offset - epoch_compensate
 
 # stats to be calculated here for Y-axes
 stats ifnameh using 3 name "Yh" nooutput
@@ -41,8 +42,8 @@ stats ifnameh using 4 name "Y2h" nooutput
 # stats to be calculated here of column 2 (UX-epoch)
 stats ifnamed using 2 name "X" nooutput
 
-Xd_min = X_min + utc_offset - 946684800
-Xd_max = X_max + utc_offset - 946684800
+Xd_min = X_min + utc_offset - epoch_compensate
+Xd_max = X_max + utc_offset - epoch_compensate
 
 # stats to be calculated here for Y-axes
 stats ifnamed using 3 name "Yd" nooutput
@@ -53,8 +54,8 @@ stats ifnamed using 4 name "Y2d" nooutput
 # ********************************************************* Statistics (L) *****
 # stats to be calculated here of column 2 (UX-epoch)
 stats ifnamew using 2 name "X" nooutput
-Xw_min = X_min + utc_offset - 946684800
-Xw_max = X_max + utc_offset - 946684800
+Xw_min = X_min + utc_offset - epoch_compensate
+Xw_max = X_max + utc_offset - epoch_compensate
 
 # stats for Y-axis
 stats ifnamew using 3 name "Yw" nooutput
@@ -98,7 +99,7 @@ set key samplen 1
 set key reverse Left
 
 # ***************************************************************** Output *****
-set arrow from graph 0,graph 0 to graph 0,graph 1 nohead lc rgb "red" front
+set arrow from graph 0,graph 0 to graph 0,graph 1 nohead lc rgb "#cc0000bb" front
 # set arrow from graph 1,graph 0 to graph 1,graph 1 nohead lc rgb "green" front
 #set object 1 rect from screen 0,0 to screen 1,1 behind
 #set object 1 rect fc rgb "#eeeeee" fillstyle solid 1.0 noborder
@@ -110,8 +111,8 @@ set rmargin at screen LMPOS
 
 # ***** PLOT *****
 plot ifnamew \
-      using ($2+utc_offset):4 title " Temperature [degC]" axes x1y2  with points pt 5 ps 0.2 fc rgb "#cc99bb99" \
-  ,'' using ($2+utc_offset):3 title " Humidity [%]"      with points pt 5 ps 0.2 fc rgb "#ccbb0000" \
+      using ($2+utc_offset):4 title " Temperature [degC]" axes x1y2  with points pt 5 ps 0.2 fc rgb "#ccbb0000" \
+  ,'' using ($2+utc_offset):3 title " Humidity [%]"      with points pt 5 ps 0.2 fc rgb "#cc0000bb" \
 
 
 
@@ -148,8 +149,8 @@ set rmargin at screen MRPOS
 
 # ***** PLOT *****
 plot ifnamed \
-      using ($2+utc_offset):4 axes x1y2 with points pt 5 ps 0.2 fc rgb "#cc99bb99" \
-  ,'' using ($2+utc_offset):3 with points pt 5 ps 0.2 fc rgb "#ccbb0000" \
+      using ($2+utc_offset):4 axes x1y2 with points pt 5 ps 0.2 fc rgb "#ccbb0000" \
+  ,'' using ($2+utc_offset):3 with points pt 5 ps 0.2 fc rgb "#cc0000bb" \
 
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -180,14 +181,14 @@ set y2tics border
 unset key
 
 # ***************************************************************** Output *****
-set arrow from graph 1,graph 0 to graph 1,graph 1 nohead lc rgb "green" front
+set arrow from graph 1,graph 0 to graph 1,graph 1 nohead lc rgb "#ccbb0000" front
 set lmargin at screen MRPOS+0.001
 set rmargin at screen RMARG
 
 # ***** PLOT *****
 plot ifnameh \
-      using ($2+utc_offset):4 axes x1y2 with points pt 5 ps 0.2 fc rgb "#cc99bb99" \
-  ,'' using ($2+utc_offset):3 with points pt 5 ps 0.2 fc rgb "#ccbb0000" \
+      using ($2+utc_offset):4 axes x1y2 with points pt 5 ps 0.2 fc rgb "#ccbb0000" \
+  ,'' using ($2+utc_offset):3 with points pt 5 ps 0.2 fc rgb "#cc0000bb" \
 
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #                                                                 FINALIZING

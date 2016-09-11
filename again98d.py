@@ -1,8 +1,8 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python3
 
 # daemon98.py file post-processor.
 
-import ConfigParser
+import configparser
 import os
 import subprocess
 import sys
@@ -16,7 +16,7 @@ from random import randrange as rnd
 # constants
 DEBUG       = False
 IS_JOURNALD = os.path.isfile('/bin/journalctl')
-MYID        = filter(str.isdigit, os.path.realpath(__file__).split('/')[-1])
+MYID        = "".join(list(filter(str.isdigit, os.path.realpath(__file__).split('/')[-1])))
 MYAPP       = os.path.realpath(__file__).split('/')[-2]
 NODE        = os.uname()[1]
 SQLMNT      = rnd(0, 59)
@@ -24,7 +24,7 @@ SQLHR       = rnd(0, 23)
 
 class MyDaemon(Daemon):
   def run(self):
-    iniconf         = ConfigParser.ConfigParser()
+    iniconf         = configparser.ConfigParser()
     inisection      = MYID
     home            = os.path.expanduser('~')
     s               = iniconf.read(home + '/' + MYAPP + '/config.ini')
@@ -52,10 +52,8 @@ class MyDaemon(Daemon):
           syslog_trace("Waiting  : {0}s".format(waitTime), False, DEBUG)
           syslog_trace("................................", False, DEBUG)
           time.sleep(waitTime)
-      except Exception as e:
+      except Exception:  # Gotta catch em all
         syslog_trace("Unexpected error in run()", syslog.LOG_CRIT, DEBUG)
-        syslog_trace("e.message : {0}".format(e.message), syslog.LOG_CRIT, DEBUG)
-        syslog_trace("e.__doc__ : {0}".format(e.__doc__), syslog.LOG_CRIT, DEBUG)
         syslog_trace(traceback.format_exc(), syslog.LOG_CRIT, DEBUG)
         raise
 
@@ -78,8 +76,20 @@ def do_mv_data(flock, homedir, script):
     write_lftp(script)
     cmnd = ['lftp', '-f', script]
     syslog_trace("...:  {0}".format(cmnd), False, DEBUG)
-    cmnd = subprocess.check_output(cmnd)
+    cmnd = subprocess.check_output(cmnd, timeout=20)
     syslog_trace("...:  {0}".format(cmnd), False, DEBUG)
+
+  try:
+    # Upload the webpage and graphs
+    if os.path.isfile('/tmp/' + MYAPP + '/site/default.md'):
+      write_lftp(script)
+      cmnd = ['lftp', '-f', script]
+      syslog_trace("...:  {0}".format(cmnd), False, DEBUG)
+      cmnd = subprocess.check_output(cmnd, timeout=20)
+      syslog_trace("...:  {0}".format(cmnd), False, DEBUG)
+  except subprocess.TimeoutExpired:
+    syslog_trace("***:  {0}".format(cmnd), syslog.LOG_CRIT, DEBUG)
+    pass
 
 def getsqldata(homedir, nu):
   minit = int(time.strftime('%M'))
@@ -107,8 +117,9 @@ def write_lftp(script):
     f.write('# DO NOT EDIT\n')
     f.write('# This file is created automatically by ' + MYAPP + '\n\n')
     f.write('# lftp script\n\n')
+    f.write('set cmd:fail-exit yes;\n')
     f.write('open hendrixnet.nl;\n')
-    f.write('cd /public_html/grav/user/pages/03.again/;\n')
+    f.write('cd 03.again/;\n')
     f.write('mirror --reverse --delete --verbose=3 -c /tmp/' + MYAPP + '/site/ . ;\n')
     f.write('\n')
 
@@ -128,7 +139,7 @@ def syslog_trace(trace, logerr, out2console):
     if line and logerr:
       syslog.syslog(logerr, line)
     if line and out2console:
-      print line
+      print(line)
 
 if __name__ == "__main__":
   daemon = MyDaemon('/tmp/' + MYAPP + '/' + MYID + '.pid')
@@ -141,14 +152,14 @@ if __name__ == "__main__":
       daemon.restart()
     elif 'foreground' == sys.argv[1]:
       # assist with debugging.
-      print "Debug-mode started. Use <Ctrl>+C to stop."
+      print("Debug-mode started. Use <Ctrl>+C to stop.")
       DEBUG = True
       syslog_trace("Daemon logging is ON", syslog.LOG_DEBUG, DEBUG)
       daemon.run()
     else:
-      print "Unknown command"
+      print("Unknown command")
       sys.exit(2)
     sys.exit(0)
   else:
-    print "usage: {0!s} start|stop|restart|foreground".format(sys.argv[0])
+    print("usage: {0!s} start|stop|restart|foreground".format(sys.argv[0]))
     sys.exit(2)
