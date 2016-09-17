@@ -38,7 +38,7 @@ Xh_max = X_max + utc_offset - epoch_compensate
 stats ifnameh using 3 name "Yh" nooutput
 
 # stats for Y2-axis
-stats ifnameh using 4 name "Y2h" nooutput
+#stats ifnameh using 4 name "Y2h" nooutput
 
 # ********************************************************* Statistics (M) *****
 # stats to be calculated here of column 2 (UX-epoch)
@@ -51,7 +51,7 @@ Xd_max = X_max + utc_offset - epoch_compensate
 stats ifnamed using 3 name "Yd" nooutput
 
 # stats for Y2-axis
-stats ifnamed using 4 name "Y2d" nooutput
+#stats ifnamed using 4 name "Y2d" nooutput
 
 # ********************************************************* Statistics (L) *****
 # stats to be calculated here of column 2 (UX-epoch)
@@ -63,12 +63,12 @@ Xw_max = X_max + utc_offset - epoch_compensate
 stats ifnamew using 3 name "Yw" nooutput
 
 # stats for Y2-axis
-stats ifnamew using 4 name "Y2w" nooutput
+#stats ifnamew using 4 name "Y2w" nooutput
 
 Ymax = max(max(Yd_max, Yh_max), Yw_max) +1
-Ymin = min(min(Yd_min, Yh_min), Yw_min) -1
-Y2max = max(max(Y2d_max, Y2h_max), Y2w_max) +1
-Y2min = min(min(Y2d_min, Y2h_min), Y2w_min) -1
+#Ymin = min(min(Yd_min, Yh_min), Yw_min) -1
+#Y2max = max(max(Y2d_max, Y2h_max), Y2w_max) +1
+#Y2min = min(min(Y2d_min, Y2h_min), Y2w_min) -1
 
 set multiplot layout 1, 3 title "Wind (Gilze-Rijen) ".strftime("( %Y-%m-%dT%H:%M:%S )", time(0)+utc_offset)
 
@@ -88,7 +88,7 @@ set xrange [ Xw_min : Xw_max ]
 
 # ***************************************************************** Y-axis *****
 set ylabel "Speed [km/h]"
-set yrange [0:]
+set yrange [0:Ymax]
 set format y "%4.1f"
 
 # **************************************************************** Y2-axis *****
