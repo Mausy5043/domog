@@ -88,7 +88,7 @@ set xrange [ Xw_min : Xw_max ]
 
 # ***************************************************************** Y-axis *****
 set ylabel "Speed [km/h]"
-set yrange [0:Ymax]
+set yrange [ 0 : kmh(Ymax) ]
 set format y "%4.1f"
 
 # **************************************************************** Y2-axis *****
@@ -134,7 +134,7 @@ set xrange [ Xd_min : Xd_max ]
 # ***************************************************************** Y-axis *****
 set ylabel " "
 set ytics format " "
-set yrange [0:]
+set yrange [ 0 : kmh(Ymax) ]
 
 # **************************************************************** Y2-axis *****
 set y2label " "
@@ -171,7 +171,7 @@ set xtics textcolor rgb "red"
 # ***************************************************************** Y-axis *****
 set ylabel " "
 set ytics format " "
-set yrange [0:]
+set yrange [ 0 : kmh(Ymax) ]
 
 # **************************************************************** Y2-axis *****
 set y2label "Direction [deg]"
