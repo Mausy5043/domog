@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Pull data from MySQL server and graph them.
+# Graph the data.
 
 LOCAL=$(date)
 LOCALSECONDS=$(date -d "$LOCAL" +%s)
