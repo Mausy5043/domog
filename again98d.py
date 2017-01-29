@@ -66,7 +66,7 @@ def do_mv_data(flock, homedir, script):
   getsqldata(homedir, False)
 
   # Graph the data
-  cmnd = homedir + '/' + MYAPP + '/graphs.sh'
+  cmnd = homedir + '/' + MYAPP + '/mkgraphs.sh'
   syslog_trace("...:  {0}".format(cmnd), False, DEBUG)
   cmnd = subprocess.check_output(cmnd)
   syslog_trace("...:  {0}".format(cmnd), False, DEBUG)
