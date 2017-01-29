@@ -53,7 +53,7 @@ pushd "$HOME/domog"
   # Set up some cronjobs
   echo "# m h dom mon dow user  command" | sudo tee /etc/cron.d/domog
   echo "$minit  * *   *   *   $ME    $HOME/domog/update.sh 2>&1 | logger -p info -t domog" | sudo tee --append /etc/cron.d/domog
-  # @reboot we allow for 120s for the WiFi to come up:
+  # after a reboot we allow for 120s for the network to come up:
   echo "@reboot               $ME    sleep 180; $HOME/domog/update.sh 2>&1 | logger -p info -t domog" | sudo tee --append /etc/cron.d/domog
 popd
 
