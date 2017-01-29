@@ -11,7 +11,7 @@ fi
 interval="INTERVAL 8 DAY "
 host=$(hostname)
 
-pushd "$HOME/domog" >/dev/null
+pushd "${HOME}/domog" >/dev/null
   mysql -h sql.lan --skip-column-names -e "USE domotica; SELECT * FROM ds18 where (sample_time >=NOW() - $interval);" | sed 's/\t/;/g;s/\n//g' > "$datastore/sql21w.csv"
   mysql -h sql.lan --skip-column-names -e "USE domotica; SELECT * FROM dht22 where (sample_time >=NOW() - $interval);" | sed 's/\t/;/g;s/\n//g' > "$datastore/sql22w.csv"
   mysql -h sql.lan --skip-column-names -e "USE domotica; SELECT * FROM bmp183 where (sample_time >=NOW() - $interval);" | sed 's/\t/;/g;s/\n//g' > "$datastore/sql23w.csv"
@@ -29,6 +29,6 @@ pushd "$HOME/domog" >/dev/null
       FROM bmp183 \
       WHERE sample_time >= NOW() - $interval \
       GROUP BY YEAR(sample_time), MONTH(sample_time), DAY(sample_time), HOUR(sample_time);" \
-      | sed 's/\t/;/g;s/\n//g' > "$datastore/sql29x.csv"
+      | sed 's/\t/;/g;s/\n//g' > "${datastore}/sql29x.csv"
 
 popd >/dev/null

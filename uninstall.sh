@@ -8,15 +8,15 @@ HOSTNAME=$(cat /etc/hostname)
 
 echo -n "Started UNinstalling domog on "; date
 
-pushd "$HOME/domog"
+pushd "${HOME}/domog"
  source ./includes
 
   sudo rm /etc/cron.d/domog
 
   echo "  Stopping all service daemons"
   for daemon in $srvclist; do
-    echo "Stopping "$daemon
-    eval "./again"$daemon"d.py stop"
+    echo "Stopping ${daemon}"
+    eval "./again${daemon}d.py stop"
   done
 popd
 
