@@ -29,6 +29,6 @@ pushd "$HOME/domog" >/dev/null
       FROM bmp183 \
       WHERE sample_time >= NOW() - $interval \
       GROUP BY YEAR(sample_time), MONTH(sample_time), DAY(sample_time), HOUR(sample_time);" \
-      > "$datastore/sql29x.csv"
+      | sed 's/\t/;/g;s/\n//g' > "$datastore/sql29x.csv"
 
 popd >/dev/null
