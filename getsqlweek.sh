@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Pull data from MySQL server and graph them.
+# Pull WEEKLY data from MySQL server.
 
 datastore="/tmp/domog/mysql"
 
@@ -20,7 +20,7 @@ pushd "$HOME/domog" >/dev/null
   #http://www.sitepoint.com/understanding-sql-joins-mysql-database/
   #mysql -h sql.lan --skip-column-names -e "USE domotica; SELECT ds18.sample_time, ds18.sample_epoch, ds18.temperature, wind.speed FROM ds18 INNER JOIN wind ON ds18.sample_epoch = wind.sample_epoch WHERE (ds18.sample_time) >=NOW() - INTERVAL 1 MINUTE;" | sed 's/\t/;/g;s/\n//g' > $datastore/sql2c.csv
 
-  # 
+  #
   mysql -h sql.lan --skip-column-names -e \
      "USE domotica; \
       SELECT YEAR(sample_time), MONTH(sample_time), DAY(sample_time), HOUR(sample_time),\

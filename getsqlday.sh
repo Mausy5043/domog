@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Pull data from MySQL server and graph them.
+# Pull DAILY data from MySQL server.
 
 datastore="/tmp/domog/mysql"
 
