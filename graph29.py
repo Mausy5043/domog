@@ -5,6 +5,8 @@ matplotlib.use("Agg")
 from cmath import rect, phase               # noqa
 from matplotlib.dates import strpdate2num   # noqa
 import numpy as np                          # noqa
+## change over pylab to pyplot :
+## https://stackoverflow.com/questions/11469336/what-is-the-difference-between-pylab-and-pyplot
 import pylab as pl                          # noqa
 
 def bytespdate2num(fmt, encoding='utf-8'):
@@ -80,6 +82,7 @@ def graphs():
   # highlight the last bar (most recent value) by giving it a different color
   bar.set_facecolor(pl.cm.cool(1.))
   bar.set_alpha(1.)
+
   # pl.title('Windroos')
   pl.savefig('/tmp/domog/site/img/day29roos.png')
 
