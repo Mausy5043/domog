@@ -20,7 +20,15 @@ def bytespdate2num(fmt, encoding='utf-8'):
   return bytesconverter
 
 def makegraph():
-  C = np.loadtxt('/tmp/domog/mysql/sql29.csv', delimiter=';', converters={0: bytespdate2num("%Y-%m-%d %H:%M:%S")})
+  datapath = '/tmp/domog/mysql4python'
+  hrdata   = 'sql21h.csv'
+  dydata   = 'sql21d.csv'
+  wkdata   = 'sql21w.csv'
+  yrdata   = 'sql21y.csv'
+  HR = np.loadtxt(datapath + hrdata, delimiter=';', converters={0: bytespdate2num("%Y-%m-%d %H:%M:%S")})
+  DY = np.loadtxt(datapath + dydata, delimiter=';', converters={0: bytespdate2num("%Y-%m-%d %H:%M:%S")})
+  WK = np.loadtxt(datapath + wkdata, delimiter=';', converters={0: bytespdate2num("%Y-%m-%d %H:%M:%S")})
+  YR = np.loadtxt(datapath + yrdata, delimiter=';', converters={0: bytespdate2num("%Y-%m-%d %H:%M:%S")})
 
 
 if __name__ == "__main__":

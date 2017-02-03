@@ -20,12 +20,12 @@ pushd "$HOME/domog" >/dev/null
   #http://www.sitepoint.com/understanding-sql-joins-mysql-database/
   #mysql -h sql.lan --skip-column-names -e "USE domotica; SELECT ds18.sample_time, ds18.sample_epoch, ds18.temperature, wind.speed FROM ds18 INNER JOIN wind ON ds18.sample_epoch = wind.sample_epoch WHERE (ds18.sample_time) >=NOW() - INTERVAL 1 MINUTE;" | sed 's/\t/;/g;s/\n//g' > /tmp/sql2c.csv
 
-######
-datastore="/tmp/domog/mysql4python"
+  ######
+  datastore="/tmp/domog/mysql4python"
 
-if [ ! -d "$datastore" ]; then
-  mkdir -p "$datastore"
-fi
+  if [ ! -d "$datastore" ]; then
+    mkdir -p "$datastore"
+  fi
 
   # Get day data for DS18 sensor (graph21)
   # DIV t : t/100 minutes
