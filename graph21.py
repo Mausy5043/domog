@@ -10,6 +10,9 @@ from matplotlib.dates import strpdate2num   # noqa
 import numpy as np                          # noqa
 import pylab as pl                          # noqa
 
+# following import is for debugging and profiling
+import datetime                             # noqa
+
 def bytespdate2num(fmt, encoding='utf-8'):
   # convert datestring to proper format for numpy.loadtext()
   strconverter = strpdate2num(fmt)
@@ -32,4 +35,13 @@ def makegraph():
 
 
 if __name__ == "__main__":
+
+  # For debugging and profiling
+  startTime = datetime.datetime.now()
+
   makegraph()
+
+  # For debugging and profiling
+  elapsed = datetime.datetime.now() - startTime
+  print " Graphing completed in %s" % (elapsed)
+  print ""
