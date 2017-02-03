@@ -43,7 +43,10 @@ def makegraph():
 
     t = nmp.arange(0.0, 1.0, 0.01)
     s = nmp.sin(2*nmp.pi*t)
-    line, = ax1.plot(t, s, color='blue', lw=2)
+    line, = ax1.plot(t,
+                     s,
+                     color='blue',
+                     lw=2)
 
     # Fixing random state for reproducibility
     nmp.random.seed(19680801)
