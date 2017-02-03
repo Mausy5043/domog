@@ -23,4 +23,22 @@ pushd "$HOME/domog" >/dev/null
   # retrieve data for windrose
   mysql -h sql.lan --skip-column-names -e "USE domotica; SELECT * FROM wind where (sample_time) >=NOW() - INTERVAL 50 HOUR;" | sed 's/\t/;/g;s/\n//g' > "$datastore/sql29.csv"
 
+######
+datastore="/tmp/domog/mysql4python"
+
+if [ ! -d "$datastore" ]; then
+  mkdir -p "$datastore"
+fi
+
+  # Get hour data for DS18 sensor (graph21)
+  # DIV t : t/100 minutes
+  # t=100 1'
+  mysql -h sql.lan --skip-column-names -e \
+  "USE domotica; \
+  SELECT MIN(sample_time),temperature \
+  FROM ds18 \
+  WHERE (sample_time >= NOW() - $interval) \
+  GROUP BY sample_time DIV 100;" \
+  | sed 's/\t/;/g;s/\n//g' > "$datastore/sql21h.csv"
+
 popd >/dev/null
