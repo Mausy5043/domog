@@ -43,5 +43,5 @@ if __name__ == "__main__":
 
   # For debugging and profiling
   elapsed = datetime.datetime.now() - startTime
-  print " Graphing completed in %s" % (elapsed)
-  print ""
+  print(" Graphing completed in %s" % (elapsed))
+  print("")
