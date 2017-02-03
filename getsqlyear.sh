@@ -21,7 +21,7 @@ pushd "$HOME/domog" >/dev/null
    FROM ds18 \
    WHERE (sample_time >= NOW() - $interval) \
    GROUP BY sample_time DIV 18000;" \
-  | sed 's/\t/;/g;s/\n//g' > "${datastore}/sql21w.csv"
+  | sed 's/\t/;/g;s/\n//g' > "${datastore}/sql21y.csv"
 
   # Get week data for BMP183 sensor (graph23)
   mysql -h sql.lan --skip-column-names -e \
@@ -32,6 +32,6 @@ pushd "$HOME/domog" >/dev/null
    FROM bmp183 \
    WHERE (sample_time >= NOW() - $interval) \
    GROUP BY sample_time DIV 18000;" \
-  | sed 's/\t/;/g;s/\n//g' > "${datastore}/sql23w.csv"
+  | sed 's/\t/;/g;s/\n//g' > "${datastore}/sql23y.csv"
 
 popd >/dev/null
