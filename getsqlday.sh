@@ -32,7 +32,7 @@ fi
   # t=1200 12'
   mysql -h sql.lan --skip-column-names -e \
   "USE domotica; \
-   SELECT MIN(sample_time),MIN(temperature),AVG(temperature),MAX(temperature) \
+   SELECT MIN(sample_time), MIN(temperature), AVG(temperature), MAX(temperature) \
    FROM ds18 \
    WHERE (sample_time >= NOW() - $interval) \
    GROUP BY sample_time DIV 1200;" \
