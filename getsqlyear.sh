@@ -20,18 +20,18 @@ pushd "$HOME/domog" >/dev/null
    SELECT MIN(sample_time), MIN(temperature), AVG(temperature), MAX(temperature) \
    FROM ds18 \
    WHERE (sample_time >= NOW() - $interval) \
-   GROUP BY sample_time DIV 18000;" \
+   GROUP BY (sample_time DIV 18000);" \
   | sed 's/\t/;/g;s/\n//g' > "${datastore}/sql21y.csv"
 
   # Get week data for BMP183 sensor (graph23)
   mysql -h sql.lan --skip-column-names -e \
   "USE domotica; \
    SELECT MIN(sample_time), \
-   MIN(pressure), AVG(pressure), MAX(pressure), \
+   MIN(pressure),    AVG(pressure),    MAX(pressure), \
    MIN(temperature), AVG(temperature), MAX(temperature) \
    FROM bmp183 \
    WHERE (sample_time >= NOW() - $interval) \
-   GROUP BY sample_time DIV 18000;" \
+   GROUP BY (sample_time DIV 18000);" \
   | sed 's/\t/;/g;s/\n//g' > "${datastore}/sql23y.csv"
 
 popd >/dev/null

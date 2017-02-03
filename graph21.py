@@ -33,6 +33,29 @@ def makegraph():
   WK = np.loadtxt(datapath + '/' + wkdata, delimiter=';', converters={0: bytespdate2num("%Y-%m-%d %H:%M:%S")})
   YR = np.loadtxt(datapath + '/' + yrdata, delimiter=';', converters={0: bytespdate2num("%Y-%m-%d %H:%M:%S")})
 
+  # Anatomy of a graph:
+  #
+  #                TITLE
+  # +-------------------------------------+
+  # |                                     | Y2-axis
+  # |               YR                    |
+  # |                                     |
+  # +-------------------------------------+
+  #                 MM
+  # +-------------+-----------+-----------+
+  # |             |           |           | Y2-axis
+  # |      WK     |    DY     |    HR     |
+  # |             |           |           |
+  # +-------------+-----------+-----------+
+  #      Wdy dd       hr:00       hh:mm
+  # ^             ^           ^           ^
+  # LMARG         LMPOS       MRPOS       RMARG
+  # spacing:      (+0.001)    (+0.001)
+  # Positions of split between graphs
+  # LMARG = 0.056
+  # LMPOS = 0.403
+  # MRPOS = 0.75
+  # RMARG = 0.96
 
 if __name__ == "__main__":
 
