@@ -35,7 +35,7 @@ pushd "$HOME/domog" >/dev/null
    SELECT MIN(sample_time), MIN(temperature), AVG(temperature), MAX(temperature) \
    FROM ds18 \
    WHERE (sample_time >= NOW() - $interval) \
-   GROUP BY (sample_time DIV 1200);" \
+   GROUP BY (sample_time DIV 3000);" \
   | sed 's/\t/;/g;s/\n//g' > "$datastore/sql21d.csv"
 
 popd >/dev/null

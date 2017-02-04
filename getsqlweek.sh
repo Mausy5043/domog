@@ -35,7 +35,7 @@ pushd "${HOME}/domog" >/dev/null
    SELECT MIN(sample_time), MIN(temperature), AVG(temperature), MAX(temperature) \
    FROM ds18 \
    WHERE (sample_time >= NOW() - $interval) \
-   GROUP BY (sample_time DIV 6000);" \
+   GROUP BY (sample_time DIV 12000);" \
   | sed 's/\t/;/g;s/\n//g' > "${datastore}/sql21w.csv"
 
   # Get week data for BMP183 sensor (graph23)
@@ -46,7 +46,7 @@ pushd "${HOME}/domog" >/dev/null
    MIN(temperature), AVG(temperature), MAX(temperature) \
    FROM bmp183 \
    WHERE (sample_time >= NOW() - $interval) \
-   GROUP BY (sample_time DIV 6000);" \
+   GROUP BY (sample_time DIV 12000);" \
   | sed 's/\t/;/g;s/\n//g' > "${datastore}/sql23w.csv"
 
 popd >/dev/null
