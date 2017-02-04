@@ -62,8 +62,11 @@ def makegraph():
     t = nmp.arange(0.0, len(YR), 1.0)
     # s = nmp.sin(2*nmp.pi*t) * nmp.random.randn()
     s = nmp.array(YR[:, 2])
+    slo = nmp.array(YR[:, 1])
+    shi = nmp.array(YR[:, 3])
     line, = ax1.plot(t, s, color='red', lw=1, label='Temperature [degC]')
     ax1.legend(loc='upper left', fontsize='x-small')
+    ax1.fill_between(t, slo, shi, interpolate=True, color='blue', alpha=0.1)
     #
     # AX2 [WEEK]
     ax2.set_ylabel('Temperature [degC]')
@@ -74,7 +77,10 @@ def makegraph():
     t = nmp.arange(0.0, len(WK), 1.0)
     # s = nmp.sin(2*nmp.pi*(t/100))
     s = nmp.array(WK[:, 2])
+    slo = nmp.array(WK[:, 1])
+    shi = nmp.array(WK[:, 3])
     line, = ax2.plot(t, s, linestyle='-', color='red', lw=2)
+    ax2.fill_between(t, slo, shi, interpolate=True, color='blue', alpha=0.1)
     #
     # AX3 [DAY]
     ax3.set_xlabel('past day')
@@ -84,7 +90,10 @@ def makegraph():
     t = nmp.arange(0.0, len(DY), 1.0)
     # s = nmp.sin(2*nmp.pi*(t/100))
     s = nmp.array(DY[:, 2])
+    slo = nmp.array(DY[:, 1])
+    shi = nmp.array(DY[:, 3])
     line, = ax3.plot(t, s, marker='.', linestyle='-', color='red', lw=3)
+    ax3.fill_between(t, slo, shi, interpolate=True, color='blue', alpha=0.1)
     #
     # AX4 [HOUR]
     ax4.set_xlabel('past hour')
