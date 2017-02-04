@@ -92,7 +92,7 @@ def makegraph():
     s = nmp.array(DY[:, 2])
     slo = nmp.array(DY[:, 1])
     shi = nmp.array(DY[:, 3])
-    line, = ax3.plot(t, s, marker='.', linestyle='-', color='red', lw=3)
+    line, = ax3.plot(t, s, marker='.', linestyle='-', color='red', lw=2)
     ax3.fill_between(t, slo, shi, interpolate=True, color='blue', alpha=0.1)
     #
     # AX4 [HOUR]
@@ -103,7 +103,7 @@ def makegraph():
     t = nmp.arange(0.0, len(HR), 1)
     # s = nmp.sin(2*nmp.pi*(t/100))
     s = nmp.array(HR[:, 1])
-    line, = ax4.plot(t, s, marker='.', linestyle='-', color='red', lw=4)
+    line, = ax4.plot(t, s, marker='.', linestyle='-', color='red', lw=2)
 
     plt.savefig('/tmp/domog/site/img/day21.png', format='png')
 
