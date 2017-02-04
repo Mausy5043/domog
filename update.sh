@@ -105,4 +105,7 @@ pushd "${HOME}/domog"
       eval "./again${daemon}d.py start"
     fi
   done
+
+  # FOR TESTING PURPOSES ONLY
+  ./graph21.py
 popd
