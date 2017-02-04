@@ -49,7 +49,7 @@ def makegraph():
     ax4 = plt.subplot2grid((2, 3), (1, 2))
 
     plt.subplots_adjust(left=LMARG, bottom=None, right=RMARG, top=None,  wspace=0.01, hspace=None)
-    plt.suptitle(datetime.datetime.now())
+    plt.suptitle('Temperature DS18B20 ( ' + datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S") + ' )')
 
     # AX1 [YEAR]
     ax1.set_ylabel('Temperature [degC]')
