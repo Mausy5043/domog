@@ -51,44 +51,31 @@ def makegraph():
     plt.subplots_adjust(left=LMARG, bottom=None, right=RMARG, top=None,  wspace=0.01, hspace=None)
     plt.suptitle(datetime.datetime.now())
 
+    # AX1 [YEAR]
+    ax1.set_ylabel('Temperature [degC]')
     #
-    # fig = plt.figure()
-    # fig.subplots_adjust(top=0.9, bottom=0.1, left=LMARG, right=RMARG)
-    # # AX1
-    # ax1 = fig.add_subplot(231)
-    # ax1.set_ylabel('volts')
-    # ax1.set_title('a sine wave')
-    #
-    t = nmp.arange(0.0, len(YR), 1)
+    t = nmp.arange(0.0, len(YR), 1.0)
     # s = nmp.sin(2*nmp.pi*t) * nmp.random.randn()
     s = nmp.array(YR[:, 2])
     line, = ax1.plot(t, s, color='blue', lw=1)
     #
-    # # AX2
-    # ax2 = fig.add_subplot(234)
-    # ax2.set_ylabel('volts')
-    # ax2.set_title('a sine wave')
+    # AX2 [WEEK]
+    ax2.set_ylabel('Temperature [degC]')
     #
-    t = nmp.arange(0.0, nmp.random.randn(), 0.01)
-    s = nmp.sin(2*nmp.pi*t) * nmp.random.randn()
+    t = nmp.arange(0.0, len(WK), 1.0)
+    s = nmp.sin(2*nmp.pi*t)
     line, = ax2.plot(t, s, color='yellow', lw=2)
     #
-    # # AX3
-    # ax3 = fig.add_subplot(235)
-    # ax3.set_ylabel('volts')
-    # ax3.set_title('a sine wave')
+    # AX3 [DAY]
     #
-    t = nmp.arange(0.0, nmp.random.randn(), 0.01)
-    s = nmp.sin(2*nmp.pi*t) * nmp.random.randn()
+    t = nmp.arange(0.0, len(DY), 1.0)
+    s = nmp.sin(2*nmp.pi*t)
     line, = ax3.plot(t, s, color='red', lw=3)
     #
-    # # AX4
-    # ax4 = fig.add_subplot(236)
-    # ax4.set_ylabel('volts')
-    # ax4.set_title('a sine wave')
+    # # AX4 [HOUR]
     #
-    t = nmp.arange(0.0, nmp.random.randn(), 0.01)
-    s = nmp.sin(2*nmp.pi*t) * nmp.random.randn()
+    t = nmp.arange(0.0, len(HR), 0.01)
+    s = nmp.sin(2*nmp.pi*t)
     line, = ax4.plot(t, s, color='green', lw=4)
 
     plt.savefig('/tmp/domog/site/img/day21.new.png', format='png')
