@@ -42,14 +42,14 @@ def makegraph():
     plt.figure(0)
     fig = plt.gcf()
     DPI = fig.get_dpi()
-    fig.set_size_inches(1280.0/float(DPI),640.0/float(DPI))
+    fig.set_size_inches(1280.0/float(DPI), 640.0/float(DPI))
 
     ax1 = plt.subplot2grid((2, 3), (0, 0), colspan=3)
     ax2 = plt.subplot2grid((2, 3), (1, 0))
     ax3 = plt.subplot2grid((2, 3), (1, 1))
     ax4 = plt.subplot2grid((2, 3), (1, 2))
 
-    plt.suptitle("subplot2grid")
+    plt.suptitle(datetime.datetime.now())
 
     #
     # fig = plt.figure()
@@ -61,48 +61,36 @@ def makegraph():
     #
     t = nmp.arange(0.0, 10.0, 0.01)
     s = nmp.sin(2*nmp.pi*t) * nmp.random.randn()
-    line, = ax1.plot(t,
-                     s,
-                     color='blue',
-                     lw=1)
+    line, = ax1.plot(t, s, color='blue', lw=1)
     #
     # # AX2
     # ax2 = fig.add_subplot(234)
     # ax2.set_ylabel('volts')
     # ax2.set_title('a sine wave')
     #
-    # t = nmp.arange(0.0, 1.0, 0.01)
+    t = nmp.arange(0.0, nmp.random.randn(), 0.01)
     s = nmp.sin(2*nmp.pi*t) * nmp.random.randn()
-    line, = ax2.plot(t,
-                     s,
-                     color='blue',
-                     lw=2)
+    line, = ax2.plot(t, s, color='yellow', lw=2)
     #
     # # AX3
     # ax3 = fig.add_subplot(235)
     # ax3.set_ylabel('volts')
     # ax3.set_title('a sine wave')
     #
-    # t = nmp.arange(0.0, 1.0, 0.01)
+    t = nmp.arange(0.0, nmp.random.randn(), 0.01)
     s = nmp.sin(2*nmp.pi*t) * nmp.random.randn()
-    line, = ax3.plot(t,
-                     s,
-                     color='red',
-                     lw=3)
+    line, = ax3.plot(t, s, color='red', lw=3)
     #
     # # AX4
     # ax4 = fig.add_subplot(236)
     # ax4.set_ylabel('volts')
     # ax4.set_title('a sine wave')
     #
-    # t = nmp.arange(0.0, 1.0, 0.01)
+    t = nmp.arange(0.0, nmp.random.randn(), 0.01)
     s = nmp.sin(2*nmp.pi*t) * nmp.random.randn()
-    line, = ax4.plot(t,
-                     s,
-                     color='green',
-                     lw=4)
+    line, = ax4.plot(t, s, color='green', lw=4)
 
-    plt.savefig('/tmp/domog/site/img/day21.new.png', format='png', dpi='figure')
+    plt.savefig('/tmp/domog/site/img/day21.new.png', format='png')
 
     pass
 
