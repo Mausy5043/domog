@@ -62,7 +62,8 @@ def makegraph():
     t = nmp.arange(0.0, len(YR), 1.0)
     # s = nmp.sin(2*nmp.pi*t) * nmp.random.randn()
     s = nmp.array(YR[:, 2])
-    line, = ax1.plot(t, s, color='red', lw=1)
+    line, = ax1.plot(t, s, color='red', lw=1, label='Temperature [degC]')
+    ax1.legend(loc='upper left', fontsize='x-small')
     #
     # AX2 [WEEK]
     ax2.set_ylabel('Temperature [degC]')
@@ -73,7 +74,7 @@ def makegraph():
     t = nmp.arange(0.0, len(WK), 1.0)
     # s = nmp.sin(2*nmp.pi*(t/100))
     s = nmp.array(WK[:, 2])
-    line, = ax2.plot(t, s, marker='.', linestyle='-', color='red', lw=2)
+    line, = ax2.plot(t, s, linestyle='-', color='red', lw=2)
     #
     # AX3 [DAY]
     ax3.set_xlabel('past day')
