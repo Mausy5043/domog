@@ -49,6 +49,7 @@ def makegraph():
     ax3 = plt.subplot2grid((2, 3), (1, 1))
     ax4 = plt.subplot2grid((2, 3), (1, 2))
 
+    plt.subplots_adjust(left=LMARG, bottom=None, right=RMARG, top=None,  wspace=0.01, hspace=None)
     plt.suptitle(datetime.datetime.now())
 
     #
