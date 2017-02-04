@@ -57,9 +57,14 @@ def makegraph():
     # AX1 [YEAR]
     ax1.set_ylabel('Temperature [degC]')
     ax1.set_xlabel('past year')
-    ax1.set_xlim([0, len(YR)])
+    ax1.set_xlim([YR[1, 0], YR[-1, 0]])
+
+    ax1.format_xdata = mpl.dates.DateFormatter('%Y-%m-%d')
     #
-    t = nmp.arange(0.0, len(YR), 1.0)
+    t = nmp.array(YR[:, 0])
+    # t = nmp.arange(0.0, len(YR), 1.0)
+    ax1.set_xticklabels(t)
+    ax1.xaxis.set_major_formatter(mpl.dates.DateFormatter('%Y'))
     # s = nmp.sin(2*nmp.pi*t) * nmp.random.randn()
     s = nmp.array(YR[:, 2])
     slo = nmp.array(YR[:, 1])
@@ -84,6 +89,7 @@ def makegraph():
     #
     # AX3 [DAY]
     ax3.set_xlabel('past day')
+    ax3.set_yticklabels([])
     ax3.set_ylim([Ymin, Ymax])
     ax3.set_xlim([0, len(DY)])
     #
@@ -97,6 +103,7 @@ def makegraph():
     #
     # AX4 [HOUR]
     ax4.set_xlabel('past hour')
+    ax3.set_yticklabels([])
     ax4.set_ylim([Ymin, Ymax])
     ax4.set_xlim([0, len(HR)])
     #
