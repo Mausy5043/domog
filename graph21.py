@@ -22,8 +22,8 @@ def bytespdate2num(fmt, encoding='utf-8'):
 
 def makegraph():
   LMARG = 0.056
-  LMPOS = 0.403
-  MRPOS = 0.75
+  # LMPOS = 0.403
+  # MRPOS = 0.75
   RMARG = 0.96
   datapath = '/tmp/domog/mysql4python'
   hrdata   = 'sql21h.csv'
@@ -34,6 +34,10 @@ def makegraph():
   DY = nmp.loadtxt(datapath + '/' + dydata, delimiter=';', converters={0: bytespdate2num("%Y-%m-%d %H:%M:%S")})
   WK = nmp.loadtxt(datapath + '/' + wkdata, delimiter=';', converters={0: bytespdate2num("%Y-%m-%d %H:%M:%S")})
   YR = nmp.loadtxt(datapath + '/' + yrdata, delimiter=';', converters={0: bytespdate2num("%Y-%m-%d %H:%M:%S")})
+
+  print(nmp.nanmin(YR[:, 1], 0))
+  Ymin = min(nmp.nanmin(WK[:, 1], 0), nmp.nanmin(DY[:, 1], 0), nmp.nanmin(HR[:, 1], 0)) - 1
+  Ymax = min(nmp.nanmax(WK[:, 1], 0), nmp.nanmax(DY[:, 1], 0), nmp.nanmax(HR[:, 1], 0)) - 1
 
   # decide if there's enough data for a graph
   # rule-of-thumb is to require more than 30 points available for the day-graph
@@ -63,23 +67,29 @@ def makegraph():
     # AX2 [WEEK]
     ax2.set_ylabel('Temperature [degC]')
     ax2.set_xlabel('past week')
+    ax2.set_ylim([Ymin, Ymax])
     #
     t = nmp.arange(0.0, len(WK), 1.0)
-    s = nmp.sin(2*nmp.pi*(t/100))
+    # s = nmp.sin(2*nmp.pi*(t/100))
+    s = nmp.array(WK[:, 2])
     line, = ax2.plot(t, s, color='yellow', lw=2)
     #
     # AX3 [DAY]
     ax3.set_xlabel('past day')
+    ax3.set_ylim([Ymin, Ymax])
     #
     t = nmp.arange(0.0, len(DY), 1.0)
-    s = nmp.sin(2*nmp.pi*(t/100))
+    # s = nmp.sin(2*nmp.pi*(t/100))
+    s = nmp.array(DY[:, 2])
     line, = ax3.plot(t, s, color='red', lw=3)
     #
     # AX4 [HOUR]
     ax4.set_xlabel('past hour')
+    ax4.set_ylim([Ymin, Ymax])
     #
     t = nmp.arange(0.0, len(HR), 0.01)
-    s = nmp.sin(2*nmp.pi*(t/100))
+    # s = nmp.sin(2*nmp.pi*(t/100))
+    s = nmp.array(HR[:, 1])
     line, = ax4.plot(t, s, color='green', lw=4)
 
     plt.savefig('/tmp/domog/site/img/day21.png', format='png')
