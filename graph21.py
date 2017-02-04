@@ -82,7 +82,7 @@ def makegraph():
     s = nmp.sin(2*nmp.pi*(t/100))
     line, = ax4.plot(t, s, color='green', lw=4)
 
-    plt.savefig('/tmp/domog/site/img/day21.new.png', format='png')
+    plt.savefig('/tmp/domog/site/img/day21.png', format='png')
 
     pass
 
