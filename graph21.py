@@ -63,19 +63,19 @@ def makegraph():
     ax2.set_ylabel('Temperature [degC]')
     #
     t = nmp.arange(0.0, len(WK), 1.0)
-    s = nmp.sin(2*nmp.pi*t)
+    s = nmp.sin(2*nmp.pi*(t/100))
     line, = ax2.plot(t, s, color='yellow', lw=2)
     #
     # AX3 [DAY]
     #
     t = nmp.arange(0.0, len(DY), 1.0)
-    s = nmp.sin(2*nmp.pi*t)
+    s = nmp.sin(2*nmp.pi*(t/100))
     line, = ax3.plot(t, s, color='red', lw=3)
     #
     # # AX4 [HOUR]
     #
     t = nmp.arange(0.0, len(HR), 0.01)
-    s = nmp.sin(2*nmp.pi*t)
+    s = nmp.sin(2*nmp.pi*(t/100))
     line, = ax4.plot(t, s, color='green', lw=4)
 
     plt.savefig('/tmp/domog/site/img/day21.new.png', format='png')
