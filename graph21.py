@@ -5,7 +5,6 @@
 import matplotlib as mpl
 mpl.use("Agg")                              # activate Anti-Grain Geometry library
 
-from matplotlib.dates import strpdate2num   # noqa
 import matplotlib.pyplot as plt             # noqa
 import numpy as nmp                         # noqa
 
@@ -14,7 +13,7 @@ import datetime                             # noqa
 
 def bytespdate2num(fmt, encoding='utf-8'):
   # convert datestring to proper format for numpy.loadtext()
-  strconverter = strpdate2num(fmt)
+  strconverter = mpl.dates.strpdate2num(fmt)
 
   def bytesconverter(b):
       s = b.decode(encoding)
@@ -60,8 +59,9 @@ def makegraph():
     # ax1.set_ylabel('volts')
     # ax1.set_title('a sine wave')
     #
-    t = nmp.arange(0.0, 10.0, 0.01)
-    s = nmp.sin(2*nmp.pi*t) * nmp.random.randn()
+    t = nmp.arange(0.0, len(YR), 1)
+    # s = nmp.sin(2*nmp.pi*t) * nmp.random.randn()
+    s = nmp.array(YR[:, 2])
     line, = ax1.plot(t, s, color='blue', lw=1)
     #
     # # AX2
