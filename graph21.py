@@ -79,7 +79,7 @@ def makegraph():
     s = nmp.array(WK[:, 2])
     slo = nmp.array(WK[:, 1])
     shi = nmp.array(WK[:, 3])
-    line, = ax2.plot(t, s, linestyle='', color='red', lw=2)
+    line, = ax2.plot(t, s, linestyle='-', color='red', lw=2)
     ax2.fill_between(t, slo, shi, interpolate=True, color='blue', alpha=0.1)
     #
     # AX3 [DAY]
@@ -103,7 +103,7 @@ def makegraph():
     t = nmp.arange(0.0, len(HR), 1)
     # s = nmp.sin(2*nmp.pi*(t/100))
     s = nmp.array(HR[:, 1])
-    line, = ax4.plot(t, s, marker='.', linestyle='-', color='red', lw=2)
+    line, = ax4.plot(t, s, marker='.', linestyle='', color='red', lw=2)
 
     plt.savefig('/tmp/domog/site/img/day21.png', format='png')
 
