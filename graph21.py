@@ -57,6 +57,7 @@ def makegraph():
     # AX1 [YEAR]
     ax1.set_ylabel('Temperature [degC]')
     ax1.set_xlabel('past year')
+    ax1.set_xlim([0, len(YR)])
     #
     t = nmp.arange(0.0, len(YR), 1.0)
     # s = nmp.sin(2*nmp.pi*t) * nmp.random.randn()
@@ -67,6 +68,7 @@ def makegraph():
     ax2.set_ylabel('Temperature [degC]')
     ax2.set_xlabel('past week')
     ax2.set_ylim([Ymin, Ymax])
+    ax2.set_xlim([0, len(WK)])
     #
     t = nmp.arange(0.0, len(WK), 1.0)
     # s = nmp.sin(2*nmp.pi*(t/100))
@@ -76,6 +78,7 @@ def makegraph():
     # AX3 [DAY]
     ax3.set_xlabel('past day')
     ax3.set_ylim([Ymin, Ymax])
+    ax3.set_xlim([0, len(DY)])
     #
     t = nmp.arange(0.0, len(DY), 1.0)
     # s = nmp.sin(2*nmp.pi*(t/100))
@@ -85,6 +88,7 @@ def makegraph():
     # AX4 [HOUR]
     ax4.set_xlabel('past hour')
     ax4.set_ylim([Ymin, Ymax])
+    ax4.set_xlim([0, len(HR)])
     #
     t = nmp.arange(0.0, len(HR), 1)
     # s = nmp.sin(2*nmp.pi*(t/100))
@@ -99,6 +103,7 @@ def makegraph():
 if __name__ == "__main__":
   # For debugging and profiling
   startTime = datetime.datetime.now()
+  print("")
 
   makegraph()
 
