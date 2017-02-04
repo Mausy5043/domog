@@ -40,6 +40,10 @@ def makegraph():
   # rule-of-thumb is to require more than 30 points available for the day-graph
   if len(DY) > 30:
     plt.figure(0)
+    fig = plt.gcf()
+    DPI = fig.get_dpi()
+    fig.set_size_inches(1280.0/float(DPI),640.0/float(DPI))
+
     ax1 = plt.subplot2grid((2, 3), (0, 0), colspan=3)
     ax2 = plt.subplot2grid((2, 3), (1, 0))
     ax3 = plt.subplot2grid((2, 3), (1, 1))
@@ -98,7 +102,7 @@ def makegraph():
                      color='green',
                      lw=4)
 
-    plt.savefig('/tmp/domog/site/img/day21.new.png')
+    plt.savefig('/tmp/domog/site/img/day21.new.png', format='png', dpi='figure')
 
     pass
 
