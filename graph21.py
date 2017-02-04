@@ -22,6 +22,10 @@ def bytespdate2num(fmt, encoding='utf-8'):
   return bytesconverter
 
 def makegraph():
+  LMARG = 0.056
+  LMPOS = 0.403
+  MRPOS = 0.75
+  RMARG = 0.96
   datapath = '/tmp/domog/mysql4python'
   hrdata   = 'sql21h.csv'
   dydata   = 'sql21d.csv'
@@ -36,8 +40,21 @@ def makegraph():
   # rule-of-thumb is to require more than 30 points available for the day-graph
   if len(DY) > 30:
     fig = plt.figure()
-    fig.subplots_adjust(top=0.8)
-    ax1 = fig.add_subplot(211)
+    fig.subplots_adjust(top=0.9, bottom=0.1, left=LMARG, right=RMARG)
+    # AX1
+    ax1 = fig.add_subplot(231)
+    ax1.set_ylabel('volts')
+    ax1.set_title('a sine wave')
+
+    t = nmp.arange(0.0, 10.0, 0.01)
+    s = nmp.sin(2*nmp.pi*t) * nmp.random.randn()
+    line, = ax1.plot(t,
+                     s,
+                     color='blue',
+                     lw=1)
+
+    # AX2
+    ax1 = fig.add_subplot(234)
     ax1.set_ylabel('volts')
     ax1.set_title('a sine wave')
 
@@ -48,15 +65,40 @@ def makegraph():
                      color='blue',
                      lw=2)
 
-    # Fixing random state for reproducibility
-    nmp.random.seed(19680801)
 
-    ax2 = fig.add_axes([0.15, 0.1, 0.7, 0.3])
-    n, bins, patches = ax2.hist(nmp.random.randn(1000),
-                                50,
-                                facecolor='yellow',
-                                edgecolor='yellow')
-    ax2.set_xlabel('time (s)')
+    # AX3
+    ax1 = fig.add_subplot(235)
+    ax1.set_ylabel('volts')
+    ax1.set_title('a sine wave')
+
+    t = nmp.arange(0.0, 1.0, 0.01)
+    s = nmp.sin(2*nmp.pi*t)
+    line, = ax1.plot(t,
+                     s,
+                     color='red',
+                     lw=3)
+
+    # AX4
+    ax1 = fig.add_subplot(236)
+    ax1.set_ylabel('volts')
+    ax1.set_title('a sine wave')
+
+    t = nmp.arange(0.0, 1.0, 0.01)
+    s = nmp.sin(2*nmp.pi*t)
+    line, = ax1.plot(t,
+                     s,
+                     color='green',
+                     lw=4)
+
+    # Fixing random state for reproducibility
+    # nmp.random.seed(19680801)
+
+    # ax2 = fig.add_axes([0.15, 0.1, 0.7, 0.3])
+    # n, bins, patches = ax2.hist(nmp.random.randn(1000),
+    #                            50,
+    #                            facecolor='yellow',
+    #                            edgecolor='yellow')
+    # ax2.set_xlabel('time (s)')
 
     plt.savefig('/tmp/domog/site/img/day21.new.png')
 
