@@ -81,8 +81,8 @@ def makegraph():
     ax2.set_xlim([0, len(WK)])
     #
     t = nmp.array(WK[:, 0])
-    ax2.set_xticklabels(t)
-    ax2.xaxis.set_major_formatter(mpl.dates.DateFormatter('%a %d'))
+    # ax2.set_xticklabels(t)
+    # ax2.xaxis.set_major_formatter(mpl.dates.DateFormatter('%a %d'))
     # ax2.xaxis.set_minor_formatter()
     s = nmp.array(WK[:, 2])
     slo = nmp.array(WK[:, 1])
@@ -97,8 +97,8 @@ def makegraph():
     ax3.set_xlim([0, len(DY)])
     #
     t = nmp.array(DY[:, 0])
-    ax3.set_xticklabels(t)
-    ax3.xaxis.set_major_formatter(mpl.dates.DateFormatter('%R'))
+    # ax3.set_xticklabels(t)
+    # ax3.xaxis.set_major_formatter(mpl.dates.DateFormatter('%R'))
     #
     s = nmp.array(DY[:, 2])
     slo = nmp.array(DY[:, 1])
@@ -113,8 +113,8 @@ def makegraph():
     ax4.set_xlim([0, len(HR)])
     #
     t = nmp.array(HR[:, 0])
-    ax4.set_xticklabels(t)
-    ax4.xaxis.set_major_formatter(mpl.dates.DateFormatter('%R'))
+    # ax4.set_xticklabels(t)
+    # ax4.xaxis.set_major_formatter(mpl.dates.DateFormatter('%R'))
     #
     s = nmp.array(HR[:, 1])
     line, = ax4.plot(t, s, marker='.', linestyle='', color='red', lw=2)
