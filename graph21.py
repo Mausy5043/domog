@@ -37,7 +37,7 @@ def makegraph():
 
   print(nmp.nanmin(YR[:, 1], 0))
   Ymin = min(nmp.nanmin(WK[:, 1], 0), nmp.nanmin(DY[:, 1], 0), nmp.nanmin(HR[:, 1], 0)) - 1
-  Ymax = min(nmp.nanmax(WK[:, 1], 0), nmp.nanmax(DY[:, 1], 0), nmp.nanmax(HR[:, 1], 0)) - 1
+  Ymax = max(nmp.nanmax(WK[:, 1], 0), nmp.nanmax(DY[:, 1], 0), nmp.nanmax(HR[:, 1], 0)) + 1
 
   # decide if there's enough data for a graph
   # rule-of-thumb is to require more than 30 points available for the day-graph
