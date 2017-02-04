@@ -53,6 +53,7 @@ def makegraph():
 
     # AX1 [YEAR]
     ax1.set_ylabel('Temperature [degC]')
+    ax1.set_xlabel('past year')
     #
     t = nmp.arange(0.0, len(YR), 1.0)
     # s = nmp.sin(2*nmp.pi*t) * nmp.random.randn()
@@ -61,18 +62,21 @@ def makegraph():
     #
     # AX2 [WEEK]
     ax2.set_ylabel('Temperature [degC]')
+    ax2.set_xlabel('past week')
     #
     t = nmp.arange(0.0, len(WK), 1.0)
     s = nmp.sin(2*nmp.pi*(t/100))
     line, = ax2.plot(t, s, color='yellow', lw=2)
     #
     # AX3 [DAY]
+    ax3.set_xlabel('past day')
     #
     t = nmp.arange(0.0, len(DY), 1.0)
     s = nmp.sin(2*nmp.pi*(t/100))
     line, = ax3.plot(t, s, color='red', lw=3)
     #
-    # # AX4 [HOUR]
+    # AX4 [HOUR]
+    ax4.set_xlabel('past hour')
     #
     t = nmp.arange(0.0, len(HR), 0.01)
     s = nmp.sin(2*nmp.pi*(t/100))

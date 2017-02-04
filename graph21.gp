@@ -6,7 +6,7 @@
 ifnameh = "/tmp/domog/mysql/sql21h.csv"
 ifnamed = "/tmp/domog/mysql/sql21d.csv"
 ifnamew = "/tmp/domog/mysql/sql21w.csv"
-set output ofname = "/tmp/domog/site/img/day21.png"
+set output ofname = "/tmp/domog/site/img/day21.old.png"
 
 # ******************************************************* General settings *****
 set terminal png enhanced font "Vera" 9 size 1280,320
