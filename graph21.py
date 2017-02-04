@@ -56,12 +56,12 @@ def makegraph():
     # ax1.set_ylabel('volts')
     # ax1.set_title('a sine wave')
     #
-    # t = nmp.arange(0.0, 10.0, 0.01)
-    # s = nmp.sin(2*nmp.pi*t) * nmp.random.randn()
-    # line, = ax1.plot(t,
-    #                  s,
-    #                  color='blue',
-    #                  lw=1)
+    t = nmp.arange(0.0, 10.0, 0.01)
+    s = nmp.sin(2*nmp.pi*t) * nmp.random.randn()
+    line, = ax1.plot(t,
+                     s,
+                     color='blue',
+                     lw=1)
     #
     # # AX2
     # ax2 = fig.add_subplot(234)
@@ -69,11 +69,11 @@ def makegraph():
     # ax2.set_title('a sine wave')
     #
     # t = nmp.arange(0.0, 1.0, 0.01)
-    # s = nmp.sin(2*nmp.pi*t)
-    # line, = ax2.plot(t,
-    #                  s,
-    #                  color='blue',
-    #                  lw=2)
+    s = nmp.sin(2*nmp.pi*t) * nmp.random.randn()
+    line, = ax2.plot(t,
+                     s,
+                     color='blue',
+                     lw=2)
     #
     # # AX3
     # ax3 = fig.add_subplot(235)
@@ -81,11 +81,11 @@ def makegraph():
     # ax3.set_title('a sine wave')
     #
     # t = nmp.arange(0.0, 1.0, 0.01)
-    # s = nmp.sin(2*nmp.pi*t)
-    # line, = ax3.plot(t,
-    #                  s,
-    #                  color='red',
-    #                  lw=3)
+    s = nmp.sin(2*nmp.pi*t) * nmp.random.randn()
+    line, = ax3.plot(t,
+                     s,
+                     color='red',
+                     lw=3)
     #
     # # AX4
     # ax4 = fig.add_subplot(236)
@@ -93,11 +93,11 @@ def makegraph():
     # ax4.set_title('a sine wave')
     #
     # t = nmp.arange(0.0, 1.0, 0.01)
-    # s = nmp.sin(2*nmp.pi*t)
-    # line, = ax4.plot(t,
-    #                  s,
-    #                  color='green',
-    #                  lw=4)
+    s = nmp.sin(2*nmp.pi*t) * nmp.random.randn()
+    line, = ax4.plot(t,
+                     s,
+                     color='green',
+                     lw=4)
 
     plt.savefig('/tmp/domog/site/img/day21.new.png')
 
