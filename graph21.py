@@ -56,17 +56,15 @@ def makegraph():
     plt.subplots_adjust(left=LMARG, bottom=None, right=RMARG, top=None,  wspace=0.01, hspace=None)
     plt.suptitle('Temperature DS18B20 ( ' + datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S") + ' )')
 
-    # AX1 [YEAR]
+    # [YEAR]
     ax1.set_ylabel('Temperature [degC]')
     ax1.set_xlabel('past year')
     ax1.set_xlim([YR[1, 0], YR[-1, 0]])
 
-    ax1.format_xdata = mpl.dates.DateFormatter('%Y-%m-%d')
     #
     t = nmp.array(YR[:, 0])
-    # t = nmp.arange(0.0, len(YR), 1.0)
     ax1.set_xticklabels(t)
-    ax1.xaxis.set_major_formatter(mpl.dates.DateFormatter('%m-%Y'))
+    ax1.xaxis.set_major_formatter(mpl.dates.DateFormatter('%b %Y'))
     ax1.xaxis.set_minor_locator(mondays)
     # s = nmp.sin(2*nmp.pi*t) * nmp.random.randn()
     s = nmp.array(YR[:, 2])
@@ -76,28 +74,32 @@ def makegraph():
     ax1.legend(loc='upper left', fontsize='x-small')
     ax1.fill_between(t, slo, shi, interpolate=True, color='red', alpha=0.2)
     #
-    # AX2 [WEEK]
+    # [WEEK]
     ax2.set_ylabel('Temperature [degC]')
     ax2.set_xlabel('past week')
     ax2.set_ylim([Ymin, Ymax])
     ax2.set_xlim([0, len(WK)])
     #
-    t = nmp.arange(0.0, len(WK), 1.0)
-    # s = nmp.sin(2*nmp.pi*(t/100))
+    t = nmp.array(WK[:, 0])
+    ax2.set_xticklabels(t)
+    ax2.xaxis.set_major_formatter(mpl.dates.DateFormatter('%a %d'))
+    # ax2.xaxis.set_minor_formatter()
     s = nmp.array(WK[:, 2])
     slo = nmp.array(WK[:, 1])
     shi = nmp.array(WK[:, 3])
     line, = ax2.plot(t, s, linestyle='-', color='red', lw=2)
     ax2.fill_between(t, slo, shi, interpolate=True, color='red', alpha=0.2)
     #
-    # AX3 [DAY]
+    # [DAY]
     ax3.set_xlabel('past day')
     ax3.set_yticklabels([])
     ax3.set_ylim([Ymin, Ymax])
     ax3.set_xlim([0, len(DY)])
     #
-    t = nmp.arange(0.0, len(DY), 1.0)
-    # s = nmp.sin(2*nmp.pi*(t/100))
+    t = nmp.array(DY[:, 0])
+    ax3.set_xticklabels(t)
+    ax3.xaxis.set_major_formatter(mpl.dates.DateFormatter('%R'))
+    #
     s = nmp.array(DY[:, 2])
     slo = nmp.array(DY[:, 1])
     shi = nmp.array(DY[:, 3])
@@ -110,8 +112,10 @@ def makegraph():
     ax4.set_ylim([Ymin, Ymax])
     ax4.set_xlim([0, len(HR)])
     #
-    t = nmp.arange(0.0, len(HR), 1)
-    # s = nmp.sin(2*nmp.pi*(t/100))
+    t = nmp.array(HR[:, 0])
+    ax4.set_xticklabels(t)
+    ax4.xaxis.set_major_formatter(mpl.dates.DateFormatter('%R'))
+    #
     s = nmp.array(HR[:, 1])
     line, = ax4.plot(t, s, marker='.', linestyle='', color='red', lw=2)
 
