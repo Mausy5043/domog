@@ -43,6 +43,9 @@ def makegraph():
   days    = mpl.dates.DayLocator()                          # find all days
   hours   = mpl.dates.HourLocator()                         # find all hours
 
+  fourhours  = (4. / 24.)
+  tenminutes = (1. / 6. / 24.)
+
   # decide if there's enough data for a graph
   # rule-of-thumb is to require more than 30 points available for the day-graph
   if len(DY) > 30:
@@ -83,7 +86,7 @@ def makegraph():
 
     # #######################
     # [WEEK]
-    minor_ticks = nmp.arange(round(WK[1, 0] - 0.5), WK[-1, 0], (4 / 24))
+    minor_ticks = nmp.arange(nmp.ceil(WK[1, 0]/fourhours)*fourhours, WK[-1, 0], fourhours)
     ax2.set_ylabel('Temperature [degC]')
     ax2.set_xlabel('past week')
     ax2.set_ylim([Ymin, Ymax])
@@ -106,7 +109,7 @@ def makegraph():
 
     # #######################
     # [DAY]
-    major_ticks = nmp.arange(round(DY[1, 0] - 0.5), DY[-1, 0], (4 / 24))
+    major_ticks = nmp.arange(nmp.ceil(DY[1, 0]/fourhours)*fourhours, DY[-1, 0], fourhours)
     ax3.set_xlabel('past day')
     ax3.grid(True)
     ax3.set_ylim([Ymin, Ymax])
@@ -129,6 +132,7 @@ def makegraph():
 
     # #######################
     # AX4 [HOUR]
+    major_ticks = nmp.arange(nmp.ceil(DY[1, 0]/tenminutes)*tenminutes, DY[-1, 0], tenminutes)
     ax4.set_xlabel('past hour')
     # ax4.grid(which='minor', alpha=0.2)
     ax4.grid(which='major', alpha=0.5)
@@ -138,7 +142,9 @@ def makegraph():
     t = nmp.array(HR[:, 0])
     ax4.set_xticklabels(t, size='small')
     ax4.set_yticklabels([])
+    ax4.set_xticks(major_ticks)
     ax4.xaxis.set_major_formatter(mpl.dates.DateFormatter('%R'))
+    ax4.grid(which='major', alpha=0.5)
     #
     s = nmp.array(HR[:, 1])
     line, = ax4.plot(t, s, marker='.', linestyle='', color='red', lw=2)
