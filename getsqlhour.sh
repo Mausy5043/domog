@@ -33,7 +33,7 @@ pushd "$HOME/domog" >/dev/null
   # Get hour data for DS18 sensor (graph21)
   # DIV t : t/100 minutes
   # t=100 1'
-  $divider=100
+  divider=100
   mysql -h sql.lan --skip-column-names -e \
   "USE domotica; \
    SELECT MIN(sample_time), AVG(temperature) \
