@@ -62,11 +62,11 @@ def do_markdown(flock, fdata):
   shutil.copyfile(home + '/' + MYAPP + '/default.md', fdata)
 
   with open(fdata, 'a') as f:
-    f.write('![A GNUplot image should be here: day21.png](img/day21.old.png?classes=zoomer)\n')
+    # f.write('![A GNUplot image should be here: day21.png](img/day21.old.png?classes=zoomer)\n')
     f.write('![A GNUplot image should be here: day21.png](img/day21.png?classes=zoomer)\n')
-    f.write('![A GNUplot image should be here: day22.png](img/day22.old.png?classes=zoomer)\n')
+    # f.write('![A GNUplot image should be here: day22.png](img/day22.old.png?classes=zoomer)\n')
     f.write('![A GNUplot image should be here: day22.png](img/day22.png?classes=zoomer)\n')
-    f.write('![A GNUplot image should be here: day23.png](img/day23.old.png?classes=zoomer)\n')
+    # f.write('![A GNUplot image should be here: day23.png](img/day23.old.png?classes=zoomer)\n')
     f.write('![A GNUplot image should be here: day23.png](img/day23.png?classes=zoomer)\n')
     f.write('![A GNUplot image should be here: day29.png](img/day29.old.png?classes=zoomer)\n')
     f.write('![A GNUplot image should be here: day29.png](img/day29.png?classes=zoomer)\n')
