@@ -38,10 +38,11 @@ def makegraph():
   Ymin = min(nmp.nanmin(WK[:, 1], 0), nmp.nanmin(DY[:, 1], 0), nmp.nanmin(HR[:, 1], 0)) - 1
   Ymax = max(nmp.nanmax(WK[:, 1], 0), nmp.nanmax(DY[:, 1], 0), nmp.nanmax(HR[:, 1], 0)) + 1
 
-  mondays = mpl.dates.WeekdayLocator(mpl.dates.MONDAY)      # find all mondays
-  months  = mpl.dates.MonthLocator()                        # find all months
-  days    = mpl.dates.DayLocator()                          # find all days
-  hours   = mpl.dates.HourLocator()                         # find all hours
+  locatedmondays = mpl.dates.WeekdayLocator(mpl.dates.MONDAY)      # find all mondays
+  locatedmonths  = mpl.dates.MonthLocator()                        # find all months
+  locateddays    = mpl.dates.DayLocator()                          # find all days
+  locatedhours   = mpl.dates.HourLocator()                         # find all hours
+  locatedminutes    = mpl.dates.MinuteLocator()                          # find all minutes
 
   fourhours  = (4. / 24.)
   tenminutes = (1. / 6. / 24.)
@@ -70,10 +71,10 @@ def makegraph():
     #
     t = nmp.array(YR[:, 0])
     ax1.set_xticklabels(t)
-    ax1.xaxis.set_major_locator(months)
+    ax1.xaxis.set_major_locator(locatedmonths)
     ax1.xaxis.set_major_formatter(mpl.dates.DateFormatter('%b %Y'))
     ax1.grid(which='major', alpha=0.5)
-    ax1.xaxis.set_minor_locator(mondays)
+    ax1.xaxis.set_minor_locator(locatedmondays)
     ax1.grid(which='minor', alpha=0.2)
     #
     s = nmp.array(YR[:, 2])
@@ -94,7 +95,7 @@ def makegraph():
     #
     t = nmp.array(WK[:, 0])
     ax2.set_xticklabels(t, size='small')
-    ax2.xaxis.set_major_locator(days)
+    ax2.xaxis.set_major_locator(locateddays)
     ax2.xaxis.set_major_formatter(mpl.dates.DateFormatter('%a %d'))
     ax2.grid(which='major', alpha=0.5)
     ax2.set_xticks(minor_ticks, minor=True)
@@ -121,7 +122,7 @@ def makegraph():
     ax3.set_xticks(major_ticks)
     ax3.xaxis.set_major_formatter(mpl.dates.DateFormatter('%R'))
     ax3.grid(which='major', alpha=0.5)
-    ax3.xaxis.set_minor_locator(hours)
+    ax3.xaxis.set_minor_locator(locatedhours)
     ax3.grid(which='minor', alpha=0.2)
     #
     s = nmp.array(DY[:, 2])
@@ -145,6 +146,8 @@ def makegraph():
     ax4.set_xticks(major_ticks)
     ax4.xaxis.set_major_formatter(mpl.dates.DateFormatter('%R'))
     ax4.grid(which='major', alpha=0.5)
+    ax4.xaxis.set_minor_locator(locatedminutes)
+    ax4.grid(which='minor', alpha=0.2)
     #
     s = nmp.array(HR[:, 1])
     line, = ax4.plot(t, s, marker='.', linestyle='', color='red', lw=2)
