@@ -107,6 +107,6 @@ pushd "${HOME}/domog"
   done
 
   # FOR TESTING PURPOSES ONLY
-  ./graph21.py
-  ./graph22.py
+  time ./graph21.py
+  time ./graph22.py
 popd
