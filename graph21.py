@@ -20,7 +20,7 @@ def bytespdate2num(fmt, encoding='utf-8'):
       return strconverter(s)
   return bytesconverter
 
-def makegraph():
+def makegraph21():
   LMARG = 0.056
   # LMPOS = 0.403
   # MRPOS = 0.75
@@ -42,7 +42,7 @@ def makegraph():
   locatedmonths  = mpl.dates.MonthLocator()                        # find all months
   locateddays    = mpl.dates.DayLocator()                          # find all days
   locatedhours   = mpl.dates.HourLocator()                         # find all hours
-  locatedminutes    = mpl.dates.MinuteLocator()                          # find all minutes
+  locatedminutes = mpl.dates.MinuteLocator()                       # find all minutes
 
   fourhours  = (4. / 24.)
   tenminutes = (1. / 6. / 24.)
@@ -160,7 +160,7 @@ if __name__ == "__main__":
   startTime = datetime.datetime.now()
   print("")
 
-  makegraph()
+  makegraph21()
 
   # For debugging and profiling
   elapsed = datetime.datetime.now() - startTime

@@ -20,7 +20,7 @@ def bytespdate2num(fmt, encoding='utf-8'):
       return strconverter(s)
   return bytesconverter
 
-def makegraph():
+def makegraph22():
   LMARG = 0.056
   # LMPOS = 0.403
   # MRPOS = 0.75
@@ -42,7 +42,7 @@ def makegraph():
   locatedmonths  = mpl.dates.MonthLocator()                        # find all months
   locateddays    = mpl.dates.DayLocator()                          # find all days
   locatedhours   = mpl.dates.HourLocator()                         # find all hours
-  locatedminutes    = mpl.dates.MinuteLocator()                          # find all minutes
+  locatedminutes = mpl.dates.MinuteLocator()                       # find all minutes
 
   fourhours  = (4. / 24.)
   tenminutes = (1. / 6. / 24.)
@@ -86,18 +86,19 @@ def makegraph():
     line01, = ax1.plot(t, s, color='red', lw=1, label='Temperature [degC]')
     ax1.fill_between(t, slo, shi, interpolate=True, color='red', alpha=0.2)
     ax1.set_ylabel('Temperature [degC]', color='red')
+    ax1.tick_params('y', colors='red')
 
     ar1 = ax1.twinx()
     line11, = ar1.plot(t, u, color='blue', lw=1, label='Humidity [%]')
     ar1.fill_between(t, ulo, uhi, interpolate=True, color='blue', alpha=0.2)
     ar1.set_ylabel('Humidity [%]', color='blue')
+    ar1.tick_params('y', colors='blue')
 
     ax1.legend(loc='upper left', fontsize='x-small')
 
     # #######################
     # [WEEK]
     minor_ticks = nmp.arange(nmp.ceil(WK[1, 0]/fourhours)*fourhours, WK[-1, 0], fourhours)
-    ax2.set_ylabel('Temperature [degC]')
     ax2.set_xlabel('past week')
     ax2.set_ylim([Ymin, Ymax])
     ax2.set_xlim([WK[1, 0], WK[-1, 0]])
@@ -113,9 +114,19 @@ def makegraph():
     s = nmp.array(WK[:, 2])
     slo = nmp.array(WK[:, 1])
     shi = nmp.array(WK[:, 3])
+    u = nmp.array(WK[:, 5])
+    ulo = nmp.array(WK[:, 4])
+    uhi = nmp.array(WK[:, 6])
     #
     line02, = ax2.plot(t, s, linestyle='-', color='red', lw=2)
     ax2.fill_between(t, slo, shi, interpolate=True, color='red', alpha=0.2)
+    ax2.set_ylabel('Temperature [degC]', color='red')
+    ax2.tick_params('y', colors='red')
+
+    ar2 = ax2.twinx()
+    line12, = ar2.plot(t, u, linestyle='-', color='blue', lw=2)
+    ar2.fill_between(t, ulo, uhi, interpolate=True, color='blue', alpha=0.2)
+    ar2.tick_params('y', colors='blue')
 
     # #######################
     # [DAY]
@@ -137,8 +148,17 @@ def makegraph():
     s = nmp.array(DY[:, 2])
     slo = nmp.array(DY[:, 1])
     shi = nmp.array(DY[:, 3])
+    u = nmp.array(DY[:, 5])
+    ulo = nmp.array(DY[:, 4])
+    uhi = nmp.array(DY[:, 6])
     line03, = ax3.plot(t, s, marker='.', linestyle='', color='red', lw=2)
     ax3.fill_between(t, slo, shi, interpolate=True, color='red', alpha=0.2)
+    ax3.tick_params('y', colors='red')
+
+    ar3 = ax3.twinx()
+    line13, = ar3.plot(t, u, marker='.', color='blue', lw=2)
+    ar3.fill_between(t, ulo, uhi, interpolate=True, color='blue', alpha=0.2)
+    ar3.tick_params('y', colors='blue')
 
     # #######################
     # AX4 [HOUR]
@@ -159,7 +179,15 @@ def makegraph():
     ax4.grid(which='minor', alpha=0.2)
     #
     s = nmp.array(HR[:, 1])
-    line04, = ax4.plot(t, s, marker='.', linestyle='', color='red', lw=2)
+    u = nmp.array(HR[:, 2])
+    line04, = ax4.plot(t, s, marker='.', color='red', lw=2)
+    ax4.tick_params('y', colors='red')
+
+    ar4 = ax4.twinx()
+    line14, = ar4.plot(t, u, marker='.', color='blue', lw=2)
+    ar4.fill_between(t, ulo, uhi, interpolate=True, color='blue', alpha=0.2)
+    ar4.set_ylabel('Humidity [%]', color='blue')
+    ar4.tick_params('y', colors='blue')
 
     plt.savefig('/tmp/domog/site/img/day22.png', format='png')
 
@@ -169,7 +197,7 @@ if __name__ == "__main__":
   startTime = datetime.datetime.now()
   print("")
 
-  makegraph()
+  makegraph22()
 
   # For debugging and profiling
   elapsed = datetime.datetime.now() - startTime
