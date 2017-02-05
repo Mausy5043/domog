@@ -41,7 +41,7 @@ def makegraph():
   mondays = mpl.dates.WeekdayLocator(mpl.dates.MONDAY)      # find all mondays
   months  = mpl.dates.MonthLocator()                        # find all months
   days    = mpl.dates.DayLocator()                          # find all days
-  hours  = mpl.dates.HourLocator()                          # find all hours
+  hours   = mpl.dates.HourLocator()                         # find all hours
 
   # decide if there's enough data for a graph
   # rule-of-thumb is to require more than 30 points available for the day-graph
@@ -59,6 +59,7 @@ def makegraph():
     plt.subplots_adjust(left=LMARG, bottom=None, right=RMARG, top=None,  wspace=0.01, hspace=None)
     plt.suptitle('Temperature DS18B20 ( ' + datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S") + ' )')
 
+    # #######################
     # [YEAR]
     ax1.set_ylabel('Temperature [degC]')
     ax1.set_xlabel('past year')
@@ -82,6 +83,7 @@ def makegraph():
 
     # #######################
     # [WEEK]
+    minor_ticks = nmp.arange(round(WK[1, 0] - 0.5), WK[-1, 0], (4 / 24))
     ax2.set_ylabel('Temperature [degC]')
     ax2.set_xlabel('past week')
     ax2.set_ylim([Ymin, Ymax])
@@ -92,8 +94,7 @@ def makegraph():
     ax2.xaxis.set_major_locator(days)
     ax2.xaxis.set_major_formatter(mpl.dates.DateFormatter('%a %d'))
     ax2.grid(which='major', alpha=0.5)
-    ax2.xaxis.set_minor_locator(hours)
-    # ax2.xaxis.set_minor_formatter()
+    ax2.set_xticks(minor_ticks)
     ax2.grid(which='minor', alpha=0.2)
     #
     s = nmp.array(WK[:, 2])
