@@ -108,7 +108,7 @@ def makegraph():
     #
     # AX4 [HOUR]
     ax4.set_xlabel('past hour')
-    ax3.set_yticklabels([])
+    ax4.set_yticklabels([])
     ax4.set_ylim([Ymin, Ymax])
     ax4.set_xlim([0, len(HR)])
     #
