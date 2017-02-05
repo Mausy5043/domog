@@ -61,7 +61,7 @@ def makegraph():
     ax4 = plt.subplot2grid((2, 3), (1, 2))
 
     plt.subplots_adjust(left=LMARG, bottom=None, right=RMARG, top=None,  wspace=0.01, hspace=None)
-    plt.suptitle('Temperature DS18B20 ( ' + datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S") + ' )')
+    plt.suptitle('Temperature DHT22 ( ' + datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S") + ' )')
 
     # #######################
     # [YEAR]
@@ -152,7 +152,7 @@ def makegraph():
     s = nmp.array(HR[:, 1])
     line, = ax4.plot(t, s, marker='.', linestyle='', color='red', lw=2)
 
-    plt.savefig('/tmp/domog/site/img/day21.png', format='png')
+    plt.savefig('/tmp/domog/site/img/day22.png', format='png')
 
 
 if __name__ == "__main__":
