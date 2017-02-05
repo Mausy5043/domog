@@ -81,7 +81,7 @@ def makegraph():
     slo = nmp.array(YR[:, 1])
     shi = nmp.array(YR[:, 3])
     #
-    line, = ax1.plot(t, s, color='red', lw=1, label='Temperature [degC]')
+    line01, = ax1.plot(t, s, color='red', lw=1, label='Temperature [degC]')
     ax1.legend(loc='upper left', fontsize='x-small')
     ax1.fill_between(t, slo, shi, interpolate=True, color='red', alpha=0.2)
 
@@ -105,7 +105,7 @@ def makegraph():
     slo = nmp.array(WK[:, 1])
     shi = nmp.array(WK[:, 3])
     #
-    line, = ax2.plot(t, s, linestyle='-', color='red', lw=2)
+    line02, = ax2.plot(t, s, linestyle='-', color='red', lw=2)
     ax2.fill_between(t, slo, shi, interpolate=True, color='red', alpha=0.2)
 
     # #######################
@@ -128,7 +128,7 @@ def makegraph():
     s = nmp.array(DY[:, 2])
     slo = nmp.array(DY[:, 1])
     shi = nmp.array(DY[:, 3])
-    line, = ax3.plot(t, s, marker='.', linestyle='', color='red', lw=2)
+    line03, = ax3.plot(t, s, marker='.', linestyle='', color='red', lw=2)
     ax3.fill_between(t, slo, shi, interpolate=True, color='red', alpha=0.2)
 
     # #######################
@@ -150,7 +150,7 @@ def makegraph():
     ax4.grid(which='minor', alpha=0.2)
     #
     s = nmp.array(HR[:, 1])
-    line, = ax4.plot(t, s, marker='.', linestyle='', color='red', lw=2)
+    line04, = ax4.plot(t, s, marker='.', linestyle='', color='red', lw=2)
 
     plt.savefig('/tmp/domog/site/img/day22.png', format='png')
 
