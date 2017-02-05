@@ -80,10 +80,15 @@ def makegraph():
     s = nmp.array(YR[:, 2])
     slo = nmp.array(YR[:, 1])
     shi = nmp.array(YR[:, 3])
+    u = nmp.array(YR[:, 5])
+    ulo = nmp.array(YR[:, 4])
+    uhi = nmp.array(YR[:, 6])
     #
     line01, = ax1.plot(t, s, color='red', lw=1, label='Temperature [degC]')
+    line11, = ax1.plot(t, u, color='blue', lw=1, label='Humidity [%]')
     ax1.legend(loc='upper left', fontsize='x-small')
     ax1.fill_between(t, slo, shi, interpolate=True, color='red', alpha=0.2)
+    ax1.fill_between(t, ulo, uhi, interpolate=True, color='red', alpha=0.2)
 
     # #######################
     # [WEEK]
