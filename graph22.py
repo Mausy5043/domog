@@ -88,7 +88,7 @@ def makegraph():
     line11, = ax1.plot(t, u, color='blue', lw=1, label='Humidity [%]')
     ax1.legend(loc='upper left', fontsize='x-small')
     ax1.fill_between(t, slo, shi, interpolate=True, color='red', alpha=0.2)
-    ax1.fill_between(t, ulo, uhi, interpolate=True, color='red', alpha=0.2)
+    ax1.fill_between(t, ulo, uhi, interpolate=True, color='blue', alpha=0.2)
 
     # #######################
     # [WEEK]
