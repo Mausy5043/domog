@@ -38,7 +38,8 @@ def makegraph():
   Ymin = min(nmp.nanmin(WK[:, 1], 0), nmp.nanmin(DY[:, 1], 0), nmp.nanmin(HR[:, 1], 0)) - 1
   Ymax = max(nmp.nanmax(WK[:, 1], 0), nmp.nanmax(DY[:, 1], 0), nmp.nanmax(HR[:, 1], 0)) + 1
 
-  mondays = mpl.dates.WeekdayLocator(mpl.dates.MONDAY)
+  mondays = mpl.dates.WeekdayLocator(mpl.dates.MONDAY)      # find all mondays
+  months  = mpl.dates.MonthLocator()                        # find all months
 
   # decide if there's enough data for a graph
   # rule-of-thumb is to require more than 30 points available for the day-graph
@@ -64,6 +65,7 @@ def makegraph():
     #
     t = nmp.array(YR[:, 0])
     ax1.set_xticklabels(t)
+    ax1.xaxis.set_major_locator(months)
     ax1.xaxis.set_major_formatter(mpl.dates.DateFormatter('%b %Y'))
     ax1.xaxis.set_minor_locator(mondays)
     # s = nmp.sin(2*nmp.pi*t) * nmp.random.randn()
