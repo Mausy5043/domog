@@ -40,6 +40,8 @@ def makegraph():
 
   mondays = mpl.dates.WeekdayLocator(mpl.dates.MONDAY)      # find all mondays
   months  = mpl.dates.MonthLocator()                        # find all months
+  days    = mpl.dates.DayLocator()                          # find all days
+  hours  = mpl.dates.HourLocator()                          # find all hours
 
   # decide if there's enough data for a graph
   # rule-of-thumb is to require more than 30 points available for the day-graph
@@ -90,8 +92,10 @@ def makegraph():
     ax2.set_xlim([WK[1, 0], WK[-1, 0]])
     #
     t = nmp.array(WK[:, 0])
-    # ax2.set_xticklabels(t)
-    # ax2.xaxis.set_major_formatter(mpl.dates.DateFormatter('%a %d'))
+    ax2.set_xticklabels(t, size='small')
+    ax2.xaxis.set_major_locator(days)
+    ax2.xaxis.set_major_formatter(mpl.dates.DateFormatter('%a %d'))
+    ax2.xaxis.set_minor_locator(hours)
     # ax2.xaxis.set_minor_formatter()
     s = nmp.array(WK[:, 2])
     slo = nmp.array(WK[:, 1])
@@ -102,14 +106,16 @@ def makegraph():
     # #######################
     # [DAY]
     ax3.set_xlabel('past day')
-    ax3.set_yticklabels([])
     ax3.grid(True)
     ax3.set_ylim([Ymin, Ymax])
     ax3.set_xlim([DY[1, 0], DY[-1, 0]])
     #
     t = nmp.array(DY[:, 0])
-    # ax3.set_xticklabels(t)
-    # ax3.xaxis.set_major_formatter(mpl.dates.DateFormatter('%R'))
+    ax3.set_xticklabels(t, size='small')
+    ax3.set_yticklabels([])
+    ax3.xaxis.set_major_locator(hours)
+    ax3.xaxis.set_major_formatter(mpl.dates.DateFormatter('%R'))
+    # ax3.xaxis.set_minor_locator(hours)
     #
     s = nmp.array(DY[:, 2])
     slo = nmp.array(DY[:, 1])
@@ -120,14 +126,14 @@ def makegraph():
     # #######################
     # AX4 [HOUR]
     ax4.set_xlabel('past hour')
-    ax4.set_yticklabels([])
     ax4.grid(True)
     ax4.set_ylim([Ymin, Ymax])
     ax4.set_xlim([HR[1, 0], HR[-1, 0]])
     #
     t = nmp.array(HR[:, 0])
-    # ax4.set_xticklabels(t)
-    # ax4.xaxis.set_major_formatter(mpl.dates.DateFormatter('%R'))
+    ax4.set_xticklabels(t, size='small')
+    ax4.set_yticklabels([])
+    ax4.xaxis.set_major_formatter(mpl.dates.DateFormatter('%R'))
     #
     s = nmp.array(HR[:, 1])
     line, = ax4.plot(t, s, marker='.', linestyle='', color='red', lw=2)
