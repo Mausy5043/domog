@@ -65,7 +65,6 @@ def makegraph():
 
     # #######################
     # [YEAR]
-    ax1.set_ylabel('Temperature [degC]')
     ax1.set_xlabel('past year')
     ax1.set_xlim([YR[1, 0], YR[-1, 0]])
     #
@@ -85,10 +84,15 @@ def makegraph():
     uhi = nmp.array(YR[:, 6])
     #
     line01, = ax1.plot(t, s, color='red', lw=1, label='Temperature [degC]')
-    line11, = ax1.plot(t, u, color='blue', lw=1, label='Humidity [%]')
-    ax1.legend(loc='upper left', fontsize='x-small')
     ax1.fill_between(t, slo, shi, interpolate=True, color='red', alpha=0.2)
-    ax1.fill_between(t, ulo, uhi, interpolate=True, color='blue', alpha=0.2)
+    ax1.set_ylabel('Temperature [degC]', color='red')
+
+    ar1 = ax1.twinx()
+    line11, = ar1.plot(t, u, color='blue', lw=1, label='Humidity [%]')
+    ar1.fill_between(t, ulo, uhi, interpolate=True, color='blue', alpha=0.2)
+    ar1.set_ylabel('Humidity [%]', color='blue')
+
+    ax1.legend(loc='upper left', fontsize='x-small')
 
     # #######################
     # [WEEK]
