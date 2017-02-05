@@ -132,7 +132,7 @@ def makegraph():
 
     # #######################
     # AX4 [HOUR]
-    major_ticks = nmp.arange(nmp.ceil(DY[1, 0]/tenminutes)*tenminutes, DY[-1, 0], tenminutes)
+    major_ticks = nmp.arange(nmp.ceil(HR[1, 0]/tenminutes)*tenminutes, HR[-1, 0], tenminutes)
     ax4.set_xlabel('past hour')
     # ax4.grid(which='minor', alpha=0.2)
     ax4.grid(which='major', alpha=0.5)
