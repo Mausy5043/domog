@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Graphing ambient temperature data from DHT22 sensor
+# Graphing ambient temperature data from BMP183 sensor
 
 import matplotlib as mpl
 mpl.use("Agg")                              # activate Anti-Grain Geometry library
@@ -26,10 +26,10 @@ def makegraph22():
   # MRPOS = 0.75
   RMARG = 0.96
   datapath = '/tmp/domog/mysql4python'
-  hrdata   = 'sql22h.csv'
-  dydata   = 'sql22d.csv'
-  wkdata   = 'sql22w.csv'
-  yrdata   = 'sql22y.csv'
+  hrdata   = 'sql23h.csv'
+  dydata   = 'sql23d.csv'
+  wkdata   = 'sql23w.csv'
+  yrdata   = 'sql23y.csv'
   HR = nmp.loadtxt(datapath + '/' + hrdata, delimiter=';', converters={0: bytespdate2num("%Y-%m-%d %H:%M:%S")})
   DY = nmp.loadtxt(datapath + '/' + dydata, delimiter=';', converters={0: bytespdate2num("%Y-%m-%d %H:%M:%S")})
   WK = nmp.loadtxt(datapath + '/' + wkdata, delimiter=';', converters={0: bytespdate2num("%Y-%m-%d %H:%M:%S")})
@@ -64,7 +64,7 @@ def makegraph22():
     ax4 = plt.subplot2grid((2, 3), (1, 2))
 
     plt.subplots_adjust(left=LMARG, bottom=None, right=RMARG, top=None,  wspace=0.01, hspace=None)
-    plt.suptitle('Humidity & Temperature DHT22 ( ' + datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S") + ' )')
+    plt.suptitle('Pressure & Temperature BMP183 ( ' + datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S") + ' )')
 
     # #######################
     # [YEAR]
@@ -92,9 +92,9 @@ def makegraph22():
     ax1.tick_params('y', colors='red')
 
     ar1 = ax1.twinx()
-    line11, = ar1.plot(t, u, color='blue', lw=1, label='Humidity [%]')
+    line11, = ar1.plot(t, u, color='blue', lw=1, label='Pressure [mbara]')
     ar1.fill_between(t, ulo, uhi, interpolate=True, color='blue', alpha=0.2)
-    ar1.set_ylabel('Humidity [%]', color='blue')
+    ar1.set_ylabel('Pressure [mbara]', color='blue')
     ar1.tick_params('y', colors='blue')
 
     ax1.legend(loc='upper left', fontsize='x-small')
@@ -193,10 +193,10 @@ def makegraph22():
     ar4 = ax4.twinx()
     ar4.set_ylim([Y2min, Y2max])
     line14, = ar4.plot(t, u, marker='.', linestyle='', color='blue', lw=2)
-    ar4.set_ylabel('Humidity [%]', color='blue')
+    ar4.set_ylabel('Pressure [mbara]', color='blue')
     ar4.tick_params('y', colors='blue')
 
-    plt.savefig('/tmp/domog/site/img/day22.png', format='png')
+    plt.savefig('/tmp/domog/site/img/day23.png', format='png')
 
 
 if __name__ == "__main__":
