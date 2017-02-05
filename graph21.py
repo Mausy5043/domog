@@ -60,6 +60,7 @@ def makegraph():
     # [YEAR]
     ax1.set_ylabel('Temperature [degC]')
     ax1.set_xlabel('past year')
+    ax1.grid(True)
     ax1.set_xlim([YR[1, 0], YR[-1, 0]])
 
     #
@@ -68,19 +69,25 @@ def makegraph():
     ax1.xaxis.set_major_locator(months)
     ax1.xaxis.set_major_formatter(mpl.dates.DateFormatter('%b %Y'))
     ax1.xaxis.set_minor_locator(mondays)
+    # ax1.xaxis.grid(True, 'major')
+    # ax1.xaxis.grid(False, 'minor')
+
     # s = nmp.sin(2*nmp.pi*t) * nmp.random.randn()
     s = nmp.array(YR[:, 2])
     slo = nmp.array(YR[:, 1])
     shi = nmp.array(YR[:, 3])
+
     line, = ax1.plot(t, s, color='red', lw=1, label='Temperature [degC]')
     ax1.legend(loc='upper left', fontsize='x-small')
     ax1.fill_between(t, slo, shi, interpolate=True, color='red', alpha=0.2)
-    #
+
+    # #######################
     # [WEEK]
     ax2.set_ylabel('Temperature [degC]')
     ax2.set_xlabel('past week')
+    ax2.grid(True)
     ax2.set_ylim([Ymin, Ymax])
-    ax2.set_xlim([0, len(WK)])
+    ax2.set_xlim([WK[1, 0], WK[-1, 0]])
     #
     t = nmp.array(WK[:, 0])
     # ax2.set_xticklabels(t)
@@ -91,12 +98,14 @@ def makegraph():
     shi = nmp.array(WK[:, 3])
     line, = ax2.plot(t, s, linestyle='-', color='red', lw=2)
     ax2.fill_between(t, slo, shi, interpolate=True, color='red', alpha=0.2)
-    #
+
+    # #######################
     # [DAY]
     ax3.set_xlabel('past day')
     ax3.set_yticklabels([])
+    ax3.grid(True)
     ax3.set_ylim([Ymin, Ymax])
-    ax3.set_xlim([0, len(DY)])
+    ax3.set_xlim([DY[1, 0], DY[-1, 0]])
     #
     t = nmp.array(DY[:, 0])
     # ax3.set_xticklabels(t)
@@ -107,12 +116,14 @@ def makegraph():
     shi = nmp.array(DY[:, 3])
     line, = ax3.plot(t, s, marker='.', linestyle='', color='red', lw=2)
     ax3.fill_between(t, slo, shi, interpolate=True, color='red', alpha=0.2)
-    #
+
+    # #######################
     # AX4 [HOUR]
     ax4.set_xlabel('past hour')
     ax4.set_yticklabels([])
+    ax4.grid(True)
     ax4.set_ylim([Ymin, Ymax])
-    ax4.set_xlim([0, len(HR)])
+    ax4.set_xlim([HR[1, 0], HR[-1, 0]])
     #
     t = nmp.array(HR[:, 0])
     # ax4.set_xticklabels(t)
@@ -122,8 +133,6 @@ def makegraph():
     line, = ax4.plot(t, s, marker='.', linestyle='', color='red', lw=2)
 
     plt.savefig('/tmp/domog/site/img/day21.png', format='png')
-
-    pass
 
 
 if __name__ == "__main__":
