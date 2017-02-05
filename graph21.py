@@ -94,7 +94,7 @@ def makegraph():
     ax2.xaxis.set_major_locator(days)
     ax2.xaxis.set_major_formatter(mpl.dates.DateFormatter('%a %d'))
     ax2.grid(which='major', alpha=0.5)
-    ax2.set_xticks(minor_ticks)
+    ax2.set_xticks(minor_ticks, minor=True)
     ax2.grid(which='minor', alpha=0.2)
     #
     s = nmp.array(WK[:, 2])
@@ -106,6 +106,7 @@ def makegraph():
 
     # #######################
     # [DAY]
+    major_ticks = nmp.arange(round(DY[1, 0] - 0.5), DY[-1, 0], (4 / 24))
     ax3.set_xlabel('past day')
     ax3.grid(True)
     ax3.set_ylim([Ymin, Ymax])
@@ -114,9 +115,11 @@ def makegraph():
     t = nmp.array(DY[:, 0])
     ax3.set_xticklabels(t, size='small')
     ax3.set_yticklabels([])
-    ax3.xaxis.set_major_locator(hours)
+    ax3.set_xticks(major_ticks)
     ax3.xaxis.set_major_formatter(mpl.dates.DateFormatter('%R'))
-    # ax3.xaxis.set_minor_locator(hours)
+    ax3.grid(which='major', alpha=0.5)
+    ax3.xaxis.set_minor_locator(hours)
+    ax3.grid(which='minor', alpha=0.2)
     #
     s = nmp.array(DY[:, 2])
     slo = nmp.array(DY[:, 1])
