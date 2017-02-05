@@ -128,6 +128,7 @@ def makegraph22():
 
     ar2 = ax2.twinx()
     ar2.set_ylim([Y2min, Y2max])
+    ar2.set_yticklabels([])
     line12, = ar2.plot(t, u, linestyle='-', color='blue', lw=2)
     ar2.fill_between(t, ulo, uhi, interpolate=True, color='blue', alpha=0.2)
     ar2.tick_params('y', colors='blue')
@@ -161,6 +162,7 @@ def makegraph22():
 
     ar3 = ax3.twinx()
     ar3.set_ylim([Y2min, Y2max])
+    ar3.set_yticklabels([])
     line13, = ar3.plot(t, u, marker='.', color='blue', lw=2)
     ar3.fill_between(t, ulo, uhi, interpolate=True, color='blue', alpha=0.2)
     ar3.tick_params('y', colors='blue')
