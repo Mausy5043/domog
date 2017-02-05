@@ -108,4 +108,5 @@ pushd "${HOME}/domog"
 
   # FOR TESTING PURPOSES ONLY
   ./graph21.py
+  ./graph22.py
 popd

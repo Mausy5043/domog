@@ -30,12 +30,23 @@ pushd "$HOME/domog" >/dev/null
   # Get day data for DS18 sensor (graph21)
   # DIV t : t/100 minutes
   # t=1200 12'
+  $divider=3000
   mysql -h sql.lan --skip-column-names -e \
   "USE domotica; \
    SELECT MIN(sample_time), MIN(temperature), AVG(temperature), MAX(temperature) \
    FROM ds18 \
-   WHERE (sample_time >= NOW() - $interval) \
-   GROUP BY (sample_time DIV 3000);" \
-  | sed 's/\t/;/g;s/\n//g' > "$datastore/sql21d.csv"
+   WHERE (sample_time >= NOW() - ${interval}) \
+   GROUP BY (sample_time DIV ${divider});" \
+  | sed 's/\t/;/g;s/\n//g' > "${datastore}/sql21d.csv"
+
+  # Get data for DHT22 sensor (graph22)
+  mysql -h sql.lan --skip-column-names -e \
+  "USE domotica; \
+   SELECT MIN(sample_time), MIN(temperature), AVG(temperature), MAX(temperature) \
+                            MIN(humidity), AVG(humidity), MAX(humidity) \
+   FROM dht22 \
+   WHERE (sample_time >= NOW() - ${interval}) \
+   GROUP BY (sample_time DIV ${divider});" \
+  | sed 's/\t/;/g;s/\n//g' > "${datastore}/sql22d.csv"
 
 popd >/dev/null

@@ -19,19 +19,19 @@ pushd "$HOME/domog" >/dev/null
   "USE domotica; \
    SELECT MIN(sample_time), MIN(temperature), AVG(temperature), MAX(temperature) \
    FROM ds18 \
-   WHERE (sample_time >= NOW() - $interval) \
+   WHERE (sample_time >= NOW() - ${interval}) \
    GROUP BY YEAR(sample_time), MONTH(sample_time), DAY(sample_time);" \
   | sed 's/\t/;/g;s/\n//g' > "${datastore}/sql21y.csv"
 
-  # Get week data for BMP183 sensor (graph23)
+  # Get data for DHT22 sensor (graph22)
   mysql -h sql.lan --skip-column-names -e \
   "USE domotica; \
-   SELECT MIN(sample_time), \
-   MIN(pressure),    AVG(pressure),    MAX(pressure), \
-   MIN(temperature), AVG(temperature), MAX(temperature) \
-   FROM bmp183 \
-   WHERE (sample_time >= NOW() - $interval) \
-   GROUP BY (sample_time DIV 144000);" \
-  | sed 's/\t/;/g;s/\n//g' > "${datastore}/sql23y.csv"
+   SELECT MIN(sample_time), MIN(temperature), AVG(temperature), MAX(temperature) \
+                            MIN(humidity), AVG(humidity), MAX(humidity) \
+   FROM dht22 \
+   WHERE (sample_time >= NOW() - ${interval}) \
+   GROUP BY YEAR(sample_time), MONTH(sample_time), DAY(sample_time);" \
+  | sed 's/\t/;/g;s/\n//g' > "${datastore}/sql22y.csv"
+
 
 popd >/dev/null
