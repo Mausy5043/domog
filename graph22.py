@@ -185,7 +185,6 @@ def makegraph22():
 
     ar4 = ax4.twinx()
     line14, = ar4.plot(t, u, marker='.', color='blue', lw=2)
-    ar4.fill_between(t, ulo, uhi, interpolate=True, color='blue', alpha=0.2)
     ar4.set_ylabel('Humidity [%]', color='blue')
     ar4.tick_params('y', colors='blue')
 
