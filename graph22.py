@@ -36,7 +36,10 @@ def makegraph22():
   YR = nmp.loadtxt(datapath + '/' + yrdata, delimiter=';', converters={0: bytespdate2num("%Y-%m-%d %H:%M:%S")})
 
   Ymin = min(nmp.nanmin(WK[:, 1], 0), nmp.nanmin(DY[:, 1], 0), nmp.nanmin(HR[:, 1], 0)) - 1
-  Ymax = max(nmp.nanmax(WK[:, 1], 0), nmp.nanmax(DY[:, 1], 0), nmp.nanmax(HR[:, 1], 0)) + 1
+  Ymax = max(nmp.nanmax(WK[:, 3], 0), nmp.nanmax(DY[:, 3], 0), nmp.nanmax(HR[:, 1], 0)) + 1
+
+  Y2min = min(nmp.nanmin(WK[:, 4], 0), nmp.nanmin(DY[:, 4], 0), nmp.nanmin(HR[:, 2], 0)) - 1
+  Y2max = max(nmp.nanmax(WK[:, 6], 0), nmp.nanmax(DY[:, 6], 0), nmp.nanmax(HR[:, 2], 0)) + 1
 
   locatedmondays = mpl.dates.WeekdayLocator(mpl.dates.MONDAY)      # find all mondays
   locatedmonths  = mpl.dates.MonthLocator()                        # find all months
@@ -124,6 +127,7 @@ def makegraph22():
     ax2.tick_params('y', colors='red')
 
     ar2 = ax2.twinx()
+    ar2.set_ylim([Y2min, Y2max])
     line12, = ar2.plot(t, u, linestyle='-', color='blue', lw=2)
     ar2.fill_between(t, ulo, uhi, interpolate=True, color='blue', alpha=0.2)
     ar2.tick_params('y', colors='blue')
@@ -156,6 +160,7 @@ def makegraph22():
     ax3.tick_params('y', colors='red')
 
     ar3 = ax3.twinx()
+    ar3.set_ylim([Y2min, Y2max])
     line13, = ar3.plot(t, u, marker='.', color='blue', lw=2)
     ar3.fill_between(t, ulo, uhi, interpolate=True, color='blue', alpha=0.2)
     ar3.tick_params('y', colors='blue')
@@ -184,6 +189,7 @@ def makegraph22():
     ax4.tick_params('y', colors='red')
 
     ar4 = ax4.twinx()
+    ar4.set_ylim([Y2min, Y2max])
     line14, = ar4.plot(t, u, marker='.', color='blue', lw=2)
     ar4.set_ylabel('Humidity [%]', color='blue')
     ar4.tick_params('y', colors='blue')
