@@ -92,10 +92,10 @@ def makegraph22():
     ax1.tick_params('y', colors='red')
 
     ar1 = ax1.twinx()
-    line11, = ar1.plot(t, u, color='blue', lw=1, label='Pressure [mbara]')
-    ar1.fill_between(t, ulo, uhi, interpolate=True, color='blue', alpha=0.2)
-    ar1.set_ylabel('Pressure [mbara]', color='blue')
-    ar1.tick_params('y', colors='blue')
+    line11, = ar1.plot(t, u, color='green', lw=1, label='Pressure [mbara]')
+    ar1.fill_between(t, ulo, uhi, interpolate=True, color='green', alpha=0.2)
+    ar1.set_ylabel('Pressure [mbara]', color='green')
+    ar1.tick_params('y', colors='green')
 
     ax1.legend(loc='upper left', fontsize='x-small')
 
@@ -129,9 +129,9 @@ def makegraph22():
     ar2 = ax2.twinx()
     ar2.set_ylim([Y2min, Y2max])
     ar2.set_yticklabels([])
-    line12, = ar2.plot(t, u, linestyle='-', color='blue', lw=2)
-    ar2.fill_between(t, ulo, uhi, interpolate=True, color='blue', alpha=0.2)
-    ar2.tick_params('y', colors='blue')
+    line12, = ar2.plot(t, u, linestyle='-', color='green', lw=2)
+    ar2.fill_between(t, ulo, uhi, interpolate=True, color='green', alpha=0.2)
+    ar2.tick_params('y', colors='green')
 
     # #######################
     # [DAY]
@@ -163,9 +163,9 @@ def makegraph22():
     ar3 = ax3.twinx()
     ar3.set_ylim([Y2min, Y2max])
     ar3.set_yticklabels([])
-    line13, = ar3.plot(t, u, marker='.', linestyle='', color='blue', lw=2)
-    ar3.fill_between(t, ulo, uhi, interpolate=True, color='blue', alpha=0.2)
-    ar3.tick_params('y', colors='blue')
+    line13, = ar3.plot(t, u, marker='.', linestyle='', color='green', lw=2)
+    ar3.fill_between(t, ulo, uhi, interpolate=True, color='green', alpha=0.2)
+    ar3.tick_params('y', colors='green')
 
     # #######################
     # AX4 [HOUR]
@@ -192,9 +192,9 @@ def makegraph22():
 
     ar4 = ax4.twinx()
     ar4.set_ylim([Y2min, Y2max])
-    line14, = ar4.plot(t, u, marker='.', linestyle='', color='blue', lw=2)
-    ar4.set_ylabel('Pressure [mbara]', color='blue')
-    ar4.tick_params('y', colors='blue')
+    line14, = ar4.plot(t, u, marker='.', linestyle='', color='green', lw=2)
+    ar4.set_ylabel('Pressure [mbara]', color='green')
+    ar4.tick_params('y', colors='green')
 
     plt.savefig('/tmp/domog/site/img/day23.png', format='png')
 
