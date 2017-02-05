@@ -54,7 +54,7 @@ pushd "$HOME/domog" >/dev/null
   # Get data for BMP183 sensor (graph23)
   mysql -h sql.lan --skip-column-names -e \
   "USE domotica; \
-   SELECT MIN(sample_time), AVG(temperature), AVG(pressure), \
+   SELECT MIN(sample_time), AVG(temperature), AVG(pressure) \
    FROM bmp183 \
    WHERE (sample_time >= NOW() - ${interval}) \
    GROUP BY (sample_time DIV ${divider});" \
