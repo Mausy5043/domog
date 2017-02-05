@@ -163,7 +163,7 @@ def makegraph22():
     ar3 = ax3.twinx()
     ar3.set_ylim([Y2min, Y2max])
     ar3.set_yticklabels([])
-    line13, = ar3.plot(t, u, marker='.', color='blue', lw=2)
+    line13, = ar3.plot(t, u, marker='.', linestyle='', color='blue', lw=2)
     ar3.fill_between(t, ulo, uhi, interpolate=True, color='blue', alpha=0.2)
     ar3.tick_params('y', colors='blue')
 
@@ -187,12 +187,12 @@ def makegraph22():
     #
     s = nmp.array(HR[:, 1])
     u = nmp.array(HR[:, 2])
-    line04, = ax4.plot(t, s, marker='.', color='red', lw=2)
+    line04, = ax4.plot(t, s, marker='.', linestyle='', color='red', lw=2)
     ax4.tick_params('y', colors='red')
 
     ar4 = ax4.twinx()
     ar4.set_ylim([Y2min, Y2max])
-    line14, = ar4.plot(t, u, marker='.', color='blue', lw=2)
+    line14, = ar4.plot(t, u, marker='.', linestyle='', color='blue', lw=2)
     ar4.set_ylabel('Humidity [%]', color='blue')
     ar4.tick_params('y', colors='blue')
 
