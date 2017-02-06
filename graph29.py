@@ -86,7 +86,7 @@ def makegraph29():
     ulo = nmp.array(YR[:, 4])
     uhi = nmp.array(YR[:, 6])
     #
-    line01, = ax1.plot(t, s, marker='.', linestyle='', color='red', lw=1, label='Speed [km/h]')
+    line01, = ax1.plot(t, s, marker='', linestyle='-', color='red', lw=1, label='Speed [km/h]')
     ax1.fill_between(t, slo, shi, interpolate=True, color='red', alpha=0.2)
     ax1.set_ylabel('Speed [km/h]', color='red')
     ax1.tick_params('y', colors='red')
