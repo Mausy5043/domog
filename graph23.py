@@ -20,7 +20,7 @@ def bytespdate2num(fmt, encoding='utf-8'):
       return strconverter(s)
   return bytesconverter
 
-def makegraph22():
+def makegraph23():
   LMARG = 0.056
   # LMPOS = 0.403
   # MRPOS = 0.75
@@ -204,7 +204,7 @@ if __name__ == "__main__":
   startTime = datetime.datetime.now()
   print("")
 
-  makegraph22()
+  makegraph23()
 
   # For debugging and profiling
   elapsed = datetime.datetime.now() - startTime

@@ -11,6 +11,7 @@ UTCOFFSET=$((LOCALSECONDS - UTCSECONDS))
 ./graph21.py
 ./graph22.py
 ./graph23.py
+./graph29.py
 
 pushd "$HOME/domog" >/dev/null
   if [ $(wc -l < /tmp/domog/mysql/sql21d.csv) -gt 30 ]; then
