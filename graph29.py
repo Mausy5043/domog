@@ -86,13 +86,13 @@ def makegraph29():
     ulo = nmp.array(YR[:, 4])
     uhi = nmp.array(YR[:, 6])
     #
-    line01, = ax1.plot(t, s, color='red', lw=1, label='Speed [km/h]')
+    line01, = ax1.plot(t, s, marker='.', linestyle='', color='red', lw=1, label='Speed [km/h]')
     ax1.fill_between(t, slo, shi, interpolate=True, color='red', alpha=0.2)
     ax1.set_ylabel('Speed [km/h]', color='red')
     ax1.tick_params('y', colors='red')
 
     ar1 = ax1.twinx()
-    line11, = ar1.plot(t, u, color='green', lw=1, label='Direction [deg]')
+    line11, = ar1.plot(t, u, marker='.', linestyle='', color='green', lw=1, label='Direction [deg]')
     ar1.fill_between(t, ulo, uhi, interpolate=True, color='green', alpha=0.2)
     ar1.set_ylabel('Direction [deg]', color='green')
     ar1.tick_params('y', colors='green')
@@ -121,7 +121,7 @@ def makegraph29():
     ulo = nmp.array(WK[:, 4])
     uhi = nmp.array(WK[:, 6])
     #
-    line02, = ax2.plot(t, s, linestyle='-', color='red', lw=2)
+    line02, = ax2.plot(t, s, marker='.', linestyle='', color='red', lw=2)
     ax2.fill_between(t, slo, shi, interpolate=True, color='red', alpha=0.2)
     ax2.set_ylabel('Speed [km/h]', color='red')
     ax2.tick_params('y', colors='red')
@@ -129,7 +129,7 @@ def makegraph29():
     ar2 = ax2.twinx()
     ar2.set_ylim([Y2min, Y2max])
     ar2.set_yticklabels([])
-    line12, = ar2.plot(t, u, linestyle='-', color='green', lw=2)
+    line12, = ar2.plot(t, u, marker='.', linestyle='', color='green', lw=2)
     ar2.fill_between(t, ulo, uhi, interpolate=True, color='green', alpha=0.2)
     ar2.tick_params('y', colors='green')
 
