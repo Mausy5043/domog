@@ -92,6 +92,7 @@ def makegraph29():
     ax1.tick_params('y', colors='red')
 
     ar1 = ax1.twinx()
+    ar1.set_ylim([Y2min, Y2max])
     line11, = ar1.plot(t, u, marker='.', linestyle='', color='green', lw=1, label='Direction [deg]')
     ar1.fill_between(t, ulo, uhi, interpolate=True, color='green', alpha=0.2)
     ar1.set_ylabel('Direction [deg]', color='green')
