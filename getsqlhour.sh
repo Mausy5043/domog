@@ -63,7 +63,7 @@ pushd "$HOME/domog" >/dev/null
   # Get data for wind sensor (graph29)
   mysql -h sql.lan --skip-column-names -e \
   "USE domotica; \
-   SELECT MIN(sample_time), AVG(wind), AVG(direction) \
+   SELECT MIN(sample_time), AVG(speed), AVG(direction) \
    FROM wind \
    WHERE (sample_time >= NOW() - ${interval}) \
    GROUP BY (sample_time DIV ${divider});" \
