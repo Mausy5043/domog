@@ -38,8 +38,8 @@ def makegraph29():
   Ymin = min(nmp.nanmin(WK[:, 1], 0), nmp.nanmin(DY[:, 1], 0), nmp.nanmin(HR[:, 1], 0)) - 1
   Ymax = max(nmp.nanmax(WK[:, 3], 0), nmp.nanmax(DY[:, 3], 0), nmp.nanmax(HR[:, 1], 0)) + 1
 
-  Y2min = min(nmp.nanmin(WK[:, 4], 0), nmp.nanmin(DY[:, 4], 0), nmp.nanmin(HR[:, 2], 0)) - 1
-  Y2max = max(nmp.nanmax(WK[:, 6], 0), nmp.nanmax(DY[:, 6], 0), nmp.nanmax(HR[:, 2], 0)) + 1
+  Y2min = 0
+  Y2max = 360
 
   locatedmondays = mpl.dates.WeekdayLocator(mpl.dates.MONDAY)      # find all mondays
   locatedmonths  = mpl.dates.MonthLocator()                        # find all months
