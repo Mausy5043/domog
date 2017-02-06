@@ -43,4 +43,14 @@ pushd "$HOME/domog" >/dev/null
    GROUP BY YEAR(sample_time), MONTH(sample_time), DAY(sample_time);" \
   | sed 's/\t/;/g;s/\n//g' > "${datastore}/sql23y.csv"
 
+  # Get data for wind sensor (graph29)
+  mysql -h sql.lan --skip-column-names -e \
+  "USE domotica; \
+   SELECT MIN(sample_time), MIN(speed), AVG(speed), MAX(speed), \
+                            MIN(direction), AVG(direction), MAX(direction) \
+   FROM wind \
+   WHERE (sample_time >= NOW() - ${interval}) \
+   GROUP BY YEAR(sample_time), MONTH(sample_time), DAY(sample_time);" \
+  | sed 's/\t/;/g;s/\n//g' > "${datastore}/sql29y.csv"
+
 popd >/dev/null
