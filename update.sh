@@ -110,4 +110,5 @@ pushd "${HOME}/domog"
   time ./graph21.py
   time ./graph22.py
   time ./graph23.py
+  time ./graph29.py
 popd
