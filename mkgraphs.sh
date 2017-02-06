@@ -8,12 +8,13 @@ UTC=$(date -u -d "$LOCAL" +"%Y-%m-%d %H:%M:%S")  #remove timezone reference
 UTCSECONDS=$(date -d "$UTC" +%s)
 UTCOFFSET=$((LOCALSECONDS - UTCSECONDS))
 
-./graph21.py
-./graph22.py
-./graph23.py
-./graph29.py
-
 pushd "$HOME/domog" >/dev/null
+
+  ./graph21.py
+  ./graph22.py
+  ./graph23.py
+  ./graph29.py
+
   #if [ $(wc -l < /tmp/domog/mysql/sql21d.csv) -gt 30 ]; then
     # time gnuplot -e "utc_offset='${UTCOFFSET}'" ./graph21.gp
   #fi
