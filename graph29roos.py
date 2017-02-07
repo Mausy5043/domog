@@ -66,6 +66,11 @@ def makegraph29roos():
 
   ahpla = 0.3
 
+  plt.figure(0)
+  fig = plt.gcf()
+  DPI = fig.get_dpi()
+  fig.set_size_inches(640.0/float(DPI), 640.0/float(DPI))
+
   # bar plot on a polar axis.
   # number of datapoints to show
   N = len(radii)
