@@ -10,6 +10,8 @@ from matplotlib.dates import strpdate2num   # noqa
 import numpy as nmp                         # noqa
 
 import matplotlib.pyplot as plt             # noqa
+# following import is for debugging and profiling
+import datetime                             # noqa
 
 def kmh(ms):
   return nmp.multiply(ms, 3.6)
@@ -81,7 +83,9 @@ def makegraph29roos():
   bar.set_facecolor(plt.cm.cool(1.))
   bar.set_alpha(1.)
 
-  plt.title('Windroos')
+  # plt.title('Windroos')
+
+  plt.suptitle('Windroos [Gilze-Rijen] ( ' + datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S") + ' )')
   plt.savefig('/tmp/domog/site/img/day29roos.png')
 
 
