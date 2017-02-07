@@ -40,7 +40,7 @@ def makegraph29():
 
   # Ymin = min(nmp.nanmin(WK[:, 1], 0), nmp.nanmin(DY[:, 1], 0), nmp.nanmin(HR[:, 1], 0)) - 1
   Ymin = 0                          # lowest speed possible : 0 km/hr
-  Ymax = max(nmp.nanmax(WK[:, 3], 0), nmp.nanmax(DY[:, 3], 0), nmp.nanmax(HR[:, 1], 0)) + 1
+  Ymax = kmh(max(nmp.nanmax(WK[:, 3], 0), nmp.nanmax(DY[:, 3], 0), nmp.nanmax(HR[:, 1], 0)) + 1)
 
   Y2min = 0
   Y2max = 360
