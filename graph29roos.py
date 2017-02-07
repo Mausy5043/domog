@@ -69,7 +69,7 @@ def makegraph29roos():
   plt.figure(0)
   fig = plt.gcf()
   DPI = fig.get_dpi()
-  fig.set_size_inches(640.0/float(DPI), 640.0/float(DPI))
+  fig.set_size_inches(320.0/float(DPI), 320.0/float(DPI))
 
   # bar plot on a polar axis.
   # number of datapoints to show
