@@ -97,7 +97,7 @@ def makegraph29():
 
     ar1 = ax1.twinx()
     ar1.set_ylim([Y2min, Y2max])
-    ar1.set_yticklabels([0, 90, 180, 270, 360])
+    ar1.set_yticks([0, 90, 180, 270, 360])
     line11, = ar1.plot(t, u, marker='.', linestyle='', color='green', lw=1, label='Direction [deg]')
     ar1.fill_between(t, ulo, uhi, interpolate=True, color='green', alpha=0.2)
     ar1.set_ylabel('Direction [deg]', color='green')
@@ -198,7 +198,7 @@ def makegraph29():
 
     ar4 = ax4.twinx()
     ar4.set_ylim([Y2min, Y2max])
-    ar4.set_yticklabels([0, 90, 180, 270, 360])
+    ar4.set_yticks([0, 90, 180, 270, 360])
     line14, = ar4.plot(t, u, marker='.', linestyle='', color='green', lw=2)
     ar4.set_ylabel('Direction [deg]', color='green')
     ar4.tick_params('y', colors='green')
