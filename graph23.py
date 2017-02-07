@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Graphing ambient temperature data from BMP183 sensor
+# Graphing ambient temperature & pressure data from BMP183 sensor
 
 import matplotlib as mpl
 mpl.use("Agg")                              # activate Anti-Grain Geometry library

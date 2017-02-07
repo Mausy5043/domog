@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Graphing ambient temperature data from DHT22 sensor
+# Graphing ambient temperature & humidity data from DHT22 sensor
 
 import matplotlib as mpl
 mpl.use("Agg")                              # activate Anti-Grain Geometry library
