@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Graphing wind data from Gilze-Rijen weatherstation
+# Graphing windroos from Gilze-Rijen weatherstation data
 
 import matplotlib
 matplotlib.use("Agg")
@@ -28,14 +28,12 @@ def bytespdate2num(fmt, encoding='utf-8'):
     return bytesconverter
 
 def makegraph29roos():
-  C = nmp.loadtxt('/tmp/domog/mysql/sql29.csv', delimiter=';', converters={0: bytespdate2num("%Y-%m-%d %H:%M:%S")})
+  datapath = '/tmp/domog/mysql4python'
+  roosdata   = 'sql29roos.csv'
+  C = nmp.loadtxt(datapath + '/' + roosdata, delimiter=';', converters={0: bytespdate2num("%Y-%m-%d %H:%M:%S")})
 
-  # 2=13= windspeed (Gilze-Rijen)
-  # 3=14= winddirection (Gilze-Rijen)
-  # !=15= WindChill
-
-  Wspd = kmh(nmp.array(C[:, 2]))                 # windspeeds
-  Wdir = d2r(nmp.array(C[:, 3]))                 # windvector
+  Wspd = kmh(nmp.array(C[:, 1]))                 # windspeeds
+  Wdir = d2r(nmp.array(C[:, 2]))                 # windvector
 
   hrsmpls = 60                              # data contains this number of samples per hour
                                             # the graph will show one slice per hour  # noqa
