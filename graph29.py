@@ -11,6 +11,9 @@ import numpy as nmp                         # noqa
 # following import is for debugging and profiling
 import datetime                             # noqa
 
+def kmh(ms):
+  return nmp.multiply(ms, 3.6)
+
 def bytespdate2num(fmt, encoding='utf-8'):
   # convert datestring to proper format for numpy.loadtext()
   strconverter = mpl.dates.strpdate2num(fmt)
@@ -80,9 +83,9 @@ def makegraph29():
     ax1.xaxis.set_minor_locator(locatedmondays)
     ax1.grid(which='minor', alpha=0.2)
     #
-    s = nmp.array(YR[:, 2])
-    slo = nmp.array(YR[:, 1])
-    shi = nmp.array(YR[:, 3])
+    s = kmh(nmp.array(YR[:, 2]))
+    slo = kmh(nmp.array(YR[:, 1]))
+    shi = kmh(nmp.array(YR[:, 3]))
     u = nmp.array(YR[:, 5])
     ulo = nmp.array(YR[:, 4])
     uhi = nmp.array(YR[:, 6])
@@ -117,9 +120,9 @@ def makegraph29():
     ax2.set_xticks(minor_ticks, minor=True)
     ax2.grid(which='minor', alpha=0.2)
     #
-    s = nmp.array(WK[:, 2])
-    slo = nmp.array(WK[:, 1])
-    shi = nmp.array(WK[:, 3])
+    s = kmh(nmp.array(WK[:, 2]))
+    slo = kmh(nmp.array(WK[:, 1]))
+    shi = kmh(nmp.array(WK[:, 3]))
     u = nmp.array(WK[:, 5])
     ulo = nmp.array(WK[:, 4])
     uhi = nmp.array(WK[:, 6])
@@ -153,9 +156,9 @@ def makegraph29():
     ax3.xaxis.set_minor_locator(locatedhours)
     ax3.grid(which='minor', alpha=0.2)
     #
-    s = nmp.array(DY[:, 2])
-    slo = nmp.array(DY[:, 1])
-    shi = nmp.array(DY[:, 3])
+    s = kmh(nmp.array(DY[:, 2]))
+    slo = kmh(nmp.array(DY[:, 1]))
+    shi = kmh(nmp.array(DY[:, 3]))
     u = nmp.array(DY[:, 5])
     ulo = nmp.array(DY[:, 4])
     uhi = nmp.array(DY[:, 6])
@@ -188,7 +191,7 @@ def makegraph29():
     ax4.xaxis.set_minor_locator(locatedminutes)
     ax4.grid(which='minor', alpha=0.2)
     #
-    s = nmp.array(HR[:, 1])
+    s = kmh(nmp.array(HR[:, 1]))
     u = nmp.array(HR[:, 2])
     line04, = ax4.plot(t, s, marker='.', linestyle='', color='red', lw=2)
     ax4.tick_params('y', colors='red')
