@@ -35,7 +35,8 @@ def makegraph29():
   WK = nmp.loadtxt(datapath + '/' + wkdata, delimiter=';', converters={0: bytespdate2num("%Y-%m-%d %H:%M:%S")})
   YR = nmp.loadtxt(datapath + '/' + yrdata, delimiter=';', converters={0: bytespdate2num("%Y-%m-%d %H:%M:%S")})
 
-  Ymin = min(nmp.nanmin(WK[:, 1], 0), nmp.nanmin(DY[:, 1], 0), nmp.nanmin(HR[:, 1], 0)) - 1
+  # Ymin = min(nmp.nanmin(WK[:, 1], 0), nmp.nanmin(DY[:, 1], 0), nmp.nanmin(HR[:, 1], 0)) - 1
+  Ymin = 0                          # lowest speed possible : 0 km/hr
   Ymax = max(nmp.nanmax(WK[:, 3], 0), nmp.nanmax(DY[:, 3], 0), nmp.nanmax(HR[:, 1], 0)) + 1
 
   Y2min = 0
