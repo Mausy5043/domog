@@ -74,7 +74,7 @@ pushd "$HOME/domog" >/dev/null
   "USE domotica; \
    SELECT sample_time, speed, direction \
    FROM wind \
-   WHERE (sample_time >= NOW() - 50 HOUR);" \
+   WHERE (sample_time >= NOW() - INTERVAL 50 HOUR);" \
   | sed 's/\t/;/g;s/\n//g' > "${datastore}/sql29roos.csv"
 
 popd >/dev/null
