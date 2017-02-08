@@ -4,8 +4,8 @@
 
 datastore="/tmp/domog/mysql"
 
-if [ ! -d "$datastore" ]; then
-  mkdir -p "$datastore"
+if [ ! -d "${datastore}" ]; then
+  mkdir -p "${datastore}"
 fi
 
 interval="INTERVAL 8 DAY "
@@ -23,8 +23,8 @@ pushd "${HOME}/domog" >/dev/null
   ######
   datastore="/tmp/domog/mysql4python"
 
-  if [ ! -d "$datastore" ]; then
-    mkdir -p "$datastore"
+  if [ ! -d "${datastore}" ]; then
+    mkdir -p "${datastore}"
   fi
 
   # Get week data for DS18 sensor (graph21)
