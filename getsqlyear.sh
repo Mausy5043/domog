@@ -7,8 +7,8 @@ datastore="/tmp/domog/mysql4python"
 
 interval="INTERVAL 370 DAY "
 
-if [ ! -d "$datastore" ]; then
-  mkdir -p "$datastore"
+if [ ! -d "${datastore}" ]; then
+  mkdir -p "${datastore}"
 fi
 
 pushd "$HOME/domog" >/dev/null
