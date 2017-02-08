@@ -4,8 +4,8 @@
 
 datastore="/tmp/domog/mysql"
 
-if [ ! -d "$datastore" ]; then
-  mkdir -p "$datastore"
+if [ ! -d "${datastore}" ]; then
+  mkdir -p "${datastore}"
 fi
 
 interval="INTERVAL 70 MINUTE "
@@ -26,8 +26,8 @@ pushd "$HOME/domog" >/dev/null
   ######
   datastore="/tmp/domog/mysql4python"
 
-  if [ ! -d "$datastore" ]; then
-    mkdir -p "$datastore"
+  if [ ! -d "${datastore}" ]; then
+    mkdir -p "${datastore}"
   fi
 
   # Get hour data for DS18 sensor (graph21)
