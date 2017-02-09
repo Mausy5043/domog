@@ -105,10 +105,4 @@ pushd "${HOME}/domog"
       eval "./again${daemon}d.py start"
     fi
   done
-
-  # FOR TESTING PURPOSES ONLY
-  time ./graph21.py
-  time ./graph22.py
-  time ./graph23.py
-  time ./graph29.py
 popd
