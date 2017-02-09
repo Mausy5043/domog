@@ -28,15 +28,13 @@ pushd "${HOME}/domog" >/dev/null
   fi
 
   # Get week data for DS18 sensor (graph21)
-  # DIV t : t/100 minutes
-  # t=6000 60'
-  divider=120000
+  divider=14400
   mysql -h sql.lan --skip-column-names -e \
   "USE domotica; \
    SELECT MIN(sample_time), MIN(temperature), AVG(temperature), MAX(temperature) \
    FROM ds18 \
    WHERE (sample_time >= NOW() - ${interval}) \
-   GROUP BY (sample_time DIV ${divider});" \
+   GROUP BY (sample_epoch DIV ${divider});" \
   | sed 's/\t/;/g;s/\n//g' > "${datastore}/sql21w.csv"
 
   # Get data for DHT22 sensor (graph22)
@@ -46,7 +44,7 @@ pushd "${HOME}/domog" >/dev/null
                             MIN(humidity), AVG(humidity), MAX(humidity) \
    FROM dht22 \
    WHERE (sample_time >= NOW() - ${interval}) \
-   GROUP BY (sample_time DIV ${divider});" \
+   GROUP BY (sample_epoch DIV ${divider});" \
   | sed 's/\t/;/g;s/\n//g' > "${datastore}/sql22w.csv"
 
   # Get data for BMP183 sensor (graph23)
@@ -56,7 +54,7 @@ pushd "${HOME}/domog" >/dev/null
                             MIN(pressure), AVG(pressure), MAX(pressure) \
    FROM bmp183 \
    WHERE (sample_time >= NOW() - ${interval}) \
-   GROUP BY (sample_time DIV ${divider});" \
+   GROUP BY (sample_epoch DIV ${divider});" \
   | sed 's/\t/;/g;s/\n//g' > "${datastore}/sql23w.csv"
 
   # Get data for wind sensor (graph29)
@@ -66,7 +64,7 @@ pushd "${HOME}/domog" >/dev/null
                             MIN(direction), AVG(direction), MAX(direction) \
    FROM wind \
    WHERE (sample_time >= NOW() - ${interval}) \
-   GROUP BY (sample_time DIV ${divider});" \
+   GROUP BY (sample_epoch DIV ${divider});" \
   | sed 's/\t/;/g;s/\n//g' > "${datastore}/sql29w.csv"
 
 popd >/dev/null

@@ -13,8 +13,6 @@ fi
 
 pushd "$HOME/domog" >/dev/null
   # Get year data for DS18 sensor (graph21)
-  # DIV t : t/100 minutes
-  # t=18000 3h
   mysql -h sql.lan --skip-column-names -e \
   "USE domotica; \
    SELECT MIN(sample_time), MIN(temperature), AVG(temperature), MAX(temperature) \
