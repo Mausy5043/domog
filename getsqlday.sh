@@ -2,11 +2,11 @@
 
 # Pull DAILY data from MySQL server.
 
-datastore="/tmp/domog/mysql"
+# datastore="/tmp/domog/mysql"
 
-if [ ! -d "${datastore}" ]; then
-  mkdir -p "${datastore}"
-fi
+# if [ ! -d "${datastore}" ]; then
+#  mkdir -p "${datastore}"
+# fi
 
 interval="INTERVAL 25 HOUR "
 host=$(hostname)
