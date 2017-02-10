@@ -7,18 +7,18 @@ matplotlib.use("Agg")
 
 from cmath import rect, phase               # noqa
 from matplotlib.dates import strpdate2num   # noqa
-import numpy as nmp                         # noqa
+import numpy as np                         # noqa
 
 import matplotlib.pyplot as plt             # noqa
 # following import is for debugging and profiling
 import datetime                             # noqa
 
 def kmh(ms):
-  return nmp.multiply(ms, 3.6)
+  return np.multiply(ms, 3.6)
 
 def d2r(deg):
-  mlt = (1/360.) * nmp.pi * 2.
-  return nmp.multiply(deg, mlt)
+  mlt = (1/360.) * np.pi * 2.
+  return np.multiply(deg, mlt)
 
 def bytespdate2num(fmt, encoding='utf-8'):
     # convert datestring to proper format for numpy.loadtext()
@@ -32,10 +32,10 @@ def bytespdate2num(fmt, encoding='utf-8'):
 def makegraph29roos():
   datapath = '/tmp/domog/mysql4python'
   roosdata   = 'sql29roos.csv'
-  C = nmp.loadtxt(datapath + '/' + roosdata, delimiter=';', converters={0: bytespdate2num("%Y-%m-%d %H:%M:%S")})
+  C = np.loadtxt(datapath + '/' + roosdata, delimiter=';', converters={0: bytespdate2num("%Y-%m-%d %H:%M:%S")})
 
-  Wspd = kmh(nmp.array(C[:, 1]))                 # windspeeds
-  Wdir = d2r(nmp.array(C[:, 2]))                 # windvector
+  Wspd = kmh(np.array(C[:, 1]))                 # windspeeds
+  Wdir = d2r(np.array(C[:, 2]))                 # windvector
 
   hrsmpls = 60                              # data contains this number of samples per hour
                                             # the graph will show one slice per hour  # noqa
@@ -47,22 +47,22 @@ def makegraph29roos():
   B14 = Wdir
   # make the array-lengths a multiple of <hrsmpls>
   for x in range(hrsmpls - lenWdir % hrsmpls):
-    B13 = nmp.append(B13, last13)
-    B14 = nmp.append(B14, last14)
+    B13 = np.append(B13, last13)
+    B14 = np.append(B14, last14)
 
   # Determine average speed and direction per 1-hour-period.
-  radii = theta = width = nmp.array([])
+  radii = theta = width = np.array([])
   for x in range(0, lenWdir - 1, hrsmpls):
-    radii = nmp.append(radii, nmp.mean(B13[x:x+5]))
+    radii = np.append(radii, np.mean(B13[x:x+5]))
 
     # Averaging of the bearings as per:
     # http://rosettacode.org/wiki/Averages/Mean_angle
     avg_theta = phase(sum(rect(1, d) for d in B14[x:x+hrsmpls-1])/hrsmpls)
     if (avg_theta < 0):
-      avg_theta = avg_theta + (2 * nmp.pi)
-    theta = nmp.append(theta, avg_theta)
-    w = (nmp.pi - abs(nmp.max(B14[x:x+hrsmpls-1]) - nmp.min(B14[x:x+hrsmpls-1]) - nmp.pi))
-    width = nmp.append(width, w)
+      avg_theta = avg_theta + (2 * np.pi)
+    theta = np.append(theta, avg_theta)
+    w = (np.pi - abs(np.max(B14[x:x+hrsmpls-1]) - np.min(B14[x:x+hrsmpls-1]) - np.pi))
+    width = np.append(width, w)
 
   ahpla = 0.3
 

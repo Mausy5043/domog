@@ -6,13 +6,13 @@ import matplotlib as mpl
 mpl.use("Agg")                              # activate Anti-Grain Geometry library
 
 import matplotlib.pyplot as plt             # noqa
-import numpy as nmp                         # noqa
+import numpy as np                         # noqa
 
 # following import is for debugging and profiling
 import datetime                             # noqa
 
 def kmh(ms):
-  return nmp.multiply(ms, 3.6)
+  return np.multiply(ms, 3.6)
 
 def bytespdate2num(fmt, encoding='utf-8'):
   # convert datestring to proper format for numpy.loadtext()
@@ -33,14 +33,14 @@ def makegraph29():
   dydata   = 'sql29d.csv'
   wkdata   = 'sql29w.csv'
   yrdata   = 'sql29y.csv'
-  HR = nmp.loadtxt(datapath + '/' + hrdata, delimiter=';', converters={0: bytespdate2num("%Y-%m-%d %H:%M:%S")})
-  DY = nmp.loadtxt(datapath + '/' + dydata, delimiter=';', converters={0: bytespdate2num("%Y-%m-%d %H:%M:%S")})
-  WK = nmp.loadtxt(datapath + '/' + wkdata, delimiter=';', converters={0: bytespdate2num("%Y-%m-%d %H:%M:%S")})
-  YR = nmp.loadtxt(datapath + '/' + yrdata, delimiter=';', converters={0: bytespdate2num("%Y-%m-%d %H:%M:%S")})
+  HR = np.loadtxt(datapath + '/' + hrdata, delimiter=';', converters={0: bytespdate2num("%Y-%m-%d %H:%M:%S")})
+  DY = np.loadtxt(datapath + '/' + dydata, delimiter=';', converters={0: bytespdate2num("%Y-%m-%d %H:%M:%S")})
+  WK = np.loadtxt(datapath + '/' + wkdata, delimiter=';', converters={0: bytespdate2num("%Y-%m-%d %H:%M:%S")})
+  YR = np.loadtxt(datapath + '/' + yrdata, delimiter=';', converters={0: bytespdate2num("%Y-%m-%d %H:%M:%S")})
 
-  # Ymin = min(nmp.nanmin(WK[:, 1], 0), nmp.nanmin(DY[:, 1], 0), nmp.nanmin(HR[:, 1], 0)) - 1
+  # Ymin = min(np.nanmin(WK[:, 1], 0), np.nanmin(DY[:, 1], 0), np.nanmin(HR[:, 1], 0)) - 1
   Ymin = 0                          # lowest speed possible : 0 km/hr
-  Ymax = kmh(max(nmp.nanmax(WK[:, 3], 0), nmp.nanmax(DY[:, 3], 0), nmp.nanmax(HR[:, 1], 0)) + 1)
+  Ymax = kmh(max(np.nanmax(WK[:, 3], 0), np.nanmax(DY[:, 3], 0), np.nanmax(HR[:, 1], 0)) + 1)
 
   Y2min = 0
   Y2max = 360
@@ -75,7 +75,7 @@ def makegraph29():
     ax1.set_xlabel('past year')
     ax1.set_xlim([YR[1, 0], YR[-1, 0]])
     #
-    t = nmp.array(YR[:, 0])
+    t = np.array(YR[:, 0])
     ax1.set_xticklabels(t)
     ax1.xaxis.set_major_locator(locatedmonths)
     ax1.xaxis.set_major_formatter(mpl.dates.DateFormatter('%b %Y'))
@@ -83,12 +83,12 @@ def makegraph29():
     ax1.xaxis.set_minor_locator(locatedmondays)
     ax1.grid(which='minor', alpha=0.2)
     #
-    s = kmh(nmp.array(YR[:, 2]))
-    slo = kmh(nmp.array(YR[:, 1]))
-    shi = kmh(nmp.array(YR[:, 3]))
-    u = nmp.array(YR[:, 5])
-    ulo = nmp.array(YR[:, 4])
-    uhi = nmp.array(YR[:, 6])
+    s = kmh(np.array(YR[:, 2]))
+    slo = kmh(np.array(YR[:, 1]))
+    shi = kmh(np.array(YR[:, 3]))
+    u = np.array(YR[:, 5])
+    ulo = np.array(YR[:, 4])
+    uhi = np.array(YR[:, 6])
     #
     line01, = ax1.plot(t, s, marker='', linestyle='-', color='red', lw=1, label='Speed [km/h]')
     ax1.fill_between(t, slo, shi, interpolate=True, color='red', alpha=0.2)
@@ -107,12 +107,12 @@ def makegraph29():
 
     # #######################
     # [WEEK]
-    minor_ticks = nmp.arange(nmp.ceil(WK[1, 0]/fourhours)*fourhours, WK[-1, 0], fourhours)
+    minor_ticks = np.arange(np.ceil(WK[1, 0]/fourhours)*fourhours, WK[-1, 0], fourhours)
     ax2.set_xlabel('past week')
     ax2.set_ylim([Ymin, Ymax])
     ax2.set_xlim([WK[1, 0], WK[-1, 0]])
     #
-    t = nmp.array(WK[:, 0])
+    t = np.array(WK[:, 0])
     ax2.set_xticklabels(t, size='small')
     ax2.xaxis.set_major_locator(locateddays)
     ax2.xaxis.set_major_formatter(mpl.dates.DateFormatter('%a %d'))
@@ -120,12 +120,12 @@ def makegraph29():
     ax2.set_xticks(minor_ticks, minor=True)
     ax2.grid(which='minor', alpha=0.2)
     #
-    s = kmh(nmp.array(WK[:, 2]))
-    slo = kmh(nmp.array(WK[:, 1]))
-    shi = kmh(nmp.array(WK[:, 3]))
-    u = nmp.array(WK[:, 5])
-    ulo = nmp.array(WK[:, 4])
-    uhi = nmp.array(WK[:, 6])
+    s = kmh(np.array(WK[:, 2]))
+    slo = kmh(np.array(WK[:, 1]))
+    shi = kmh(np.array(WK[:, 3]))
+    u = np.array(WK[:, 5])
+    ulo = np.array(WK[:, 4])
+    uhi = np.array(WK[:, 6])
     #
     line02, = ax2.plot(t, s, marker='.', linestyle='', color='red', lw=2)
     ax2.fill_between(t, slo, shi, interpolate=True, color='red', alpha=0.2)
@@ -141,13 +141,13 @@ def makegraph29():
 
     # #######################
     # [DAY]
-    major_ticks = nmp.arange(nmp.ceil(DY[1, 0]/fourhours)*fourhours, DY[-1, 0], fourhours)
+    major_ticks = np.arange(np.ceil(DY[1, 0]/fourhours)*fourhours, DY[-1, 0], fourhours)
     ax3.set_xlabel('past day')
     ax3.grid(True)
     ax3.set_ylim([Ymin, Ymax])
     ax3.set_xlim([DY[1, 0], DY[-1, 0]])
     #
-    t = nmp.array(DY[:, 0])
+    t = np.array(DY[:, 0])
     ax3.set_xticklabels(t, size='small')
     ax3.set_yticklabels([])
     ax3.set_xticks(major_ticks)
@@ -156,12 +156,12 @@ def makegraph29():
     ax3.xaxis.set_minor_locator(locatedhours)
     ax3.grid(which='minor', alpha=0.2)
     #
-    s = kmh(nmp.array(DY[:, 2]))
-    slo = kmh(nmp.array(DY[:, 1]))
-    shi = kmh(nmp.array(DY[:, 3]))
-    u = nmp.array(DY[:, 5])
-    ulo = nmp.array(DY[:, 4])
-    uhi = nmp.array(DY[:, 6])
+    s = kmh(np.array(DY[:, 2]))
+    slo = kmh(np.array(DY[:, 1]))
+    shi = kmh(np.array(DY[:, 3]))
+    u = np.array(DY[:, 5])
+    ulo = np.array(DY[:, 4])
+    uhi = np.array(DY[:, 6])
     line03, = ax3.plot(t, s, marker='.', linestyle='', color='red', lw=2)
     ax3.fill_between(t, slo, shi, interpolate=True, color='red', alpha=0.2)
     ax3.tick_params('y', colors='red')
@@ -175,14 +175,14 @@ def makegraph29():
 
     # #######################
     # AX4 [HOUR]
-    major_ticks = nmp.arange(nmp.ceil(HR[1, 0]/tenminutes)*tenminutes, HR[-1, 0], tenminutes)
+    major_ticks = np.arange(np.ceil(HR[1, 0]/tenminutes)*tenminutes, HR[-1, 0], tenminutes)
     ax4.set_xlabel('past hour')
     # ax4.grid(which='minor', alpha=0.2)
     ax4.grid(which='major', alpha=0.5)
     ax4.set_ylim([Ymin, Ymax])
     ax4.set_xlim([HR[1, 0], HR[-1, 0]])
     #
-    t = nmp.array(HR[:, 0])
+    t = np.array(HR[:, 0])
     ax4.set_xticklabels(t, size='small')
     ax4.set_yticklabels([])
     ax4.set_xticks(major_ticks)
@@ -191,8 +191,8 @@ def makegraph29():
     ax4.xaxis.set_minor_locator(locatedminutes)
     ax4.grid(which='minor', alpha=0.2)
     #
-    s = kmh(nmp.array(HR[:, 1]))
-    u = nmp.array(HR[:, 2])
+    s = kmh(np.array(HR[:, 1]))
+    u = np.array(HR[:, 2])
     line04, = ax4.plot(t, s, marker='.', linestyle='', color='red', lw=2)
     ax4.tick_params('y', colors='red')
 
