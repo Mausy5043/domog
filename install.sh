@@ -45,7 +45,7 @@ pushd "$HOME/domog"
   git config core.fileMode false
   # set the branch
   if [ ! -e "$HOME/.domog.branch" ]; then
-    echo "v3_pyplot" > "$HOME/.domog.branch"
+    echo "v4" > "$HOME/.domog.branch"
   fi
 
   # Create the /etc/cron.d directory if it doesn't exist
