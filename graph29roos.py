@@ -93,5 +93,13 @@ def makegraph29roos():
 
 
 if __name__ == "__main__":
+  # For debugging and profiling
+  startTime = datetime.datetime.now()
+  print("")
 
   makegraph29roos()
+
+  # For debugging and profiling
+  elapsed = datetime.datetime.now() - startTime
+  print(" Graphing completed in {0}".format(elapsed))
+  print("")
