@@ -2,7 +2,6 @@
 
 # Pull YEARLY data from MySQL server.
 
-######
 datastore="/tmp/domog/mysql4python"
 
 interval="INTERVAL 370 DAY "
