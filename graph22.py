@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Graphing wind data from Gilze-Rijen weatherstation
+# Graphing ambient temperature & humidity data from DHT22 sensor
 
 import matplotlib as mpl
 mpl.use("Agg")                              # activate Anti-Grain Geometry library
@@ -11,9 +11,6 @@ import numpy as np                         # noqa
 # following import is for debugging and profiling
 import datetime                             # noqa
 
-def kmh(ms):
-  return np.multiply(ms, 3.6)
-
 def bytespdate2num(fmt, encoding='utf-8'):
   # convert datestring to proper format for numpy.loadtext()
   strconverter = mpl.dates.strpdate2num(fmt)
@@ -23,27 +20,26 @@ def bytespdate2num(fmt, encoding='utf-8'):
       return strconverter(s)
   return bytesconverter
 
-def makegraph29():
+def makegraph22():
   LMARG = 0.056
   # LMPOS = 0.403
   # MRPOS = 0.75
   RMARG = 0.96
   datapath = '/tmp/domog/mysql4python'
-  hrdata   = 'sql29h.csv'
-  dydata   = 'sql29d.csv'
-  wkdata   = 'sql29w.csv'
-  yrdata   = 'sql29y.csv'
+  hrdata   = 'sql22h.csv'
+  dydata   = 'sql22d.csv'
+  wkdata   = 'sql22w.csv'
+  yrdata   = 'sql22y.csv'
   HR = np.loadtxt(datapath + '/' + hrdata, delimiter=';', converters={0: bytespdate2num("%Y-%m-%d %H:%M:%S")})
   DY = np.loadtxt(datapath + '/' + dydata, delimiter=';', converters={0: bytespdate2num("%Y-%m-%d %H:%M:%S")})
   WK = np.loadtxt(datapath + '/' + wkdata, delimiter=';', converters={0: bytespdate2num("%Y-%m-%d %H:%M:%S")})
   YR = np.loadtxt(datapath + '/' + yrdata, delimiter=';', converters={0: bytespdate2num("%Y-%m-%d %H:%M:%S")})
 
-  # Ymin = min(np.nanmin(WK[:, 1], 0), np.nanmin(DY[:, 1], 0), np.nanmin(HR[:, 1], 0)) - 1
-  Ymin = 0                          # lowest speed possible : 0 km/hr
-  Ymax = kmh(max(np.nanmax(WK[:, 3], 0), np.nanmax(DY[:, 3], 0), np.nanmax(HR[:, 1], 0)) + 1)
+  Ymin = min(np.nanmin(WK[:, 1], 0), np.nanmin(DY[:, 1], 0), np.nanmin(HR[:, 1], 0)) - 1
+  Ymax = max(np.nanmax(WK[:, 3], 0), np.nanmax(DY[:, 3], 0), np.nanmax(HR[:, 1], 0)) + 1
 
-  Y2min = 0
-  Y2max = 360
+  Y2min = min(np.nanmin(WK[:, 4], 0), np.nanmin(DY[:, 4], 0), np.nanmin(HR[:, 2], 0)) - 1
+  Y2max = max(np.nanmax(WK[:, 6], 0), np.nanmax(DY[:, 6], 0), np.nanmax(HR[:, 2], 0)) + 1
 
   locatedmondays = mpl.dates.WeekdayLocator(mpl.dates.MONDAY)      # find all mondays
   locatedmonths  = mpl.dates.MonthLocator()                        # find all months
@@ -68,7 +64,7 @@ def makegraph29():
     ax4 = plt.subplot2grid((2, 3), (1, 2))
 
     plt.subplots_adjust(left=LMARG, bottom=None, right=RMARG, top=None,  wspace=0.01, hspace=None)
-    plt.suptitle('Wind [Gilze-Rijen] ( ' + datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S") + ' )')
+    plt.suptitle('Humidity & Temperature DHT22 ( ' + datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S") + ' )')
 
     # #######################
     # [YEAR]
@@ -83,25 +79,23 @@ def makegraph29():
     ax1.xaxis.set_minor_locator(locatedmondays)
     ax1.grid(which='minor', alpha=0.2)
     #
-    s = kmh(np.array(YR[:, 2]))
-    slo = kmh(np.array(YR[:, 1]))
-    shi = kmh(np.array(YR[:, 3]))
+    s = np.array(YR[:, 2])
+    slo = np.array(YR[:, 1])
+    shi = np.array(YR[:, 3])
     u = np.array(YR[:, 5])
     ulo = np.array(YR[:, 4])
     uhi = np.array(YR[:, 6])
     #
-    line01, = ax1.plot(t, s, marker='', linestyle='-', color='red', lw=1, label='Speed [km/h]')
+    line01, = ax1.plot(t, s, color='red', lw=1, label='Temperature [degC]')
     ax1.fill_between(t, slo, shi, interpolate=True, color='red', alpha=0.2)
-    ax1.set_ylabel('Speed [km/h]', color='red')
+    ax1.set_ylabel('Temperature [degC]', color='red')
     ax1.tick_params('y', colors='red')
 
     ar1 = ax1.twinx()
-    ar1.set_ylim([Y2min, Y2max])
-    ar1.set_yticks([0, 90, 180, 270, 360])
-    line11, = ar1.plot(t, u, marker='.', linestyle='', color='green', lw=1, label='Direction [deg]')
-    ar1.fill_between(t, ulo, uhi, interpolate=True, color='green', alpha=0.2)
-    ar1.set_ylabel('Direction [deg]', color='green')
-    ar1.tick_params('y', colors='green')
+    line11, = ar1.plot(t, u, color='blue', lw=1, label='Humidity [%]')
+    ar1.fill_between(t, ulo, uhi, interpolate=True, color='blue', alpha=0.2)
+    ar1.set_ylabel('Humidity [%]', color='blue')
+    ar1.tick_params('y', colors='blue')
 
     ax1.legend(loc='upper left', fontsize='x-small')
 
@@ -120,24 +114,24 @@ def makegraph29():
     ax2.set_xticks(minor_ticks, minor=True)
     ax2.grid(which='minor', alpha=0.2)
     #
-    s = kmh(np.array(WK[:, 2]))
-    slo = kmh(np.array(WK[:, 1]))
-    shi = kmh(np.array(WK[:, 3]))
+    s = np.array(WK[:, 2])
+    slo = np.array(WK[:, 1])
+    shi = np.array(WK[:, 3])
     u = np.array(WK[:, 5])
     ulo = np.array(WK[:, 4])
     uhi = np.array(WK[:, 6])
     #
-    line02, = ax2.plot(t, s, marker='.', linestyle='', color='red', lw=2)
+    line02, = ax2.plot(t, s, linestyle='-', color='red', lw=2)
     ax2.fill_between(t, slo, shi, interpolate=True, color='red', alpha=0.2)
-    ax2.set_ylabel('Speed [km/h]', color='red')
+    ax2.set_ylabel('Temperature [degC]', color='red')
     ax2.tick_params('y', colors='red')
 
     ar2 = ax2.twinx()
     ar2.set_ylim([Y2min, Y2max])
     ar2.set_yticklabels([])
-    line12, = ar2.plot(t, u, marker='.', linestyle='', color='green', lw=2)
-    ar2.fill_between(t, ulo, uhi, interpolate=True, color='green', alpha=0.2)
-    ar2.tick_params('y', colors='green')
+    line12, = ar2.plot(t, u, linestyle='-', color='blue', lw=2)
+    ar2.fill_between(t, ulo, uhi, interpolate=True, color='blue', alpha=0.2)
+    ar2.tick_params('y', colors='blue')
 
     # #######################
     # [DAY]
@@ -156,9 +150,9 @@ def makegraph29():
     ax3.xaxis.set_minor_locator(locatedhours)
     ax3.grid(which='minor', alpha=0.2)
     #
-    s = kmh(np.array(DY[:, 2]))
-    slo = kmh(np.array(DY[:, 1]))
-    shi = kmh(np.array(DY[:, 3]))
+    s = np.array(DY[:, 2])
+    slo = np.array(DY[:, 1])
+    shi = np.array(DY[:, 3])
     u = np.array(DY[:, 5])
     ulo = np.array(DY[:, 4])
     uhi = np.array(DY[:, 6])
@@ -169,9 +163,9 @@ def makegraph29():
     ar3 = ax3.twinx()
     ar3.set_ylim([Y2min, Y2max])
     ar3.set_yticklabels([])
-    line13, = ar3.plot(t, u, marker='.', linestyle='', color='green', lw=2)
-    ar3.fill_between(t, ulo, uhi, interpolate=True, color='green', alpha=0.2)
-    ar3.tick_params('y', colors='green')
+    line13, = ar3.plot(t, u, marker='.', linestyle='', color='blue', lw=2)
+    ar3.fill_between(t, ulo, uhi, interpolate=True, color='blue', alpha=0.2)
+    ar3.tick_params('y', colors='blue')
 
     # #######################
     # AX4 [HOUR]
@@ -191,19 +185,18 @@ def makegraph29():
     ax4.xaxis.set_minor_locator(locatedminutes)
     ax4.grid(which='minor', alpha=0.2)
     #
-    s = kmh(np.array(HR[:, 1]))
+    s = np.array(HR[:, 1])
     u = np.array(HR[:, 2])
     line04, = ax4.plot(t, s, marker='.', linestyle='', color='red', lw=2)
     ax4.tick_params('y', colors='red')
 
     ar4 = ax4.twinx()
     ar4.set_ylim([Y2min, Y2max])
-    ar4.set_yticks([0, 90, 180, 270, 360])
-    line14, = ar4.plot(t, u, marker='.', linestyle='', color='green', lw=2)
-    ar4.set_ylabel('Direction [deg]', color='green')
-    ar4.tick_params('y', colors='green')
+    line14, = ar4.plot(t, u, marker='.', linestyle='', color='blue', lw=2)
+    ar4.set_ylabel('Humidity [%]', color='blue')
+    ar4.tick_params('y', colors='blue')
 
-    plt.savefig('/tmp/domog/site/img/day29.png', format='png')
+    plt.savefig('/tmp/domog/site/img/day22.png', format='png')
 
 
 if __name__ == "__main__":
@@ -211,7 +204,7 @@ if __name__ == "__main__":
   startTime = datetime.datetime.now()
   print("")
 
-  makegraph29()
+  makegraph22()
 
   # For debugging and profiling
   elapsed = datetime.datetime.now() - startTime

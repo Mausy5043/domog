@@ -66,7 +66,7 @@ def do_mv_data(flock, homedir, script):
   getsqldata(homedir, False)
 
   # Graph the data
-  cmnd = homedir + '/' + MYAPP + '/graphs.sh'
+  cmnd = homedir + '/' + MYAPP + '/mkgraphs.sh'
   syslog_trace("...:  {0}".format(cmnd), False, DEBUG)
   cmnd = subprocess.check_output(cmnd)
   syslog_trace("...:  {0}".format(cmnd), False, DEBUG)
@@ -100,10 +100,16 @@ def getsqldata(homedir, nu):
     syslog_trace("...:  {0}".format(cmnd), False, DEBUG)
     cmnd = subprocess.call(cmnd)
     syslog_trace("...:  {0}".format(cmnd), False, DEBUG)
-    # dat of the last week is updated every 4 hours
+    # data of the last week is updated every 4 hours
     if ((nowur % 4) == (SQLHR % 4)) or nu:
       cmnd = homedir + '/' + MYAPP + '/getsqlweek.sh'
       syslog_trace("...:  {0}".format(cmnd), False, DEBUG)
+      cmnd = subprocess.call(cmnd)
+      syslog_trace("...:  {0}".format(cmnd), False, DEBUG)
+    # data of the last year is updated at 01:xx
+    if (nowur == 1) or nu:
+      cmnd = homedir + '/' + MYAPP + '/getsqlyear.sh'
+      syslog_trace("...:  {0}".format(cmnd), True, DEBUG)  # temporary logging
       cmnd = subprocess.call(cmnd)
       syslog_trace("...:  {0}".format(cmnd), False, DEBUG)
 
@@ -114,7 +120,7 @@ def write_lftp(script):
     f.write('# lftp script\n\n')
     f.write('set cmd:fail-exit yes;\n')
     f.write('open hendrixnet.nl;\n')
-    f.write('cd 03.again/;\n')
+    f.write('cd 09.debagain/;\n')
     f.write('mirror --reverse --delete --verbose=3 -c /tmp/' + MYAPP + '/site/ . ;\n')
     f.write('\n')
 
@@ -135,6 +141,7 @@ def syslog_trace(trace, logerr, out2console):
       syslog.syslog(logerr, line)
     if line and out2console:
       print(line)
+
 
 if __name__ == "__main__":
   daemon = MyDaemon('/tmp/' + MYAPP + '/' + MYID + '.pid')
