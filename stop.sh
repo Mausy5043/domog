@@ -2,9 +2,6 @@
 
 # Use stop.sh to stop all daemons in one go
 # You can use update.sh to get everything started again.
-# BEWARE: a cron job may be active that restarts the daemons.
-#         so you may need to stop the daemons regularly or
-#         use the ./uninstall.sh script to stop the daemons indefinately.
 
 pushd "${HOME}/domog"
   source ./includes
