@@ -6,9 +6,7 @@ import matplotlib as mpl
 mpl.use("Agg")                              # activate Anti-Grain Geometry library
 
 import matplotlib.pyplot as plt             # noqa
-import numpy as np                         # noqa
-
-# following import is for debugging and profiling
+import numpy as np                          # noqa
 import datetime                             # noqa
 
 def bytespdate2num(fmt, encoding='utf-8'):
@@ -171,8 +169,6 @@ def makegraph23():
     # AX4 [HOUR]
     major_ticks = np.arange(np.ceil(HR[1, 0]/tenminutes)*tenminutes, HR[-1, 0], tenminutes)
     ax4.set_xlabel('past hour')
-    # ax4.grid(which='minor', alpha=0.2)
-    ax4.grid(which='major', alpha=0.5)
     ax4.set_ylim([Ymin, Ymax])
     ax4.set_xlim([HR[1, 0], HR[-1, 0]])
     #

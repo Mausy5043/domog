@@ -7,10 +7,8 @@ matplotlib.use("Agg")
 
 from cmath import rect, phase               # noqa
 from matplotlib.dates import strpdate2num   # noqa
-import numpy as np                         # noqa
-
+import numpy as np                          # noqa
 import matplotlib.pyplot as plt             # noqa
-# following import is for debugging and profiling
 import datetime                             # noqa
 
 def kmh(ms):
