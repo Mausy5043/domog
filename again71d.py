@@ -63,7 +63,7 @@ class MyDaemon(Daemon):
     flock           = iniconf.get(inisection, "lockfile")
     sampleTime      = reportTime/samplesperCycle        # time [s] between samples
 
-    initaxes()
+    init_axes()
     do_main(flock, True)  # get all data and graphs on start-up
 
     while True:
@@ -116,7 +116,7 @@ def do_main(flock, nu):
   syslog_trace("* Main Loop end", False, DEBUG)
 
 @timeme
-def initaxes():
+def init_axes():
   global FIG
   global AX1
   global AX2
@@ -149,6 +149,7 @@ def initaxes():
   # AX1 = [YEAR]
   AX1.set_ylabel(PLOT_Y1LABEL)
   AX1.set_xlabel('past year')
+  AX1.grid(True)
   # AX1.xaxis.set_major_locator(LOCATEDMONTHS)
   # AX1.xaxis.set_major_formatter(mpl.dates.DateFormatter('%b %Y'))
   # AX1.grid(which='major', alpha=0.5)
@@ -160,6 +161,7 @@ def initaxes():
   # AX2 = [WEEK]
   AX2.set_ylabel(PLOT_Y1LABEL)
   AX2.set_xlabel('past week')
+  AX2.grid(True)
   # AX2.xaxis.set_major_locator(LOCATEDDAYS)
   # AX2.xaxis.set_major_formatter(mpl.dates.DateFormatter('%a %d'))
   # AX2.grid(which='major', alpha=0.5)
@@ -168,8 +170,8 @@ def initaxes():
   # #######################
   # AX3 = [DAY]
   AX3.set_xlabel('past day')
-  AX3.grid(True)
   AX3.set_yticklabels([])
+  AX3.grid(True)
   # AX3.xaxis.set_major_formatter(mpl.dates.DateFormatter('%R'))
   # AX3.grid(which='major', alpha=0.5)
   # AX3.xaxis.set_minor_locator(LOCATEDHOURS)
@@ -179,11 +181,11 @@ def initaxes():
   # AX4 = [HOUR]
   AX4.set_xlabel('past hour')
   AX4.set_yticklabels([])
+  AX4.grid(True)
   # AX4.xaxis.set_major_formatter(mpl.dates.DateFormatter('%R'))
   # AX4.grid(which='major', alpha=0.5)
   # AX4.xaxis.set_minor_locator(LOCATEDMINUTES)
   # AX4.grid(which='minor', alpha=0.2)
-
 
 def lock(fname):
   open(fname, 'a').close()
