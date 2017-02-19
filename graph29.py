@@ -204,13 +204,13 @@ def makegraph29():
 
 if __name__ == "__main__":
   # For debugging and profiling
-  startTime = datetime.datetime.now()
+  starttime = datetime.datetime.now()
   print("")
 
   makegraph29()
 
   # For debugging and profiling
-  elapsed = datetime.datetime.now() - startTime
+  elapsed = datetime.datetime.now() - starttime
   print(" Graphing completed in {0}".format(elapsed))
   print("")
 

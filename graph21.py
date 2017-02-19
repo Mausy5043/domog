@@ -10,13 +10,12 @@ import numpy as np                          # noqa
 import datetime                             # noqa
 import time                                 # noqa
 
-
 def timeme(method):
     def wrapper(*args, **kw):
-        startTime = int(round(time.time() * 1000))
+        starttime = int(round(time.time() * 1000))
         result = method(*args, **kw)
-        endTime = int(round(time.time() * 1000))
-        print(endTime - startTime, 'ms')
+        endtime = int(round(time.time() * 1000))
+        print(endtime - starttime, 'ms')
         return result
     return wrapper
 
@@ -165,13 +164,13 @@ def makegraph21():
 
 if __name__ == "__main__":
   # For debugging and profiling
-  startTime = time.time()
+  starttime = time.time()
   print("")
 
   makegraph21()
 
   # For debugging and profiling
-  elapsed = time.time() - startTime
+  elapsed = time.time() - starttime
   print(" Graphing completed in {0}".format(elapsed))
   print("")
 

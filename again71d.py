@@ -19,21 +19,22 @@ import matplotlib as mpl
 mpl.use("Agg", warn=True)        # activate Anti-Grain Geometry library before importing pyplot
 import matplotlib.pyplot as plt  # noqa
 
-def timeme(method):
-    def wrapper(*args, **kw):
-        startTime = int(round(time.time() * 1000))
-        result = method(*args, **kw)
-        endTime = int(round(time.time() * 1000))
-        print(endTime - startTime, 'ms')
-        return result
-    return wrapper
-
 # constants
 DEBUG       = False
 IS_JOURNALD = os.path.isfile('/bin/journalctl')
 MYID        = "".join(list(filter(str.isdigit, os.path.realpath(__file__).split('/')[-1])))
 MYAPP       = os.path.realpath(__file__).split('/')[-2]
 NODE        = os.uname()[1]
+
+def timeme(method):
+    def wrapper(*args, **kw):
+        starttime = int(round(time.time() * 1000))
+        result = method(*args, **kw)
+        endtime = int(round(time.time() * 1000))
+        print(endtime - starttime, 'ms')
+        return result
+    return wrapper
+
 
 class MyDaemon(Daemon):
   def run(self):
