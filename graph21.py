@@ -10,6 +10,16 @@ import numpy as np                          # noqa
 import datetime                             # noqa
 import time                                 # noqa
 
+
+def timeme(method):
+    def wrapper(*args, **kw):
+        startTime = int(round(time.time() * 1000))
+        result = method(*args, **kw)
+        endTime = int(round(time.time() * 1000))
+        print(endTime - startTime, 'ms')
+        return result
+    return wrapper
+
 def bytespdate2num(fmt, encoding='utf-8'):
   # convert datestring to proper format for numpy.loadtext()
   strconverter = mpl.dates.strpdate2num(fmt)
@@ -19,6 +29,7 @@ def bytespdate2num(fmt, encoding='utf-8'):
       return strconverter(s)
   return bytesconverter
 
+@timeme
 def makegraph21():
   LMARG = 0.056
   # LMPOS = 0.403

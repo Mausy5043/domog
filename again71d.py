@@ -66,15 +66,19 @@ class MyDaemon(Daemon):
 
 @timeme
 def do_main(flock):
+  syslog_trace("* Lock", False, DEBUG)
   lock(flock)
-  syslog_trace("* Main Loop Start", False, DEBUG)
   # ff wachten
   time.sleep(2)
+  syslog_trace("* Unlock", False, DEBUG)
   unlock(flock)
+  syslog_trace("* Main Loop end", False, DEBUG)
 
+@timeme
 def lock(fname):
   open(fname, 'a').close()
 
+@timeme
 def unlock(fname):
   if os.path.isfile(fname):
     os.remove(fname)
