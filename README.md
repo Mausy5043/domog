@@ -1,6 +1,8 @@
 # domog
 Platform independent domotica data grapher.
 
+[![Code Issues](https://www.quantifiedcode.com/api/v1/project/62314a00c098411e8a1544d9e9dd272d/badge.svg)](https://www.quantifiedcode.com/app/project/62314a00c098411e8a1544d9e9dd272d)
+
 
 ## Installing
 
