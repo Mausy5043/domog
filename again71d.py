@@ -2,7 +2,7 @@
 
 # daemon71d.py creates a graph.
 
-import datetime
+# import datetime
 import configparser
 import os
 # import platform
@@ -14,7 +14,7 @@ import traceback
 
 from libdaemon import Daemon
 
-import numpy as np
+# import numpy as np
 import matplotlib as mpl
 mpl.use("Agg", warn=True)        # activate Anti-Grain Geometry library before importing pyplot
 import matplotlib.pyplot as plt  # noqa
@@ -49,11 +49,13 @@ class MyDaemon(Daemon):
     flock           = iniconf.get(inisection, "lockfile")
     sampleTime      = reportTime/samplesperCycle        # time [s] between samples
 
+    do_main(flock, True)  # get all data and graphs on start-up
+
     while True:
       try:
         startTime   = time.time()
 
-        do_main(flock)
+        do_main(flock, False)
 
         waitTime    = sampleTime - (time.time() - startTime) - (startTime % sampleTime)
         if (waitTime > 0):
@@ -66,11 +68,33 @@ class MyDaemon(Daemon):
         raise
 
 @timeme
-def do_main(flock):
+def do_main(flock, nu):
   syslog_trace("* Lock", False, DEBUG)
   lock(flock)
   # ff wachten
   time.sleep(2)
+  currentminute = int(time.strftime('%M'))
+  currenthour   = int(time.strftime('%H'))
+  # HOUR
+  # data of last hour is updated every minute
+  syslog_trace("* Get new data for hour", False, DEBUG)
+
+  # DAY
+  # data of the last day is updated every 30 minutes
+  if (currentminute % 30) or nu:
+    syslog_trace("* Get new data for day", False, DEBUG)
+    syslog_trace("* min :  {0}".format(currentminute), False, DEBUG)
+  # WEEK
+  # data of the last week is updated every 4 hours
+  if (currenthour % 6) or nu:
+    syslog_trace("* Get new data for week", False, DEBUG)
+    syslog_trace("* hour:  {0}".format(currenthour), False, DEBUG)
+  # YEAR
+  # data of the last year is updated at 01:xx
+  if (currenthour % 12) or nu:
+    syslog_trace("* Get new data for year", False, DEBUG)
+    syslog_trace("* hour:  {0}".format(currenthour), False, DEBUG)
+
   syslog_trace("* Unlock", False, DEBUG)
   unlock(flock)
   syslog_trace("* Main Loop end", False, DEBUG)
