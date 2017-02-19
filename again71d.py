@@ -41,13 +41,14 @@ LOCATEDMINUTES  = mpl.dates.MinuteLocator()                       # find all min
 
 
 def timeme(method):
-    def wrapper(*args, **kw):
-        starttime = int(round(time.time() * 1000))
-        result = method(*args, **kw)
-        endtime = int(round(time.time() * 1000))
-        print(endtime - starttime, 'ms')
-        return result
-    return wrapper
+  """Execution timer for decoration."""
+  def wrapper(*args, **kw):
+      starttime = int(round(time.time() * 1000))
+      result = method(*args, **kw)
+      endtime = int(round(time.time() * 1000))
+      print(endtime - starttime, 'ms')
+      return result
+  return wrapper
 
 
 class MyDaemon(Daemon):
@@ -84,6 +85,7 @@ class MyDaemon(Daemon):
 
 @timeme
 def do_main(flock, nu):
+  """Main loop: Calls the various subroutines when needed."""
   syslog_trace("* Lock", False, DEBUG)
   lock(flock)
   # ff wachten
@@ -117,6 +119,7 @@ def do_main(flock, nu):
 
 @timeme
 def init_axes():
+  """Initialise the figure and its axes."""
   global FIG
   global AX1
   global AX2
@@ -188,14 +191,16 @@ def init_axes():
   # AX4.grid(which='minor', alpha=0.2)
 
 def lock(fname):
+  """Create a lockfile."""
   open(fname, 'a').close()
 
 def unlock(fname):
+  """Remove the lockfile."""
   if os.path.isfile(fname):
     os.remove(fname)
 
 def syslog_trace(trace, logerr, out2console):
-  # Log a python stack trace to syslog
+  """Log a python stack trace to syslog."""
   log_lines = trace.split('\n')
   for line in log_lines:
     if line and logerr:
