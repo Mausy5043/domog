@@ -52,7 +52,9 @@ def timeme(method):
 
 
 class MyDaemon(Daemon):
+  """Definition of daemon."""
   def run(self):
+    """Overload definition of run."""
     iniconf         = configparser.ConfigParser()
     inisection      = MYID
     home            = os.path.expanduser('~')
