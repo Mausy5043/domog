@@ -2,16 +2,31 @@
 
 # daemon71d.py creates a graph.
 
+import datetime
 import configparser
 import os
-import platform
-import shutil
+# import platform
+# import shutil
 import sys
 import syslog
 import time
 import traceback
 
 from libdaemon import Daemon
+
+import numpy as np
+import matplotlib as mpl
+mpl.use("Agg", warn=True)        # activate Anti-Grain Geometry library before importing pyplot
+import matplotlib.pyplot as plt  # noqa
+
+def timeme(method):
+    def wrapper(*args, **kw):
+        startTime = int(round(time.time() * 1000))
+        result = method(*args, **kw)
+        endTime = int(round(time.time() * 1000))
+        print(endTime - startTime, 'ms')
+        return result
+    return wrapper
 
 # constants
 DEBUG       = False
@@ -49,6 +64,7 @@ class MyDaemon(Daemon):
         syslog_trace(traceback.format_exc(), syslog.LOG_CRIT, DEBUG)
         raise
 
+@timeme
 def do_main(flock):
   lock(flock)
   syslog_trace("* Main Loop Start", False, DEBUG)
