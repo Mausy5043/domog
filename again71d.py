@@ -92,7 +92,7 @@ class MyDaemon(Daemon):
       try:
         startTime   = time.time()
 
-        do_main(flock, False)
+        do_main(flock, False, consql)
 
         waitTime    = sampleTime - (time.time() - startTime) - (startTime % sampleTime)
         if (waitTime > 0):
@@ -138,7 +138,7 @@ def update_hour_query(consql, minutes):
   try:
     cursql  = consql.cursor()               # get a cursor on the dB.
     cursql.execute(sqlcmd, sqldata)
-    data  = cursql.fetchone()
+    data  = cursql.fetchall()
     cursql.close()
   except mdb.IntegrityError as e:
     syslog_trace("DB error : {0}".format(e.__str__), syslog.LOG_ERR,  DEBUG)
