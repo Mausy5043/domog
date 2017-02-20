@@ -154,10 +154,9 @@ def do_main(flock, nu):
   """Main loop: Calls the various subroutines when needed."""
   syslog_trace("* Lock", False, DEBUG)
   lock(flock)
-  # ff wachten
-  time.sleep(2)
   currentminute = int(time.strftime('%M'))
   currenthour   = int(time.strftime('%H'))
+
   # HOUR
   # data of last hour is updated every minute
   if nu:
