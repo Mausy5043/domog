@@ -39,6 +39,7 @@ install_package "gnuplot-nox"
 # MySQL support
 install_package "mysql-client"
 install_package "libmysqlclient-dev"
+sudo pip3 install mysqlclient
 
 pushd "$HOME/domog"
   # To suppress git detecting changes by chmod:
