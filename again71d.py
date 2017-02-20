@@ -2,25 +2,23 @@
 
 # daemon71d.py creates a graph.
 
-import time
-# For debugging and profiling
-starttime = time.time()
-
-import datetime  # noqa
-import configparser  # noqa
-import os  # noqa
+import configparser
+import datetime
+import MySQLdb as mdb
+import os
 # import platform
 # import shutil
-import sys  # noqa
-import syslog  # noqa
-import traceback  # noqa
+import sys
+import syslog
+import time
+import traceback
 
-from libdaemon import Daemon  # noqa
+from libdaemon import Daemon
 
 # import numpy as np
-import matplotlib as mpl  # noqa
-mpl.use("Agg", warn=True)        # activate Anti-Grain Geometry library before importing pyplot
-import matplotlib.pyplot as plt  # noqa
+import matplotlib as mpl
+mpl.use("Agg", warn=True)         # activate Anti-Grain Geometry library before importing pyplot
+import matplotlib.pyplot as plt   #noqa
 
 # constants
 PLOT_TITLE      = "Temperature DS18B20"
@@ -41,7 +39,11 @@ LOCATEDMINUTES  = mpl.dates.MinuteLocator()                       # find all min
 
 
 def timeme(method):
-  """Execution timer for decoration."""
+  """
+  Execution timer.
+  Used as decoration to determine execution time of functions.
+  For profiling and debugging purposes.
+  """
   def wrapper(*args, **kw):
       starttime = int(round(time.time() * 1000))
       result = method(*args, **kw)
@@ -85,6 +87,68 @@ class MyDaemon(Daemon):
         syslog_trace(traceback.format_exc(), syslog.LOG_CRIT, DEBUG)
         raise
 
+
+@timeme
+def total_hour_query():
+  """Query the database to get the data for the past hour"""
+  syslog_trace("* Get data for past hour", False, DEBUG)
+
+@timeme
+def total_day_query():
+  """Query the database to get the data for the past day"""
+  syslog_trace("* Get data for past day", False, DEBUG)
+
+@timeme
+def total_week_query():
+  """Query the database to get the data for the past week"""
+  syslog_trace("* Get data for past week", False, DEBUG)
+
+@timeme
+def total_year_query():
+  """Query the database to get the data for the past year"""
+  syslog_trace("* Get data for past year", False, DEBUG)
+
+@timeme
+def update_hour_query():
+  """Query the database and update the data for the past hour"""
+  syslog_trace("* Get update for past hour", False, DEBUG)
+
+@timeme
+def update_day_query():
+  """Query the database and update the data for the past day"""
+  syslog_trace("* Get update for past day", False, DEBUG)
+
+@timeme
+def update_week_query():
+  """Query the database and update the data for the past week"""
+  syslog_trace("* Get update for past week", False, DEBUG)
+
+@timeme
+def update_year_query():
+  """Query the database and update the data for the past year"""
+  syslog_trace("* Get update for year hour", False, DEBUG)
+
+@timeme
+def update_hour_graph():
+  """(Re)draw the axes of the hour graph"""
+  syslog_trace("* (Re)draw graph for past hour", False, DEBUG)
+
+@timeme
+def update_day_graph():
+  """(Re)draw the axes of the day graph"""
+  syslog_trace("* (Re)draw graph for past day", False, DEBUG)
+
+@timeme
+def update_week_graph():
+  """(Re)draw the axes of the week graph"""
+  syslog_trace("* (Re)draw graph for past week", False, DEBUG)
+
+@timeme
+def update_year_graph():
+  """(Re)draw the axes of the year graph"""
+  syslog_trace("* (Re)draw graph for year hour", False, DEBUG)
+
+
 @timeme
 def do_main(flock, nu):
   """Main loop: Calls the various subroutines when needed."""
@@ -96,23 +160,45 @@ def do_main(flock, nu):
   currenthour   = int(time.strftime('%H'))
   # HOUR
   # data of last hour is updated every minute
-  syslog_trace("* Get new data for hour", False, DEBUG)
+  if nu:
+    total_hour_query()
+  else:
+    update_hour_query()
+  update_hour_graph()
 
   # DAY
   # data of the last day is updated every 30 minutes
   if (currentminute % 30) == 0 or nu:
     syslog_trace("* Get new data for day", False, DEBUG)
     syslog_trace("* min :  {0}".format(currentminute), False, DEBUG)
+    if nu:
+      total_day_query
+    else:
+      update_day_query
+    update_day_graph()
+
   # WEEK
   # data of the last week is updated every 4 hours
   if (currenthour % 6) == 0 and (currentminute == 1) or nu:
     syslog_trace("* Get new data for week", False, DEBUG)
     syslog_trace("* hour:  {0}".format(currenthour), False, DEBUG)
+    if nu:
+      total_week_query
+    else:
+      update_week_query
+    update_week_graph()
+
   # YEAR
   # data of the last year is updated at 01:11
   if (currenthour == 1) and (currentminute == 11) or nu:
     syslog_trace("* Get new data for year", False, DEBUG)
     syslog_trace("* hour:  {0}".format(currenthour), False, DEBUG)
+    if nu:
+      total_year_query
+    else:
+      update_year_query
+    update_year_graph()
+
 
   plt.savefig('/tmp/domog/site/img/day71.png', format='png')
   syslog_trace("* Unlock", False, DEBUG)
@@ -213,10 +299,6 @@ def syslog_trace(trace, logerr, out2console):
 
 if __name__ == "__main__":
   daemon = MyDaemon('/tmp/' + MYAPP + '/' + MYID + '.pid')
-
-  # For debugging and profiling
-  elapsed = time.time() - starttime
-  print(elapsed * 1000)
 
   if len(sys.argv) == 2:
     if 'start' == sys.argv[1]:
