@@ -57,6 +57,23 @@ class MyDaemon(Daemon):
   """Definition of daemon."""
   def run(self):
     """Overload definition of run."""
+    try:                 # Initialise MySQLdb
+      consql    = mdb.connect(host='sql.lan', db='domotica', read_default_file='~/.my.cnf')
+      if consql.open:                           # dB initialised successfully
+        cursql  = consql.cursor()               # get a cursor on the dB.
+        cursql.execute("SELECT VERSION();")
+        versql  = cursql.fetchone()
+        cursql.close()
+        logtext = "{0} : {1}".format("Attached to MySQL server", versql)
+        syslog.syslog(syslog.LOG_INFO, logtext)
+    except mdb.Error:
+      syslog_trace("Unexpected MySQL error in run(init)", syslog.LOG_CRIT, DEBUG)
+      syslog_trace(traceback.format_exc(), syslog.LOG_CRIT, DEBUG)
+      if consql.open:                           # attempt to close connection to MySQLdb
+        consql.close()
+        syslog_trace("** Closed MySQL connection in run(init) **", syslog.LOG_CRIT, DEBUG)
+      raise
+
     iniconf         = configparser.ConfigParser()
     inisection      = MYID
     home            = os.path.expanduser('~')
@@ -111,7 +128,26 @@ def total_year_query():
 @timeme
 def update_hour_query():
   """Query the database and update the data for the past hour"""
+  global consql
   syslog_trace("* Get update for past hour", False, DEBUG)
+  try:
+    cursql  = consql.cursor()               # get a cursor on the dB.
+    cursql.execute("USE domotica;
+                   SELECT MIN(sample_time), AVG(temperature)
+                   FROM ds18
+                   WHERE (sample_time >= NOW() - 70 MINUTE)
+                   GROUP BY (sample_epoch DIV 60);"
+                   )
+    versql  = cursql.fetchone()
+    cursql.close()
+  except mdb.IntegrityError as e:
+    syslog_trace("DB error : {0}".format(e.__str__), syslog.LOG_ERR,  DEBUG)
+    if cursql:
+      cursql.close()
+      syslog_trace(" *** Closed MySQL connection in do_writesample() ***", syslog.LOG_ERR, DEBUG)
+      syslog_trace(" Execution of MySQL command {0} FAILED!".format(cmd), syslog.LOG_INFO, DEBUG)
+      syslog_trace(" Not added to MySQLdb: {0}".format(dat), syslog.LOG_INFO, DEBUG)
+    pass
 
 @timeme
 def update_day_query():
@@ -197,7 +233,6 @@ def do_main(flock, nu):
     else:
       update_year_query
     update_year_graph()
-
 
   plt.savefig('/tmp/domog/site/img/day71.png', format='png')
   syslog_trace("* Unlock", False, DEBUG)
