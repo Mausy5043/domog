@@ -130,7 +130,7 @@ def total_year_query():
 @timeme
 def update_hour_query(consql, xdata, ydata, minutes):
   """Query the database and update the data for the past hour"""
-  syslog_trace("* Get update for past hour", False, DEBUG)
+  syslog_trace("* Get update of {0} samples for past hour".format(minutes), False, DEBUG)
   sqlcmd = ('SELECT MIN(sample_time), AVG(temperature) '
             'FROM ds18 '
             'WHERE (sample_time >= NOW() - INTERVAL %s MINUTE) '
@@ -148,9 +148,10 @@ def update_hour_query(consql, xdata, ydata, minutes):
       syslog_trace(" *** Closed MySQL connection in do_writesample() ***", syslog.LOG_ERR, DEBUG)
       syslog_trace(" Execution of MySQL command {0} FAILED!".format(sqlcmd), syslog.LOG_INFO, DEBUG)
     pass
-    for i in enumerate(data):
-      xdata = np.append(xdata, i[0])
-      ydata = np.append(ydata, i[1])
+
+  for i in enumerate(data):
+    xdata = np.append(xdata, i[0])
+    ydata = np.append(ydata, i[1])
   return xdata, ydata
 
 
