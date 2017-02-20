@@ -149,9 +149,15 @@ def update_hour_query(consql, xdata, ydata, minutes):
       syslog_trace(" Execution of MySQL command {0} FAILED!".format(sqlcmd), syslog.LOG_INFO, DEBUG)
     pass
 
-  for i in enumerate(data):
-    xdata = np.append(xdata, i[0])
-    ydata = np.append(ydata, i[1])
+  for i, j in (data):
+    if len(xdata) > 0:
+      previ = xdata[-1]
+    else:
+      previ = 0
+    i = mpl.dates.date2num(i)
+    if i > previ:
+      xdata = np.append(xdata, i)
+      ydata = np.append(ydata, float(j))
   return xdata, ydata
 
 
@@ -194,6 +200,11 @@ def update_year_graph():
 @timeme
 def do_main(flock, nu, consql):
   """Main loop: Calls the various subroutines when needed."""
+  global HRx, HRy
+  global DYx, DYy
+  global WKx, WKy
+  global YRx, YRy
+
   syslog_trace("* Lock", False, DEBUG)
   lock(flock)
   currentminute = int(time.strftime('%M'))
