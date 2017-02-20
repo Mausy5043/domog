@@ -177,9 +177,23 @@ def update_year_query():
   syslog_trace("* Get update for year hour", False, DEBUG)
 
 @timeme
-def update_hour_graph():
+def update_hour_graph(consql):
   """(Re)draw the axes of the hour graph"""
   syslog_trace("* (Re)draw graph for past hour", False, DEBUG)
+  sqlcmd = ('SELECT NOW();')
+  try:
+    cursql  = consql.cursor()               # get a cursor on the dB.
+    cursql.execute(sqlcmd)
+    data  = cursql.fetchall()
+    print(data)
+    cursql.close()
+  except mdb.IntegrityError as e:
+    syslog_trace("DB error : {0}".format(e.__str__), syslog.LOG_ERR,  DEBUG)
+    if cursql:
+      cursql.close()
+      syslog_trace(" *** Closed MySQL connection in do_writesample() ***", syslog.LOG_ERR, DEBUG)
+      syslog_trace(" Execution of MySQL command {0} FAILED!".format(sqlcmd), syslog.LOG_INFO, DEBUG)
+    pass
 
 @timeme
 def update_day_graph():
@@ -217,10 +231,10 @@ def do_main(flock, nu, consql):
     HRy = np.array([])
     HRx, HRy = total_hour_query(consql, HRx, HRy)
   else:
-    HRx, HRy = update_hour_query(consql, HRx, HRy, 2)
+    HRx, HRy = update_hour_query(consql, HRx, HRy, 10)
   print(HRx)
   print(HRy)
-  update_hour_graph()
+  update_hour_graph(consql)
 
   # DAY
   # data of the last day is updated every 30 minutes
