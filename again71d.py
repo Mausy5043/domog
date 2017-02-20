@@ -15,7 +15,7 @@ import traceback
 
 from libdaemon import Daemon
 
-# import numpy as np
+import numpy as np
 import matplotlib as mpl
 mpl.use("Agg", warn=True)         # activate Anti-Grain Geometry library before importing pyplot
 import matplotlib.pyplot as plt   #noqa
@@ -106,10 +106,11 @@ class MyDaemon(Daemon):
 
 
 @timeme
-def total_hour_query(consql):
+def total_hour_query(consql, x, y):
   """Query the database to get the data for the past hour"""
   syslog_trace("* Get data for past hour", False, DEBUG)
-  update_hour_query(consql, 70)
+  x, y = update_hour_query(consql, x, y, 70)
+  return x, y
 
 @timeme
 def total_day_query():
@@ -127,7 +128,7 @@ def total_year_query():
   syslog_trace("* Get data for past year", False, DEBUG)
 
 @timeme
-def update_hour_query(consql, minutes):
+def update_hour_query(consql, xdata, ydata, minutes):
   """Query the database and update the data for the past hour"""
   syslog_trace("* Get update for past hour", False, DEBUG)
   sqlcmd = ('SELECT MIN(sample_time), AVG(temperature) '
@@ -147,8 +148,10 @@ def update_hour_query(consql, minutes):
       syslog_trace(" *** Closed MySQL connection in do_writesample() ***", syslog.LOG_ERR, DEBUG)
       syslog_trace(" Execution of MySQL command {0} FAILED!".format(sqlcmd), syslog.LOG_INFO, DEBUG)
     pass
-  print(data)
-  return data
+    for i in enumerate(data):
+      xdata = np.append(xdata, i[0])
+      ydata = np.append(ydata, i[1])
+  return xdata, ydata
 
 
 @timeme
@@ -198,9 +201,13 @@ def do_main(flock, nu, consql):
   # HOUR
   # data of last hour is updated every minute
   if nu:
-    total_hour_query(consql)
+    HRx = np.array([])
+    HRy = np.array([])
+    HRx, HRy = total_hour_query(consql, HRx, HRy)
   else:
-    update_hour_query(consql, 2)
+    HRx, HRy = update_hour_query(consql, HRx, HRy, 2)
+  print(HRx)
+  print(HRy)
   update_hour_graph()
 
   # DAY
