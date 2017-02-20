@@ -86,7 +86,7 @@ class MyDaemon(Daemon):
     sampleTime      = reportTime/samplesperCycle        # time [s] between samples
 
     init_axes()
-    do_main(flock, True)  # get all data and graphs on start-up
+    do_main(flock, True, consql)  # get all data and graphs on start-up
 
     while True:
       try:
@@ -106,9 +106,10 @@ class MyDaemon(Daemon):
 
 
 @timeme
-def total_hour_query():
+def total_hour_query(consql):
   """Query the database to get the data for the past hour"""
   syslog_trace("* Get data for past hour", False, DEBUG)
+  update_hour_query(consql, 70)
 
 @timeme
 def total_day_query():
@@ -126,17 +127,17 @@ def total_year_query():
   syslog_trace("* Get data for past year", False, DEBUG)
 
 @timeme
-def update_hour_query():
+def update_hour_query(consql, minutes):
   """Query the database and update the data for the past hour"""
-  global consql
   syslog_trace("* Get update for past hour", False, DEBUG)
   sqlcmd = ('SELECT MIN(sample_time), AVG(temperature) '
             'FROM ds18 '
-            'WHERE (sample_time >= NOW() - 70 MINUTE)'
-            'GROUP BY (sample_epoch DIV 60)')
+            'WHERE (sample_time >= NOW() - INTERVAL %s MINUTE) '
+            'GROUP BY (sample_epoch DIV %s);')
+  sqldata = (minutes, 60)
   try:
     cursql  = consql.cursor()               # get a cursor on the dB.
-    cursql.execute(sqlcmd)
+    cursql.execute(sqlcmd, sqldata)
     data  = cursql.fetchone()
     cursql.close()
   except mdb.IntegrityError as e:
@@ -146,6 +147,7 @@ def update_hour_query():
       syslog_trace(" *** Closed MySQL connection in do_writesample() ***", syslog.LOG_ERR, DEBUG)
       syslog_trace(" Execution of MySQL command {0} FAILED!".format(sqlcmd), syslog.LOG_INFO, DEBUG)
     pass
+  print(data)
   return data
 
 
@@ -186,7 +188,7 @@ def update_year_graph():
 
 
 @timeme
-def do_main(flock, nu):
+def do_main(flock, nu, consql):
   """Main loop: Calls the various subroutines when needed."""
   syslog_trace("* Lock", False, DEBUG)
   lock(flock)
@@ -196,9 +198,9 @@ def do_main(flock, nu):
   # HOUR
   # data of last hour is updated every minute
   if nu:
-    total_hour_query()
+    total_hour_query(consql)
   else:
-    update_hour_query()
+    update_hour_query(consql, 2)
   update_hour_graph()
 
   # DAY
