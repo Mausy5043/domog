@@ -113,9 +113,11 @@ def total_hour_query(consql, x, y):
   return x, y
 
 @timeme
-def total_day_query():
+def total_day_query(consql, x, y):
   """Query the database to get the data for the past day"""
   syslog_trace("* Get data for past day", False, DEBUG)
+  x, y = update_day_query(consql, x, y, 25)
+  return x, y
 
 @timeme
 def total_week_query():
@@ -139,6 +141,7 @@ def update_hour_query(consql, xdata, ydata, minutes):
   try:
     cursql  = consql.cursor()               # get a cursor on the dB.
     cursql.execute(sqlcmd, sqldata)
+    consql.commit()
     data  = cursql.fetchall()
     cursql.close()
   except mdb.IntegrityError as e:
@@ -158,13 +161,52 @@ def update_hour_query(consql, xdata, ydata, minutes):
     if i > previ:
       xdata = np.append(xdata, i)
       ydata = np.append(ydata, float(j))
+
+  while len(xdata) > 70:
+    xdata = xdata[1:]
+    ydata = ydata[1:]
+
   return xdata, ydata
 
 
 @timeme
-def update_day_query():
+def update_day_query(consql, xdata, ydata, hours):
   """Query the database and update the data for the past day"""
   syslog_trace("* Get update for past day", False, DEBUG)
+  sqlcmd = ('SELECT MIN(sample_time), MIN(temperature), AVG(temperature), MAX(temperature) '
+            'FROM ds18 '
+            'WHERE (sample_time >= NOW() - INTERVAL %s MINUTE) '
+            'GROUP BY (sample_epoch DIV %s);')
+  sqldata = (hours, 1800)
+  try:
+    cursql  = consql.cursor()               # get a cursor on the dB.
+    cursql.execute(sqlcmd, sqldata)
+    consql.commit()
+    data  = cursql.fetchall()
+    cursql.close()
+  except mdb.IntegrityError as e:
+    syslog_trace("DB error : {0}".format(e.__str__), syslog.LOG_ERR,  DEBUG)
+    if cursql:
+      cursql.close()
+      syslog_trace(" *** Closed MySQL connection in do_writesample() ***", syslog.LOG_ERR, DEBUG)
+      syslog_trace(" Execution of MySQL command {0} FAILED!".format(sqlcmd), syslog.LOG_INFO, DEBUG)
+    pass
+
+  for i, j, k, l in (data):
+    if len(xdata) > 0:
+      previ = xdata[-1]  # timestamp of last element in list
+    else:
+      previ = 0          # empty list
+    i = mpl.dates.date2num(i)
+    if i > previ:
+      xdata = np.append(xdata, i)
+      ydata = np.append(ydata, [float(j), float(k), float(l)])
+
+  while len(xdata) > 25:
+    xdata = xdata[1:]
+    ydata = ydata[1:]
+
+  return xdata, ydata
 
 @timeme
 def update_week_query():
@@ -180,20 +222,6 @@ def update_year_query():
 def update_hour_graph(consql):
   """(Re)draw the axes of the hour graph"""
   syslog_trace("* (Re)draw graph for past hour", False, DEBUG)
-  sqlcmd = ('SELECT NOW();')
-  try:
-    cursql  = consql.cursor()               # get a cursor on the dB.
-    cursql.execute(sqlcmd)
-    data  = cursql.fetchall()
-    print(data)
-    cursql.close()
-  except mdb.IntegrityError as e:
-    syslog_trace("DB error : {0}".format(e.__str__), syslog.LOG_ERR,  DEBUG)
-    if cursql:
-      cursql.close()
-      syslog_trace(" *** Closed MySQL connection in do_writesample() ***", syslog.LOG_ERR, DEBUG)
-      syslog_trace(" Execution of MySQL command {0} FAILED!".format(sqlcmd), syslog.LOG_INFO, DEBUG)
-    pass
 
 @timeme
 def update_day_graph():
@@ -214,10 +242,10 @@ def update_year_graph():
 @timeme
 def do_main(flock, nu, consql):
   """Main loop: Calls the various subroutines when needed."""
-  global HRx, HRy
-  global DYx, DYy
-  global WKx, WKy
-  global YRx, YRy
+  global hourly_data_x, hourly_data_y
+  global daily_data_x, daily_data_y
+  global weekly_data_x, weekly_data_y
+  global yearly_data_x, yearly_data_y
 
   syslog_trace("* Lock", False, DEBUG)
   lock(flock)
@@ -227,13 +255,11 @@ def do_main(flock, nu, consql):
   # HOUR
   # data of last hour is updated every minute
   if nu:
-    HRx = np.array([])
-    HRy = np.array([])
-    HRx, HRy = total_hour_query(consql, HRx, HRy)
+    hourly_data_x = np.array([])
+    hourly_data_y = np.array([])
+    hourly_data_x, hourly_data_y = total_hour_query(consql, hourly_data_x, hourly_data_y)
   else:
-    HRx, HRy = update_hour_query(consql, HRx, HRy, 10)
-  print(HRx)
-  print(HRy)
+    hourly_data_x, hourly_data_y = update_hour_query(consql, hourly_data_x, hourly_data_y, 2)
   update_hour_graph(consql)
 
   # DAY
@@ -242,9 +268,11 @@ def do_main(flock, nu, consql):
     syslog_trace("* Get new data for day", False, DEBUG)
     syslog_trace("* min :  {0}".format(currentminute), False, DEBUG)
     if nu:
-      total_day_query
+      daily_data_x = np.array([])
+      daily_data_y = np.array([])
+      daily_data_x, daily_data_y = total_day_query(consql, daily_data_x, daily_data_y)
     else:
-      update_day_query
+      daily_data_x, daily_data_y = update_day_query(consql, daily_data_x, daily_data_y, 2)
     update_day_graph()
 
   # WEEK
