@@ -378,7 +378,7 @@ def do_main(flock, nu, consql):
     if nu:
       yearly_data_x = np.array([])
       yearly_data_y = np.array([[0, 0, 0]])  # initialise array with dummy data
-      yearly_data_x, yearly_data_y = Update_year_query(consql, yearly_data_x, yearly_data_y)
+      yearly_data_x, yearly_data_y = update_year_query(consql, yearly_data_x, yearly_data_y)
     else:
       yearly_data_x, yearly_data_y = update_year_query(consql, yearly_data_x, yearly_data_y)
     # print(yearly_data_x)
