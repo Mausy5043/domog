@@ -200,7 +200,7 @@ def update_day_query(consql, xdata, ydata, queryhours):
     i = mpl.dates.date2num(i)
     if i > previ:
       xdata = np.append(xdata, i)
-      ydata = np.append(ydata, [float(j), float(k), float(l)])
+      ydata = np.append(ydata, [[float(j), float(k), float(l)]], axis=0)
 
   while len(xdata) > 25:
     xdata = xdata[1:]
@@ -218,22 +218,22 @@ def update_year_query():
   """Query the database and update the data for the past year"""
   syslog_trace("* Get update for year hour", False, DEBUG)
 
-@timeme
+# @timeme
 def update_hour_graph(consql):
   """(Re)draw the axes of the hour graph"""
   syslog_trace("* (Re)draw graph for past hour", False, DEBUG)
 
-@timeme
+# @timeme
 def update_day_graph():
   """(Re)draw the axes of the day graph"""
   syslog_trace("* (Re)draw graph for past day", False, DEBUG)
 
-@timeme
+# @timeme
 def update_week_graph():
   """(Re)draw the axes of the week graph"""
   syslog_trace("* (Re)draw graph for past week", False, DEBUG)
 
-@timeme
+# @timeme
 def update_year_graph():
   """(Re)draw the axes of the year graph"""
   syslog_trace("* (Re)draw graph for year hour", False, DEBUG)
@@ -270,12 +270,12 @@ def do_main(flock, nu, consql):
     syslog_trace("* min :  {0}".format(currentminute), False, DEBUG)
     if nu:
       daily_data_x = np.array([])
-      daily_data_y = np.array([])
+      daily_data_y = np.array([[0, 0, 0]])  # initialise array with dummy data
       daily_data_x, daily_data_y = total_day_query(consql, daily_data_x, daily_data_y)
     else:
       daily_data_x, daily_data_y = update_day_query(consql, daily_data_x, daily_data_y, 2)
-    print(daily_data_x)
-    print(daily_data_y)
+    # print(daily_data_x)
+    # print(daily_data_y)
     print(len(daily_data_x), len(daily_data_y))
     update_day_graph()
 
