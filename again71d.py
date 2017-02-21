@@ -260,6 +260,7 @@ def do_main(flock, nu, consql):
     hourly_data_x, hourly_data_y = total_hour_query(consql, hourly_data_x, hourly_data_y)
   else:
     hourly_data_x, hourly_data_y = update_hour_query(consql, hourly_data_x, hourly_data_y, 2)
+  print(len(hourly_data_x), len(hourly_data_y))
   update_hour_graph(consql)
 
   # DAY
@@ -273,6 +274,9 @@ def do_main(flock, nu, consql):
       daily_data_x, daily_data_y = total_day_query(consql, daily_data_x, daily_data_y)
     else:
       daily_data_x, daily_data_y = update_day_query(consql, daily_data_x, daily_data_y, 2)
+    print(daily_data_x)
+    print(daily_data_y)
+    print(len(daily_data_x), len(daily_data_y))
     update_day_graph()
 
   # WEEK
