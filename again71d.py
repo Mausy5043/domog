@@ -204,6 +204,7 @@ def update_day_query(consql, xdata, ydata, queryhours):
 
   while len(xdata) > 25:
     xdata = xdata[1:]
+  while len(ydata) > 25:
     ydata = ydata[1:]
 
   return xdata, ydata
