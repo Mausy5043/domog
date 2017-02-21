@@ -294,12 +294,12 @@ def update_year_query(consql, xdata, ydata, querydays):
   return xdata, ydata
 
 # @timeme
-def update_hour_graph(consql):
+def update_hour_graph():
   """(Re)draw the axes of the hour graph"""
   syslog_trace("* (Re)draw graph for past hour", False, DEBUG)
 
 # @timeme
-def update_day_graph(con):
+def update_day_graph():
   """(Re)draw the axes of the day graph"""
   syslog_trace("* (Re)draw graph for past day", False, DEBUG)
 
@@ -336,7 +336,7 @@ def do_main(flock, nu, consql):
   else:
     hourly_data_x, hourly_data_y = update_hour_query(consql, hourly_data_x, hourly_data_y, 2)
   print(len(hourly_data_x), len(hourly_data_y))
-  update_hour_graph(consql)
+  update_hour_graph()
 
   # DAY
   # data of the last day is updated every 30 minutes
