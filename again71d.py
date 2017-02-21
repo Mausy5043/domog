@@ -175,7 +175,7 @@ def update_day_query(consql, xdata, ydata, queryhours):
   syslog_trace("* Get update of {0} samples for past day".format(queryhours), False, DEBUG)
   sqlcmd = ('SELECT MIN(sample_time), MIN(temperature), AVG(temperature), MAX(temperature) '
             'FROM ds18 '
-            'WHERE (sample_time >= NOW() - INTERVAL %s MINUTE) '
+            'WHERE (sample_time >= NOW() - INTERVAL %s HOUR) '
             'GROUP BY (sample_epoch DIV %s);')
   sqldata = (queryhours, 1800)
   try:
