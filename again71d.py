@@ -127,9 +127,11 @@ def total_week_query(consql, x, y):
   return x, y
 
 @timeme
-def total_year_query():
+def total_year_query(consql, x, y):
   """Query the database to get the data for the past year"""
   syslog_trace("* Get data for past year", False, DEBUG)
+  x, y = update_year_query(consql, x, y, 370)
+  return x, y
 
 @timeme
 def update_hour_query(consql, xdata, ydata, queryminutes):
@@ -252,9 +254,44 @@ def update_week_query(consql, xdata, ydata, querydays):
   return xdata, ydata
 
 @timeme
-def update_year_query():
+def update_year_query(consql, xdata, ydata, querydays):
   """Query the database and update the data for the past year"""
-  syslog_trace("* Get update for year hour", False, DEBUG)
+  syslog_trace("* Get update of {0} samples for past year".format(querydays), False, DEBUG)
+  sqlcmd = ('SELECT MIN(sample_time), MIN(temperature), AVG(temperature), MAX(temperature) '
+            'FROM ds18 '
+            'WHERE (sample_time >= NOW() - INTERVAL %s DAY) '
+            'GROUP BY YEAR(sample_time), MONTH(sample_time), DAY(sample_time);')
+  sqldata = (querydays)
+  try:
+    cursql  = consql.cursor()               # get a cursor on the dB.
+    cursql.execute(sqlcmd, sqldata)
+    consql.commit()
+    data  = cursql.fetchall()
+    cursql.close()
+  except mdb.IntegrityError as e:
+    syslog_trace("DB error : {0}".format(e.__str__), syslog.LOG_ERR,  DEBUG)
+    if cursql:
+      cursql.close()
+      syslog_trace(" *** Closed MySQL connection in do_writesample() ***", syslog.LOG_ERR, DEBUG)
+      syslog_trace(" Execution of MySQL command {0} FAILED!".format(sqlcmd), syslog.LOG_INFO, DEBUG)
+    pass
+
+  for i, j, k, l in (data):
+    if len(xdata) > 0:
+      previ = xdata[-1]  # timestamp of last element in list
+    else:
+      previ = 0          # empty list
+    i = mpl.dates.date2num(i)
+    if i > previ:
+      xdata = np.append(xdata, i)
+      ydata = np.append(ydata, [[float(j), float(k), float(l)]], axis=0)
+
+  while len(xdata) > 370:
+    xdata = xdata[1:]
+  while len(ydata) > 370:
+    ydata = ydata[1:]
+
+  return xdata, ydata
 
 # @timeme
 def update_hour_graph(consql):
@@ -262,7 +299,7 @@ def update_hour_graph(consql):
   syslog_trace("* (Re)draw graph for past hour", False, DEBUG)
 
 # @timeme
-def update_day_graph():
+def update_day_graph(con):
   """(Re)draw the axes of the day graph"""
   syslog_trace("* (Re)draw graph for past day", False, DEBUG)
 
@@ -339,9 +376,14 @@ def do_main(flock, nu, consql):
     syslog_trace("* Get new data for year", False, DEBUG)
     syslog_trace("* hour:  {0}".format(currenthour), False, DEBUG)
     if nu:
-      total_year_query
+      yearly_data_x = np.array([])
+      yearly_data_y = np.array([[0, 0, 0]])  # initialise array with dummy data
+      yearly_data_x, yearly_data_y = total_year_query(consql, yearly_data_x, yearly_data_y)
     else:
-      update_year_query
+      yearly_data_x, yearly_data_y = update_year_query(consql, yearly_data_x, yearly_data_y, 2)
+    # print(yearly_data_x)
+    # print(yearly_data_y)
+    print(len(yearly_data_x), len(yearly_data_y))
     update_year_graph()
 
   plt.savefig('/tmp/domog/site/img/day71.png', format='png')
