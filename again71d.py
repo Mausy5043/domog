@@ -124,6 +124,7 @@ def total_week_query(consql, x, y):
   """Query the database to get the data for the past week"""
   syslog_trace("* Get data for past week", False, DEBUG)
   x, y = update_week_query(consql, x, y, 8)
+  return x, y
 
 @timeme
 def total_year_query():
@@ -213,7 +214,7 @@ def update_day_query(consql, xdata, ydata, queryhours):
 @timeme
 def update_week_query(consql, xdata, ydata, querydays):
   """Query the database and update the data for the past week"""
-  syslog_trace("* Get update of {0} samples for past day".format(querydays), False, DEBUG)
+  syslog_trace("* Get update of {0} samples for past week".format(querydays), False, DEBUG)
   sqlcmd = ('SELECT MIN(sample_time), MIN(temperature), AVG(temperature), MAX(temperature) '
             'FROM ds18 '
             'WHERE (sample_time >= NOW() - INTERVAL %s DAY) '
@@ -324,9 +325,9 @@ def do_main(flock, nu, consql):
     if nu:
       weekly_data_x = np.array([])
       weekly_data_y = np.array([[0, 0, 0]])  # initialise array with dummy data
-      weekly_data_x, weekly_data_y = total_day_query(consql, weekly_data_x, weekly_data_y)
+      weekly_data_x, weekly_data_y = total_week_query(consql, weekly_data_x, weekly_data_y)
     else:
-      weekly_data_x, weekly_data_y = update_day_query(consql, weekly_data_x, weekly_data_y, 2)
+      weekly_data_x, weekly_data_y = update_week_query(consql, weekly_data_x, weekly_data_y, 2)
     # print(weekly_data_x)
     # print(weekly_data_y)
     print(len(weekly_data_x), len(weekly_data_y))
