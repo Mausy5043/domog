@@ -120,9 +120,10 @@ def total_day_query(consql, x, y):
   return x, y
 
 @timeme
-def total_week_query():
+def total_week_query(consql, x, y):
   """Query the database to get the data for the past week"""
   syslog_trace("* Get data for past week", False, DEBUG)
+  x, y = update_week_query(consql, x, y, 8)
 
 @timeme
 def total_year_query():
@@ -210,9 +211,44 @@ def update_day_query(consql, xdata, ydata, queryhours):
   return xdata, ydata
 
 @timeme
-def update_week_query():
+def update_week_query(consql, xdata, ydata, querydays):
   """Query the database and update the data for the past week"""
-  syslog_trace("* Get update for past week", False, DEBUG)
+  syslog_trace("* Get update of {0} samples for past day".format(querydays), False, DEBUG)
+  sqlcmd = ('SELECT MIN(sample_time), MIN(temperature), AVG(temperature), MAX(temperature) '
+            'FROM ds18 '
+            'WHERE (sample_time >= NOW() - INTERVAL %s DAY) '
+            'GROUP BY (sample_epoch DIV %s);')
+  sqldata = (querydays, 14400)
+  try:
+    cursql  = consql.cursor()               # get a cursor on the dB.
+    cursql.execute(sqlcmd, sqldata)
+    consql.commit()
+    data  = cursql.fetchall()
+    cursql.close()
+  except mdb.IntegrityError as e:
+    syslog_trace("DB error : {0}".format(e.__str__), syslog.LOG_ERR,  DEBUG)
+    if cursql:
+      cursql.close()
+      syslog_trace(" *** Closed MySQL connection in do_writesample() ***", syslog.LOG_ERR, DEBUG)
+      syslog_trace(" Execution of MySQL command {0} FAILED!".format(sqlcmd), syslog.LOG_INFO, DEBUG)
+    pass
+
+  for i, j, k, l in (data):
+    if len(xdata) > 0:
+      previ = xdata[-1]  # timestamp of last element in list
+    else:
+      previ = 0          # empty list
+    i = mpl.dates.date2num(i)
+    if i > previ:
+      xdata = np.append(xdata, i)
+      ydata = np.append(ydata, [[float(j), float(k), float(l)]], axis=0)
+
+  while len(xdata) > 48:
+    xdata = xdata[1:]
+  while len(ydata) > 48:
+    ydata = ydata[1:]
+
+  return xdata, ydata
 
 @timeme
 def update_year_query():
