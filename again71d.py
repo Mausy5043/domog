@@ -332,7 +332,7 @@ def do_main(flock, nu, consql):
   if nu:
     hourly_data_x = np.array([])
     hourly_data_y = np.array([])
-    hourly_data_x, hourly_data_y = total_hour_query(consql, hourly_data_x, hourly_data_y)
+    hourly_data_x, hourly_data_y = update_hour_query(consql, hourly_data_x, hourly_data_y, 70)
   else:
     hourly_data_x, hourly_data_y = update_hour_query(consql, hourly_data_x, hourly_data_y, 2)
   print(len(hourly_data_x), len(hourly_data_y))
@@ -346,7 +346,7 @@ def do_main(flock, nu, consql):
     if nu:
       daily_data_x = np.array([])
       daily_data_y = np.array([[0, 0, 0]])  # initialise array with dummy data
-      daily_data_x, daily_data_y = total_day_query(consql, daily_data_x, daily_data_y)
+      daily_data_x, daily_data_y = update_day_query(consql, daily_data_x, daily_data_y, 25)
     else:
       daily_data_x, daily_data_y = update_day_query(consql, daily_data_x, daily_data_y, 2)
     # print(daily_data_x)
@@ -362,7 +362,7 @@ def do_main(flock, nu, consql):
     if nu:
       weekly_data_x = np.array([])
       weekly_data_y = np.array([[0, 0, 0]])  # initialise array with dummy data
-      weekly_data_x, weekly_data_y = total_week_query(consql, weekly_data_x, weekly_data_y)
+      weekly_data_x, weekly_data_y = update_week_query(consql, weekly_data_x, weekly_data_y, 8)
     else:
       weekly_data_x, weekly_data_y = update_week_query(consql, weekly_data_x, weekly_data_y, 2)
     # print(weekly_data_x)
@@ -378,9 +378,9 @@ def do_main(flock, nu, consql):
     if nu:
       yearly_data_x = np.array([])
       yearly_data_y = np.array([[0, 0, 0]])  # initialise array with dummy data
-      yearly_data_x, yearly_data_y = total_year_query(consql, yearly_data_x, yearly_data_y)
+      yearly_data_x, yearly_data_y = Update_year_query(consql, yearly_data_x, yearly_data_y)
     else:
-      yearly_data_x, yearly_data_y = update_year_query(consql, yearly_data_x, yearly_data_y, 2)
+      yearly_data_x, yearly_data_y = update_year_query(consql, yearly_data_x, yearly_data_y)
     # print(yearly_data_x)
     # print(yearly_data_y)
     print(len(yearly_data_x), len(yearly_data_y))
