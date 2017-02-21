@@ -132,7 +132,7 @@ def total_year_query():
 @timeme
 def update_hour_query(consql, xdata, ydata, queryminutes):
   """Query the database and update the data for the past hour"""
-  syslog_trace("* Get update of {0} samples for past hour".format(minutes), False, DEBUG)
+  syslog_trace("* Get update of {0} samples for past hour".format(queryminutes), False, DEBUG)
   sqlcmd = ('SELECT MIN(sample_time), AVG(temperature) '
             'FROM ds18 '
             'WHERE (sample_time >= NOW() - INTERVAL %s MINUTE) '
@@ -172,7 +172,7 @@ def update_hour_query(consql, xdata, ydata, queryminutes):
 @timeme
 def update_day_query(consql, xdata, ydata, queryhours):
   """Query the database and update the data for the past day"""
-  syslog_trace("* Get update for past day", False, DEBUG)
+  syslog_trace("* Get update of {0} samples for past day".format(queryhours), False, DEBUG)
   sqlcmd = ('SELECT MIN(sample_time), MIN(temperature), AVG(temperature), MAX(temperature) '
             'FROM ds18 '
             'WHERE (sample_time >= NOW() - INTERVAL %s MINUTE) '
