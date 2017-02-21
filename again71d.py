@@ -168,6 +168,7 @@ def update_hour_query(consql, xdata, ydata, queryminutes):
 
   while len(xdata) > 70:
     xdata = xdata[1:]
+  while len(ydata) > len(xdata):
     ydata = ydata[1:]
 
   return xdata, ydata
@@ -208,7 +209,7 @@ def update_day_query(consql, xdata, ydata, queryhours):
 
   while len(xdata) > 25:
     xdata = xdata[1:]
-  while len(ydata) > 25:
+  while len(ydata) > len(xdata):
     ydata = ydata[1:]
 
   return xdata, ydata
@@ -248,7 +249,7 @@ def update_week_query(consql, xdata, ydata, querydays):
 
   while len(xdata) > 48:
     xdata = xdata[1:]
-  while len(ydata) > 48:
+  while len(ydata) > len(xdata):
     ydata = ydata[1:]
 
   return xdata, ydata
@@ -288,7 +289,7 @@ def update_year_query(consql, xdata, ydata, querydays):
 
   while len(xdata) > 370:
     xdata = xdata[1:]
-  while len(ydata) > 370:
+  while len(ydata) > len(xdata):
     ydata = ydata[1:]
 
   return xdata, ydata
