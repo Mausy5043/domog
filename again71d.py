@@ -130,7 +130,7 @@ def total_week_query(consql, x, y):
 def total_year_query(consql, x, y):
   """Query the database to get the data for the past year"""
   syslog_trace("* Get data for past year", False, DEBUG)
-  x, y = update_year_query(consql, x, y, 370)
+  x, y = update_year_query(consql, x, y)
   return x, y
 
 @timeme
@@ -255,17 +255,16 @@ def update_week_query(consql, xdata, ydata, querydays):
   return xdata, ydata
 
 @timeme
-def update_year_query(consql, xdata, ydata, querydays):
+def update_year_query(consql, xdata, ydata):
   """Query the database and update the data for the past year"""
-  syslog_trace("* Get update of {0} samples for past year".format(querydays), False, DEBUG)
+  syslog_trace("* Get update for past year", False, DEBUG)
   sqlcmd = ('SELECT MIN(sample_time), MIN(temperature), AVG(temperature), MAX(temperature) '
             'FROM ds18 '
-            'WHERE (sample_time >= NOW() - INTERVAL %s DAY) '
+            'WHERE (sample_time >= NOW() - INTERVAL 370 DAY) '
             'GROUP BY YEAR(sample_time), MONTH(sample_time), DAY(sample_time);')
-  sqldata = (querydays)
   try:
     cursql  = consql.cursor()               # get a cursor on the dB.
-    cursql.execute(sqlcmd, sqldata)
+    cursql.execute(sqlcmd)
     consql.commit()
     data  = cursql.fetchall()
     cursql.close()
