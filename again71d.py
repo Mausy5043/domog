@@ -318,13 +318,18 @@ def do_main(flock, nu, consql):
 
   # WEEK
   # data of the last week is updated every 4 hours
-  if (currenthour % 6) == 0 and (currentminute == 1) or nu:
+  if (currenthour % 4) == 0 and (currentminute == 1) or nu:
     syslog_trace("* Get new data for week", False, DEBUG)
     syslog_trace("* hour:  {0}".format(currenthour), False, DEBUG)
     if nu:
-      total_week_query
+      weekly_data_x = np.array([])
+      weekly_data_y = np.array([[0, 0, 0]])  # initialise array with dummy data
+      weekly_data_x, weekly_data_y = total_day_query(consql, weekly_data_x, weekly_data_y)
     else:
-      update_week_query
+      weekly_data_x, weekly_data_y = update_day_query(consql, weekly_data_x, weekly_data_y, 2)
+    # print(weekly_data_x)
+    # print(weekly_data_y)
+    print(len(weekly_data_x), len(weekly_data_y))
     update_week_graph()
 
   # YEAR
