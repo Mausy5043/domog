@@ -130,14 +130,14 @@ def total_year_query():
   syslog_trace("* Get data for past year", False, DEBUG)
 
 @timeme
-def update_hour_query(consql, xdata, ydata, minutes):
+def update_hour_query(consql, xdata, ydata, queryminutes):
   """Query the database and update the data for the past hour"""
   syslog_trace("* Get update of {0} samples for past hour".format(minutes), False, DEBUG)
   sqlcmd = ('SELECT MIN(sample_time), AVG(temperature) '
             'FROM ds18 '
             'WHERE (sample_time >= NOW() - INTERVAL %s MINUTE) '
             'GROUP BY (sample_epoch DIV %s);')
-  sqldata = (minutes, 60)
+  sqldata = (queryminutes, 60)
   try:
     cursql  = consql.cursor()               # get a cursor on the dB.
     cursql.execute(sqlcmd, sqldata)
@@ -170,14 +170,14 @@ def update_hour_query(consql, xdata, ydata, minutes):
 
 
 @timeme
-def update_day_query(consql, xdata, ydata, hours):
+def update_day_query(consql, xdata, ydata, queryhours):
   """Query the database and update the data for the past day"""
   syslog_trace("* Get update for past day", False, DEBUG)
   sqlcmd = ('SELECT MIN(sample_time), MIN(temperature), AVG(temperature), MAX(temperature) '
             'FROM ds18 '
             'WHERE (sample_time >= NOW() - INTERVAL %s MINUTE) '
             'GROUP BY (sample_epoch DIV %s);')
-  sqldata = (hours, 1800)
+  sqldata = (queryhours, 1800)
   try:
     cursql  = consql.cursor()               # get a cursor on the dB.
     cursql.execute(sqlcmd, sqldata)
