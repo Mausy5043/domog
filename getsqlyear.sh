@@ -12,13 +12,13 @@ fi
 
 pushd "$HOME/domog" >/dev/null
   # Get year data for DS18 sensor (graph21)
-  mysql -h sql.lan --skip-column-names -e \
-  "USE domotica; \
-   SELECT MIN(sample_time), MIN(temperature), AVG(temperature), MAX(temperature) \
-   FROM ds18 \
-   WHERE (sample_time >= NOW() - ${interval}) \
-   GROUP BY YEAR(sample_time), MONTH(sample_time), DAY(sample_time);" \
-  | sed 's/\t/;/g;s/\n//g' > "${datastore}/sql21y.csv"
+  # mysql -h sql.lan --skip-column-names -e \
+  # "USE domotica; \
+  #  SELECT MIN(sample_time), MIN(temperature), AVG(temperature), MAX(temperature) \
+  #  FROM ds18 \
+  #  WHERE (sample_time >= NOW() - ${interval}) \
+  #  GROUP BY YEAR(sample_time), MONTH(sample_time), DAY(sample_time);" \
+  # | sed 's/\t/;/g;s/\n//g' > "${datastore}/sql21y.csv"
 
   # Get data for DHT22 sensor (graph22)
   mysql -h sql.lan --skip-column-names -e \
