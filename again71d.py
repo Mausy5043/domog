@@ -372,7 +372,7 @@ def do_main(flock, nu, consql):
   # YEAR graph
   # graph of the last year is updated at 01:11
   if (currenthour == 1) and (currentminute == 11) or nu:
-    update_year_graph()
+    update_year_graph(Ymin, Ymax)
 
   # WEEK data
   # graph of the last week is updated every 4 hours
