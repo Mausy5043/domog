@@ -281,6 +281,8 @@ def update_hour_graph(ymin, ymax):
   AX4.xaxis.set_minor_locator(LOCATEDMINUTES)
   AX4.grid(which='minor', alpha=0.2)
 
+  AX4.plot(hourly_data_x, hourly_data_y, marker='.', linestyle='', color='red', lw=2)
+
 # @timeme
 def update_day_graph(ymin, ymax):
   """(Re)draw the axes of the day graph"""
