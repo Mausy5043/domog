@@ -179,7 +179,7 @@ def update_day_query(consql, xdata, ydata, queryhours):
       xdata = np.append(xdata, i)
       ydata = np.append(ydata, [[float(j), float(k), float(l)]], axis=0)
 
-  while len(xdata) > (queryhours * 3600 / divider):
+  while len(xdata) > (25 * 3600 / divider):
     xdata = xdata[1:]
   while len(ydata) > len(xdata):
     ydata = ydata[1:]
@@ -220,7 +220,7 @@ def update_week_query(consql, xdata, ydata, querydays):
       xdata = np.append(xdata, i)
       ydata = np.append(ydata, [[float(j), float(k), float(l)]], axis=0)
 
-  while len(xdata) > (querydays * 86400 / divider):
+  while len(xdata) > (8 * 86400 / divider):
     xdata = xdata[1:]
   while len(ydata) > len(xdata):
     ydata = ydata[1:]
