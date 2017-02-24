@@ -109,11 +109,12 @@ class MyDaemon(Daemon):
 def update_hour_query(consql, xdata, ydata, queryminutes):
   """Query the database and update the data for the past hour"""
   syslog_trace("* Get update of {0} samples for past hour".format(queryminutes), False, DEBUG)
+  divider = 60
   sqlcmd = ('SELECT MIN(sample_time), AVG(temperature) '
             'FROM ds18 '
             'WHERE (sample_time >= NOW() - INTERVAL %s MINUTE) '
             'GROUP BY (sample_epoch DIV %s);')
-  sqldata = (queryminutes, 60)
+  sqldata = (queryminutes, divider)
   try:
     cursql  = consql.cursor()               # get a cursor on the dB.
     cursql.execute(sqlcmd, sqldata)
@@ -195,7 +196,7 @@ def update_week_query(consql, xdata, ydata, querydays):
             'FROM ds18 '
             'WHERE (sample_time >= NOW() - INTERVAL %s DAY) '
             'GROUP BY (sample_epoch DIV %s);')
-  sqldata = (querydays, 14400)
+  sqldata = (querydays, divider)
   try:
     cursql  = consql.cursor()               # get a cursor on the dB.
     cursql.execute(sqlcmd, sqldata)
@@ -277,10 +278,9 @@ def update_hour_graph(ymin, ymax):
   AX4.set_ylim([ymin, ymax])
   AX4.set_yticklabels([])
   AX4.set_xlim([hourly_data_x[1], hourly_data_x[-1]])
+  AX3.set_xticklabels(hourly_data_x, size='small')
   AX4.set_xticks(major_ticks)
   AX4.xaxis.set_major_formatter(mpl.dates.DateFormatter('%R'))
-  # t must contain labels
-  # ax4.set_xticklabels(t, size='small')
   AX4.grid(which='major', alpha=0.5)
   AX4.xaxis.set_minor_locator(LOCATEDMINUTES)
   AX4.grid(which='minor', alpha=0.2)
