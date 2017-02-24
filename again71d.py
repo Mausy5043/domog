@@ -149,11 +149,12 @@ def update_hour_query(consql, xdata, ydata, queryminutes):
 def update_day_query(consql, xdata, ydata, queryhours):
   """Query the database and update the data for the past day"""
   syslog_trace("* Get update of {0} samples for past day".format(queryhours), False, DEBUG)
+  divider = 1800
   sqlcmd = ('SELECT MIN(sample_time), MIN(temperature), AVG(temperature), MAX(temperature) '
             'FROM ds18 '
             'WHERE (sample_time >= NOW() - INTERVAL %s HOUR) '
             'GROUP BY (sample_epoch DIV %s);')
-  sqldata = (queryhours, 1800)
+  sqldata = (queryhours, divider)
   try:
     cursql  = consql.cursor()               # get a cursor on the dB.
     cursql.execute(sqlcmd, sqldata)
@@ -178,7 +179,7 @@ def update_day_query(consql, xdata, ydata, queryhours):
       xdata = np.append(xdata, i)
       ydata = np.append(ydata, [[float(j), float(k), float(l)]], axis=0)
 
-  while len(xdata) > 25:
+  while len(xdata) > (queryhours * 3600 / divider):
     xdata = xdata[1:]
   while len(ydata) > len(xdata):
     ydata = ydata[1:]
@@ -189,6 +190,7 @@ def update_day_query(consql, xdata, ydata, queryhours):
 def update_week_query(consql, xdata, ydata, querydays):
   """Query the database and update the data for the past week"""
   syslog_trace("* Get update of {0} samples for past week".format(querydays), False, DEBUG)
+  divider = 14400
   sqlcmd = ('SELECT MIN(sample_time), MIN(temperature), AVG(temperature), MAX(temperature) '
             'FROM ds18 '
             'WHERE (sample_time >= NOW() - INTERVAL %s DAY) '
@@ -218,7 +220,7 @@ def update_week_query(consql, xdata, ydata, querydays):
       xdata = np.append(xdata, i)
       ydata = np.append(ydata, [[float(j), float(k), float(l)]], axis=0)
 
-  while len(xdata) > 48:
+  while len(xdata) > (querydays * 86400 / divider):
     xdata = xdata[1:]
   while len(ydata) > len(xdata):
     ydata = ydata[1:]
@@ -277,7 +279,8 @@ def update_hour_graph(ymin, ymax):
   AX4.set_xlim([hourly_data_x[1], hourly_data_x[-1]])
   AX4.set_xticks(major_ticks)
   AX4.xaxis.set_major_formatter(mpl.dates.DateFormatter('%R'))
-  AX4.set_xticklabels(size='small')
+  # t must contain labels
+  # ax4.set_xticklabels(t, size='small')
   AX4.grid(which='major', alpha=0.5)
   AX4.xaxis.set_minor_locator(LOCATEDMINUTES)
   AX4.grid(which='minor', alpha=0.2)
@@ -293,10 +296,9 @@ def update_day_graph(ymin, ymax):
   AX3.set_ylim([ymin, ymax])
   AX3.set_yticklabels([])
   AX3.set_xlim([daily_data_x[1], daily_data_x[-1]])
+  AX3.set_xticklabels(daily_data_x, size='small')
   AX3.set_xticks(major_ticks)
   AX3.xaxis.set_major_formatter(mpl.dates.DateFormatter('%R'))
-  AX3.set_xticklabels(size='small')
-  AX3.set_xticklabels(daily_data_x, size='small')
   AX3.grid(which='major', alpha=0.5)
   AX3.xaxis.set_minor_locator(LOCATEDHOURS)
   AX3.grid(which='minor', alpha=0.2)
