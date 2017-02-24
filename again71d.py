@@ -106,34 +106,6 @@ class MyDaemon(Daemon):
 
 
 @timeme
-def total_hour_query(consql, x, y):
-  """Query the database to get the data for the past hour"""
-  syslog_trace("* Get data for past hour", False, DEBUG)
-  x, y = update_hour_query(consql, x, y, 70)
-  return x, y
-
-@timeme
-def total_day_query(consql, x, y):
-  """Query the database to get the data for the past day"""
-  syslog_trace("* Get data for past day", False, DEBUG)
-  x, y = update_day_query(consql, x, y, 25)
-  return x, y
-
-@timeme
-def total_week_query(consql, x, y):
-  """Query the database to get the data for the past week"""
-  syslog_trace("* Get data for past week", False, DEBUG)
-  x, y = update_week_query(consql, x, y, 8)
-  return x, y
-
-@timeme
-def total_year_query(consql, x, y):
-  """Query the database to get the data for the past year"""
-  syslog_trace("* Get data for past year", False, DEBUG)
-  x, y = update_year_query(consql, x, y)
-  return x, y
-
-@timeme
 def update_hour_query(consql, xdata, ydata, queryminutes):
   """Query the database and update the data for the past hour"""
   syslog_trace("* Get update of {0} samples for past hour".format(queryminutes), False, DEBUG)
@@ -172,7 +144,6 @@ def update_hour_query(consql, xdata, ydata, queryminutes):
     ydata = ydata[1:]
 
   return xdata, ydata
-
 
 @timeme
 def update_day_query(consql, xdata, ydata, queryhours):
@@ -294,9 +265,21 @@ def update_year_query(consql, xdata, ydata):
   return xdata, ydata
 
 # @timeme
-def update_hour_graph():
+def update_hour_graph(ymin, ymax):
   """(Re)draw the axes of the hour graph"""
+  global AX4
   syslog_trace("* (Re)draw graph for past hour", False, DEBUG)
+  tenminutes = (1. / 6. / 24.)
+  plt.suptitle(PLOT_TITLE + ' ( ' + datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S") + ' )')
+  major_ticks = np.arange(np.ceil(hourly_data_x[1, 0]/tenminutes)*tenminutes, hourly_data_x[-1, 0], tenminutes)
+  AX4.set_ylim([ymin, ymax])
+  AX4.set_yticklabels([])
+  AX4.set_xlim([hourly_data_x[1, 0], hourly_data_x[-1, 0]])
+  AX4.set_xticks(major_ticks)
+  AX4.xaxis.set_major_formatter(mpl.dates.DateFormatter('%R'))
+  AX4.grid(which='major', alpha=0.5)
+  AX4.xaxis.set_minor_locator(LOCATEDMINUTES)
+  AX4.grid(which='minor', alpha=0.2)
 
 # @timeme
 def update_day_graph():
@@ -327,50 +310,7 @@ def do_main(flock, nu, consql):
   currentminute = int(time.strftime('%M'))
   currenthour   = int(time.strftime('%H'))
 
-  # HOUR
-  # data of last hour is updated every minute
-  if nu:
-    hourly_data_x = np.array([])
-    hourly_data_y = np.array([])
-    hourly_data_x, hourly_data_y = update_hour_query(consql, hourly_data_x, hourly_data_y, 70)
-  else:
-    hourly_data_x, hourly_data_y = update_hour_query(consql, hourly_data_x, hourly_data_y, 2)
-  print(len(hourly_data_x), len(hourly_data_y))
-  update_hour_graph()
-
-  # DAY
-  # data of the last day is updated every 30 minutes
-  if (currentminute % 30) == 0 or nu:
-    syslog_trace("* Get new data for day", False, DEBUG)
-    syslog_trace("* min :  {0}".format(currentminute), False, DEBUG)
-    if nu:
-      daily_data_x = np.array([])
-      daily_data_y = np.array([[0, 0, 0]])  # initialise array with dummy data
-      daily_data_x, daily_data_y = update_day_query(consql, daily_data_x, daily_data_y, 25)
-    else:
-      daily_data_x, daily_data_y = update_day_query(consql, daily_data_x, daily_data_y, 2)
-    # print(daily_data_x)
-    # print(daily_data_y)
-    print(len(daily_data_x), len(daily_data_y))
-    update_day_graph()
-
-  # WEEK
-  # data of the last week is updated every 4 hours
-  if (currenthour % 4) == 0 and (currentminute == 1) or nu:
-    syslog_trace("* Get new data for week", False, DEBUG)
-    syslog_trace("* hour:  {0}".format(currenthour), False, DEBUG)
-    if nu:
-      weekly_data_x = np.array([])
-      weekly_data_y = np.array([[0, 0, 0]])  # initialise array with dummy data
-      weekly_data_x, weekly_data_y = update_week_query(consql, weekly_data_x, weekly_data_y, 8)
-    else:
-      weekly_data_x, weekly_data_y = update_week_query(consql, weekly_data_x, weekly_data_y, 2)
-    # print(weekly_data_x)
-    # print(weekly_data_y)
-    print(len(weekly_data_x), len(weekly_data_y))
-    update_week_graph()
-
-  # YEAR
+  # YEAR data
   # data of the last year is updated at 01:11
   if (currenthour == 1) and (currentminute == 11) or nu:
     syslog_trace("* Get new data for year", False, DEBUG)
@@ -384,7 +324,69 @@ def do_main(flock, nu, consql):
     # print(yearly_data_x)
     # print(yearly_data_y)
     print(len(yearly_data_x), len(yearly_data_y))
+
+  # WEEK data
+  # data of the last week is updated every 4 hours
+  if (currenthour % 4) == 0 and (currentminute == 1) or nu:
+    syslog_trace("* Get new data for week", False, DEBUG)
+    syslog_trace("* hour:  {0}".format(currenthour), False, DEBUG)
+    if nu:
+      weekly_data_x = np.array([])
+      weekly_data_y = np.array([[0, 0, 0]])  # initialise array with dummy data
+      weekly_data_x, weekly_data_y = update_week_query(consql, weekly_data_x, weekly_data_y, 8)
+    else:
+      weekly_data_x, weekly_data_y = update_week_query(consql, weekly_data_x, weekly_data_y, 2)
+    # print(weekly_data_x)
+    # print(weekly_data_y)
+    print(len(weekly_data_x), len(weekly_data_y))
+
+  # DAY data
+  # data of the last day is updated every 30 minutes
+  if (currentminute % 30) == 0 or nu:
+    syslog_trace("* Get new data for day", False, DEBUG)
+    syslog_trace("* min :  {0}".format(currentminute), False, DEBUG)
+    if nu:
+      daily_data_x = np.array([])
+      daily_data_y = np.array([[0, 0, 0]])  # initialise array with dummy data
+      daily_data_x, daily_data_y = update_day_query(consql, daily_data_x, daily_data_y, 25)
+    else:
+      daily_data_x, daily_data_y = update_day_query(consql, daily_data_x, daily_data_y, 2)
+    # print(daily_data_x)
+    # print(daily_data_y)
+    print(len(daily_data_x), len(daily_data_y))
+
+  # HOUR data
+  # data of last hour is updated every minute
+  if nu:
+    hourly_data_x = np.array([])
+    hourly_data_y = np.array([])
+    hourly_data_x, hourly_data_y = update_hour_query(consql, hourly_data_x, hourly_data_y, 70)
+  else:
+    hourly_data_x, hourly_data_y = update_hour_query(consql, hourly_data_x, hourly_data_y, 2)
+  print(len(hourly_data_x), len(hourly_data_y))
+
+  # Data post/pre-procesing
+  Ymin = min(np.nanmin(weekly_data_y[:, 1], 0), np.nanmin(daily_data_y[:, 1], 0), np.nanmin(hourly_data_y[:, 1], 0)) - 1
+  Ymax = max(np.nanmax(weekly_data_y[:, 1], 0), np.nanmax(daily_data_y[:, 1], 0), np.nanmax(hourly_data_y[:, 1], 0)) + 1
+
+  # YEAR graph
+  # graph of the last year is updated at 01:11
+  if (currenthour == 1) and (currentminute == 11) or nu:
     update_year_graph()
+
+  # WEEK data
+  # graph of the last week is updated every 4 hours
+  if (currenthour % 4) == 0 and (currentminute == 1) or nu:
+    update_week_graph(Ymin, Ymax)
+
+  # DAY data
+  # graph of the last day is updated every 30 minutes
+  if (currentminute % 30) == 0 or nu:
+    update_day_graph(Ymin, Ymax)
+
+  # HOUR graph
+  # graph of last hour is updated every minute
+  update_hour_graph(Ymin, Ymax)
 
   plt.savefig('/tmp/domog/site/img/day71.png', format='png')
   syslog_trace("* Unlock", False, DEBUG)
