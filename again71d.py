@@ -264,7 +264,7 @@ def update_year_query(consql, xdata, ydata):
 
   return xdata, ydata
 
-# @timeme
+@timeme
 def update_hour_graph(ymin, ymax):
   """(Re)draw the axes of the hour graph"""
   global AX4
@@ -277,23 +277,39 @@ def update_hour_graph(ymin, ymax):
   AX4.set_xlim([hourly_data_x[1], hourly_data_x[-1]])
   AX4.set_xticks(major_ticks)
   AX4.xaxis.set_major_formatter(mpl.dates.DateFormatter('%R'))
+  AX4.set_xticklabels(size='small')
   AX4.grid(which='major', alpha=0.5)
   AX4.xaxis.set_minor_locator(LOCATEDMINUTES)
   AX4.grid(which='minor', alpha=0.2)
 
   AX4.plot(hourly_data_x, hourly_data_y, marker='.', linestyle='', color='red', lw=2)
 
-# @timeme
+@timeme
 def update_day_graph(ymin, ymax):
   """(Re)draw the axes of the day graph"""
   syslog_trace("* (Re)draw graph for past day", False, DEBUG)
+  fourhours  = (4. / 24.)
+  major_ticks = np.arange(np.ceil(daily_data_x[1]/fourhours)*fourhours, daily_data_x[-1], fourhours)
+  AX3.set_ylim([ymin, ymax])
+  AX3.set_yticklabels([])
+  AX3.set_xlim([daily_data_x[1], daily_data_x[-1]])
+  AX3.set_xticks(major_ticks)
+  AX3.xaxis.set_major_formatter(mpl.dates.DateFormatter('%R'))
+  AX3.set_xticklabels(size='small')
+  AX3.set_xticklabels(daily_data_x, size='small')
+  AX3.grid(which='major', alpha=0.5)
+  AX3.xaxis.set_minor_locator(LOCATEDHOURS)
+  AX3.grid(which='minor', alpha=0.2)
 
-# @timeme
+  AX3.plot(daily_data_x, daily_data_y[:, 1], marker='.', linestyle='', color='red', lw=2)
+  AX3.fill_between(daily_data_x, daily_data_y[:, 0], daily_data_y[:, 2], interpolate=True, color='red', alpha=0.2)
+
+@timeme
 def update_week_graph(ymin, ymax):
   """(Re)draw the axes of the week graph"""
   syslog_trace("* (Re)draw graph for past week", False, DEBUG)
 
-# @timeme
+@timeme
 def update_year_graph(ymin, ymax):
   """(Re)draw the axes of the year graph"""
   syslog_trace("* (Re)draw graph for past year", False, DEBUG)
@@ -368,27 +384,27 @@ def do_main(flock, nu, consql):
   print(len(hourly_data_x), len(hourly_data_y))
 
   # Data post/pre-procesing
-  Ymin = min(np.nanmin(weekly_data_y[:, 0], 0), np.nanmin(daily_data_y[:, 0], 0), np.nanmin(hourly_data_y, 0)) - 1
-  Ymax = max(np.nanmax(weekly_data_y[:, 2], 0), np.nanmax(daily_data_y[:, 2], 0), np.nanmax(hourly_data_y, 0)) + 1
+  minimum_y = min(np.nanmin(weekly_data_y[:, 0], 0), np.nanmin(daily_data_y[:, 0], 0), np.nanmin(hourly_data_y, 0)) - 1
+  maximum_y = max(np.nanmax(weekly_data_y[:, 2], 0), np.nanmax(daily_data_y[:, 2], 0), np.nanmax(hourly_data_y, 0)) + 1
 
   # YEAR graph
   # graph of the last year is updated at 01:11
   if (currenthour == 1) and (currentminute == 11) or nu:
-    update_year_graph(Ymin, Ymax)
+    update_year_graph(minimum_y, maximum_y)
 
   # WEEK data
   # graph of the last week is updated every 4 hours
   if (currenthour % 4) == 0 and (currentminute == 1) or nu:
-    update_week_graph(Ymin, Ymax)
+    update_week_graph(minimum_y, maximum_y)
 
   # DAY data
   # graph of the last day is updated every 30 minutes
   if (currentminute % 30) == 0 or nu:
-    update_day_graph(Ymin, Ymax)
+    update_day_graph(minimum_y, maximum_y)
 
   # HOUR graph
   # graph of last hour is updated every minute
-  update_hour_graph(Ymin, Ymax)
+  update_hour_graph(minimum_y, maximum_y)
 
   plt.savefig('/tmp/domog/site/img/day71.png', format='png')
   syslog_trace("* Unlock", False, DEBUG)
