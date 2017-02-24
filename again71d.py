@@ -271,10 +271,10 @@ def update_hour_graph(ymin, ymax):
   syslog_trace("* (Re)draw graph for past hour", False, DEBUG)
   tenminutes = (1. / 6. / 24.)
   plt.suptitle(PLOT_TITLE + ' ( ' + datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S") + ' )')
-  major_ticks = np.arange(np.ceil(hourly_data_x[1, 0]/tenminutes)*tenminutes, hourly_data_x[-1, 0], tenminutes)
+  major_ticks = np.arange(np.ceil(hourly_data_x[1]/tenminutes)*tenminutes, hourly_data_x[-1], tenminutes)
   AX4.set_ylim([ymin, ymax])
   AX4.set_yticklabels([])
-  AX4.set_xlim([hourly_data_x[1, 0], hourly_data_x[-1, 0]])
+  AX4.set_xlim([hourly_data_x[1], hourly_data_x[-1]])
   AX4.set_xticks(major_ticks)
   AX4.xaxis.set_major_formatter(mpl.dates.DateFormatter('%R'))
   AX4.grid(which='major', alpha=0.5)
@@ -294,7 +294,7 @@ def update_week_graph(ymin, ymax):
 # @timeme
 def update_year_graph(ymin, ymax):
   """(Re)draw the axes of the year graph"""
-  syslog_trace("* (Re)draw graph for year hour", False, DEBUG)
+  syslog_trace("* (Re)draw graph for past year", False, DEBUG)
 
 
 @timeme
