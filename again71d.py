@@ -278,7 +278,7 @@ def update_hour_graph(ymin, ymax):
   AX4.set_ylim([ymin, ymax])
   AX4.set_yticklabels([])
   AX4.set_xlim([hourly_data_x[1], hourly_data_x[-1]])
-  AX3.set_xticklabels(hourly_data_x, size='small')
+  AX4.set_xticklabels(hourly_data_x, size='small')
   AX4.set_xticks(major_ticks)
   AX4.xaxis.set_major_formatter(mpl.dates.DateFormatter('%R'))
   AX4.grid(which='major', alpha=0.5)
@@ -310,6 +310,19 @@ def update_day_graph(ymin, ymax):
 def update_week_graph(ymin, ymax):
   """(Re)draw the axes of the week graph"""
   syslog_trace("* (Re)draw graph for past week", False, DEBUG)
+  fourhours  = (4. / 24.)
+  minor_ticks = np.arange(np.ceil(weekly_data_x[1]/fourhours)*fourhours, weekly_data_x[-1], fourhours)
+  AX2.set_ylim([ymin, ymax])
+  AX2.set_xlim([weekly_data_x[1], weekly_data_x[-1]])
+  AX2.set_xticklabels(weekly_data_x, size='small')
+  AX2.xaxis.set_major_locator(LOCATEDDAYS)
+  AX2.xaxis.set_major_formatter(mpl.dates.DateFormatter('%a %d'))
+  AX2.grid(which='major', alpha=0.5)
+  AX2.set_xticks(minor_ticks, minor=True)
+  AX2.grid(which='minor', alpha=0.2)
+
+  AX2.plot(weekly_data_x, weekly_data_y[:, 1], linestyle='-', color='red', lw=2)
+  AX2.fill_between(weekly_data_x, weekly_data_y[:, 0], weekly_data_y[:, 2], interpolate=True, color='red', alpha=0.2)
 
 @timeme
 def update_year_graph(ymin, ymax):
