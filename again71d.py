@@ -282,17 +282,17 @@ def update_hour_graph(ymin, ymax):
   AX4.grid(which='minor', alpha=0.2)
 
 # @timeme
-def update_day_graph():
+def update_day_graph(ymin, ymax):
   """(Re)draw the axes of the day graph"""
   syslog_trace("* (Re)draw graph for past day", False, DEBUG)
 
 # @timeme
-def update_week_graph():
+def update_week_graph(ymin, ymax):
   """(Re)draw the axes of the week graph"""
   syslog_trace("* (Re)draw graph for past week", False, DEBUG)
 
 # @timeme
-def update_year_graph():
+def update_year_graph(ymin, ymax):
   """(Re)draw the axes of the year graph"""
   syslog_trace("* (Re)draw graph for year hour", False, DEBUG)
 
@@ -366,8 +366,8 @@ def do_main(flock, nu, consql):
   print(len(hourly_data_x), len(hourly_data_y))
 
   # Data post/pre-procesing
-  Ymin = min(np.nanmin(weekly_data_y[:, 1], 0), np.nanmin(daily_data_y[:, 1], 0), np.nanmin(hourly_data_y[:, 1], 0)) - 1
-  Ymax = max(np.nanmax(weekly_data_y[:, 1], 0), np.nanmax(daily_data_y[:, 1], 0), np.nanmax(hourly_data_y[:, 1], 0)) + 1
+  Ymin = min(np.nanmin(weekly_data_y[:, 0], 0), np.nanmin(daily_data_y[:, 0], 0), np.nanmin(hourly_data_y, 0)) - 1
+  Ymax = max(np.nanmax(weekly_data_y[:, 2], 0), np.nanmax(daily_data_y[:, 2], 0), np.nanmax(hourly_data_y, 0)) + 1
 
   # YEAR graph
   # graph of the last year is updated at 01:11
