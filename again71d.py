@@ -328,7 +328,18 @@ def update_week_graph(ymin, ymax):
 def update_year_graph(ymin, ymax):
   """(Re)draw the axes of the year graph"""
   syslog_trace("* (Re)draw graph for past year", False, DEBUG)
+  # AX1 has no no ylim, we use autoscaling
+  AX1.set_xlim([yearly_data_x[1], yearly_data_x[-1]])
+  AX1.set_xticklabels(yearly_data_x, size='small')
+  AX1.xaxis.set_major_locator(LOCATEDMONTHS)
+  AX1.xaxis.set_major_formatter(mpl.dates.DateFormatter('%b %Y'))
+  AX1.grid(which='major', alpha=0.5)
+  AX1.xaxis.set_minor_locator(LOCATEDMONDAYS)
+  AX1.grid(which='minor', alpha=0.2)
 
+  AX1.plot(yearly_data_x, yearly_data_y[:, 1], color='red', lw=1, label='Temperature [degC]')
+  AX1.legend(loc='upper left', fontsize='x-small')
+  AX1.fill_between(yearly_data_x, yearly_data_y[:, 0], yearly_data_y[:, 1], interpolate=True, color='red', alpha=0.2)
 
 @timeme
 def do_main(flock, nu, consql):
