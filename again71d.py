@@ -280,6 +280,7 @@ def update_hour_graph(ymin, ymax):
   AX4.set_ylim([ymin, ymax])
   AX4.set_yticklabels([])
   AX4.set_xlim([hourly_data_x[1], hourly_data_x[-1]])
+  AX4.set_xlabel('past hour')
   AX4.set_xticklabels(hourly_data_x, size='small')
   AX4.set_xticks(major_ticks)
   AX4.xaxis.set_major_formatter(mpl.dates.DateFormatter('%R'))
@@ -300,6 +301,7 @@ def update_day_graph(ymin, ymax):
   AX3.set_ylim([ymin, ymax])
   AX3.set_yticklabels([])
   AX3.set_xlim([daily_data_x[1], daily_data_x[-1]])
+  AX3.set_xlabel('past day')
   AX3.set_xticklabels(daily_data_x, size='small')
   AX3.set_xticks(major_ticks)
   AX3.xaxis.set_major_formatter(mpl.dates.DateFormatter('%R'))
@@ -319,8 +321,10 @@ def update_week_graph(ymin, ymax):
   plt.sca(AX2)
   plt.cla()
   AX2.set_ylim([ymin, ymax])
+  AX2.set_ylabel(PLOT_Y1LABEL)
   AX2.set_xlim([weekly_data_x[1], weekly_data_x[-1]])
   AX2.set_xticklabels(weekly_data_x, size='small')
+  AX2.set_xlabel('past week')
   AX2.xaxis.set_major_locator(LOCATEDDAYS)
   AX2.xaxis.set_major_formatter(mpl.dates.DateFormatter('%a %d'))
   AX2.grid(which='major', alpha=0.5)
@@ -337,8 +341,10 @@ def update_year_graph(ymin, ymax):
   plt.sca(AX1)
   plt.cla()
   # AX1 has no no ylim, we use autoscaling
+  AX1.set_ylabel(PLOT_Y1LABEL)
   AX1.set_xlim([yearly_data_x[1], yearly_data_x[-1]])
   AX1.set_xticklabels(yearly_data_x, size='small')
+  AX1.set_xlabel('past year')
   AX1.xaxis.set_major_locator(LOCATEDMONTHS)
   AX1.xaxis.set_major_formatter(mpl.dates.DateFormatter('%b %Y'))
   AX1.grid(which='major', alpha=0.5)
@@ -480,45 +486,19 @@ def init_axes():
 
   # #######################
   # AX1 = [YEAR]
-  AX1.set_ylabel(PLOT_Y1LABEL)
-  AX1.set_xlabel('past year')
   AX1.grid(True)
-  # AX1.xaxis.set_major_locator(LOCATEDMONTHS)
-  # AX1.xaxis.set_major_formatter(mpl.dates.DateFormatter('%b %Y'))
-  # AX1.grid(which='major', alpha=0.5)
-  # AX1.xaxis.set_minor_locator(LOCATEDMONDAYS)
-  # AX1.grid(which='minor', alpha=0.2)
-  # AX1.legend(loc='upper left', fontsize='x-small')
 
   # #######################
   # AX2 = [WEEK]
-  AX2.set_ylabel(PLOT_Y1LABEL)
-  AX2.set_xlabel('past week')
   AX2.grid(True)
-  # AX2.xaxis.set_major_locator(LOCATEDDAYS)
-  # AX2.xaxis.set_major_formatter(mpl.dates.DateFormatter('%a %d'))
-  # AX2.grid(which='major', alpha=0.5)
-  # AX2.grid(which='minor', alpha=0.2)
 
   # #######################
   # AX3 = [DAY]
-  AX3.set_xlabel('past day')
-  AX3.set_yticklabels([])
   AX3.grid(True)
-  # AX3.xaxis.set_major_formatter(mpl.dates.DateFormatter('%R'))
-  # AX3.grid(which='major', alpha=0.5)
-  # AX3.xaxis.set_minor_locator(LOCATEDHOURS)
-  # AX3.grid(which='minor', alpha=0.2)
 
   # #######################
   # AX4 = [HOUR]
-  AX4.set_xlabel('past hour')
-  AX4.set_yticklabels([])
   AX4.grid(True)
-  # AX4.xaxis.set_major_formatter(mpl.dates.DateFormatter('%R'))
-  # AX4.grid(which='major', alpha=0.5)
-  # AX4.xaxis.set_minor_locator(LOCATEDMINUTES)
-  # AX4.grid(which='minor', alpha=0.2)
 
 def lock(fname):
   """Create a lockfile."""
