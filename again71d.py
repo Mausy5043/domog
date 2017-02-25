@@ -127,7 +127,7 @@ def update_hour_query(consql, xdata, ydata, queryminutes):
       cursql.close()
       syslog_trace(" *** Closed MySQL connection in do_writesample() ***", syslog.LOG_ERR, DEBUG)
       syslog_trace(" Execution of MySQL command {0} FAILED!".format(sqlcmd), syslog.LOG_INFO, DEBUG)
-    pass
+    raise
 
   for i, j in (data):
     if len(xdata) > 0:
@@ -168,7 +168,7 @@ def update_day_query(consql, xdata, ydata, queryhours):
       cursql.close()
       syslog_trace(" *** Closed MySQL connection in do_writesample() ***", syslog.LOG_ERR, DEBUG)
       syslog_trace(" Execution of MySQL command {0} FAILED!".format(sqlcmd), syslog.LOG_INFO, DEBUG)
-    pass
+    raise
 
   for i, j, k, l in (data):
     if len(xdata) > 0:
@@ -209,7 +209,7 @@ def update_week_query(consql, xdata, ydata, querydays):
       cursql.close()
       syslog_trace(" *** Closed MySQL connection in do_writesample() ***", syslog.LOG_ERR, DEBUG)
       syslog_trace(" Execution of MySQL command {0} FAILED!".format(sqlcmd), syslog.LOG_INFO, DEBUG)
-    pass
+    raise
 
   for i, j, k, l in (data):
     if len(xdata) > 0:
@@ -248,7 +248,7 @@ def update_year_query(consql, xdata, ydata):
       cursql.close()
       syslog_trace(" *** Closed MySQL connection in do_writesample() ***", syslog.LOG_ERR, DEBUG)
       syslog_trace(" Execution of MySQL command {0} FAILED!".format(sqlcmd), syslog.LOG_INFO, DEBUG)
-    pass
+    raise
 
   for i, j, k, l in (data):
     if len(xdata) > 0:
