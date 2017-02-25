@@ -33,14 +33,14 @@ pushd "${HOME}/domog" >/dev/null
   # | sed 's/\t/;/g;s/\n//g' > "${datastore}/sql22w.csv"
 
   # Get data for BMP183 sensor (graph23)
-  mysql -h sql.lan --skip-column-names -e \
-  "USE domotica; \
-   SELECT MIN(sample_time), MIN(temperature), AVG(temperature), MAX(temperature), \
-                            MIN(pressure), AVG(pressure), MAX(pressure) \
-   FROM bmp183 \
-   WHERE (sample_time >= NOW() - ${interval}) \
-   GROUP BY (sample_epoch DIV ${divider});" \
-  | sed 's/\t/;/g;s/\n//g' > "${datastore}/sql23w.csv"
+  # mysql -h sql.lan --skip-column-names -e \
+  # "USE domotica; \
+  #  SELECT MIN(sample_time), MIN(temperature), AVG(temperature), MAX(temperature), \
+  #                           MIN(pressure), AVG(pressure), MAX(pressure) \
+  #  FROM bmp183 \
+  #  WHERE (sample_time >= NOW() - ${interval}) \
+  #  GROUP BY (sample_epoch DIV ${divider});" \
+  # | sed 's/\t/;/g;s/\n//g' > "${datastore}/sql23w.csv"
 
   # Get data for wind sensor (graph29)
   mysql -h sql.lan --skip-column-names -e \
