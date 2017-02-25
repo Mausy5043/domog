@@ -455,10 +455,10 @@ def do_main(flock, nu, consql):
   print(len(hourly_data_x), len(hourly_data_y))
 
   # Data post/pre-procesing
-  minimum_y = min(np.nanmin(weekly_data_y[:, 0], 0), np.nanmin(daily_data_y[:, 0], 0), np.nanmin(hourly_data_y[0], 0)) - 1
-  maximum_y = max(np.nanmax(weekly_data_y[:, 2], 0), np.nanmax(daily_data_y[:, 2], 0), np.nanmax(hourly_data_y[0], 0)) + 1
-  minimum_y2 = min(np.nanmin(weekly_data_y[:, 3], 0), np.nanmin(daily_data_y[:, 3], 0), np.nanmin(hourly_data_y[1], 0)) - 1
-  maximum_y2 = max(np.nanmax(weekly_data_y[:, 5], 0), np.nanmax(daily_data_y[:, 5], 0), np.nanmax(hourly_data_y[1], 0)) + 1
+  minimum_y = min(np.nanmin(weekly_data_y[:, 0], 0), np.nanmin(daily_data_y[:, 0], 0), np.nanmin(hourly_data_y[:, 0], 0)) - 1
+  maximum_y = max(np.nanmax(weekly_data_y[:, 2], 0), np.nanmax(daily_data_y[:, 2], 0), np.nanmax(hourly_data_y[:, 0], 0)) + 1
+  minimum_y2 = min(np.nanmin(weekly_data_y[:, 3], 0), np.nanmin(daily_data_y[:, 3], 0), np.nanmin(hourly_data_y[:, 1], 0)) - 1
+  maximum_y2 = max(np.nanmax(weekly_data_y[:, 5], 0), np.nanmax(daily_data_y[:, 5], 0), np.nanmax(hourly_data_y[:, 1], 0)) + 1
 
   # YEAR graph
   # graph of the last year is updated at 01:11
