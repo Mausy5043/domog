@@ -381,7 +381,7 @@ def update_year_graph(ymin, ymax, y2min, y2max):
   AX1.legend(loc='upper left', fontsize='x-small')
   AX1.fill_between(yearly_data_x, yearly_data_y[:, 0], yearly_data_y[:, 2], interpolate=True, color='red', alpha=0.2)
 
-  AR1.plot(yearly_data_x, yearly_data_y[:, 1], color='blue', lw=1, label='Humidity [%]')
+  AR1.plot(yearly_data_x, yearly_data_y[:, 4], color='blue', lw=1, label='Humidity [%]')
   AR1.fill_between(yearly_data_x, yearly_data_y[:, 3], yearly_data_y[:, 5], interpolate=True, color='blue', alpha=0.2)
   AR1.set_ylabel('Humidity [%]', color='blue')
   AR1.tick_params('y', colors='blue')
@@ -448,7 +448,7 @@ def do_main(flock, nu, consql):
   # data of last hour is updated every minute
   if nu:
     hourly_data_x = np.array([])
-    hourly_data_y = np.array([])
+    hourly_data_y = np.array([[0, 0]])
     hourly_data_x, hourly_data_y = update_hour_query(consql, hourly_data_x, hourly_data_y, 70)
   else:
     hourly_data_x, hourly_data_y = update_hour_query(consql, hourly_data_x, hourly_data_y, 2)
@@ -480,7 +480,7 @@ def do_main(flock, nu, consql):
   # and the graph is then saved
   if (currentminute % 3) == 0 or nu:
     update_hour_graph(minimum_y, maximum_y, minimum_y2, maximum_y2)
-    plt.savefig('/tmp/domod/site/img/day72.png', format='png')
+    plt.savefig('/tmp/domog/site/img/day72.png', format='png')
 
   syslog_trace("* Unlock", False, DEBUG)
   unlock(flock)
