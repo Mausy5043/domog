@@ -480,7 +480,7 @@ def do_main(flock, nu, consql):
   # and the graph is then saved
   if (currentminute % 3) == 0 or nu:
     update_hour_graph(minimum_y, maximum_y, minimum_y2, maximum_y2)
-    plt.savefig('/tmp/domog/site/img/day72.png', format='png')
+    plt.savefig('/tmp/domog/site/img/day73.png', format='png')
 
   syslog_trace("* Unlock", False, DEBUG)
   unlock(flock)
