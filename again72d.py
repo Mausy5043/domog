@@ -366,7 +366,7 @@ def update_year_graph(ymin, ymax, y2min, y2max):
   plt.sca(AX1)
   plt.cla()
   # AX1 has no no ylim, we use autoscaling
-  AX1.set_ylabel(PLOT_Y1LABEL)
+  AX1.set_ylabel(PLOT_Y1LABEL, color='red')
   AX1.set_xlim([yearly_data_x[1], yearly_data_x[-1]])
   AX1.set_xlabel('past year')
   AX1.set_xticklabels(yearly_data_x, size='small')
