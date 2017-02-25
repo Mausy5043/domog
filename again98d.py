@@ -23,7 +23,10 @@ SQLMNT      = rnd(0, 59)
 SQLHR       = rnd(0, 23)
 
 class MyDaemon(Daemon):
-  def run(self):
+  """Definition of daemon."""
+  @staticmethod
+  def run():
+    """Overload definition of run."""
     iniconf         = configparser.ConfigParser()
     inisection      = MYID
     home            = os.path.expanduser('~')
