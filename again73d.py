@@ -21,7 +21,7 @@ mpl.use("Agg", warn=True)         # activate Anti-Grain Geometry library before 
 import matplotlib.pyplot as plt   # noqa
 
 # constants
-PLOT_TITLE      = "Pressure & Temperature bmp183"
+PLOT_TITLE      = "Pressure & Temperature BMP83"
 PLOT_Y1LABEL    = "Temperature [degC]"
 PLOT_Y2LABEL    = "Pressure [mbara]"
 
@@ -294,9 +294,9 @@ def update_hour_graph(ymin, ymax, y2min, y2max):
   AX4.plot(hourly_data_x, hourly_data_y[:, 0], marker='.', linestyle='', color='red', lw=2)
 
   AR4.set_ylim([y2min, y2max])
-  AR4.set_ylabel(PLOT_Y2LABEL, color='blue')
-  AR4.tick_params('y', colors='blue')
-  AR4.plot(hourly_data_x, hourly_data_y[:, 1], marker='.', linestyle='', color='blue', lw=2)
+  AR4.set_ylabel(PLOT_Y2LABEL, color='green')
+  AR4.tick_params('y', colors='green')
+  AR4.plot(hourly_data_x, hourly_data_y[:, 1], marker='.', linestyle='', color='green', lw=2)
 
 @timeme
 def update_day_graph(ymin, ymax, y2min, y2max):
@@ -324,9 +324,9 @@ def update_day_graph(ymin, ymax, y2min, y2max):
 
   AR3.set_ylim([y2min, y2max])
   AR3.set_yticklabels([])
-  AR3.plot(daily_data_x, daily_data_y[:, 4], marker='.', linestyle='', color='blue', lw=2)
-  AR3.fill_between(daily_data_x, daily_data_y[:, 3], daily_data_y[:, 5], interpolate=True, color='blue', alpha=0.2)
-  AR3.tick_params('y', colors='blue')
+  AR3.plot(daily_data_x, daily_data_y[:, 4], marker='.', linestyle='', color='green', lw=2)
+  AR3.fill_between(daily_data_x, daily_data_y[:, 3], daily_data_y[:, 5], interpolate=True, color='green', alpha=0.2)
+  AR3.tick_params('y', colors='green')
 
 @timeme
 def update_week_graph(ymin, ymax, y2min, y2max):
@@ -354,9 +354,9 @@ def update_week_graph(ymin, ymax, y2min, y2max):
 
   AR2.set_ylim([y2min, y2max])
   AR2.set_yticklabels([])
-  AR2.plot(weekly_data_x, weekly_data_y[:, 4], linestyle='-', color='blue', lw=2)
-  AR2.fill_between(weekly_data_x, weekly_data_y[:, 3], weekly_data_y[:, 5], interpolate=True, color='blue', alpha=0.2)
-  AR2.tick_params('y', colors='blue')
+  AR2.plot(weekly_data_x, weekly_data_y[:, 4], linestyle='-', color='green', lw=2)
+  AR2.fill_between(weekly_data_x, weekly_data_y[:, 3], weekly_data_y[:, 5], interpolate=True, color='green', alpha=0.2)
+  AR2.tick_params('y', colors='green')
 
 @timeme
 def update_year_graph(ymin, ymax, y2min, y2max):
@@ -377,13 +377,13 @@ def update_year_graph(ymin, ymax, y2min, y2max):
   AX1.grid(which='minor', alpha=0.2)
   AX1.tick_params('y', colors='red')
 
-  AX1.plot(yearly_data_x, yearly_data_y[:, 1], color='red', lw=1, label='Temperature [degC]')
+  AX1.plot(yearly_data_x, yearly_data_y[:, 1], color='red', lw=1, label=PLOT_Y1LABEL)
   AX1.legend(loc='upper left', fontsize='x-small')
   AX1.fill_between(yearly_data_x, yearly_data_y[:, 0], yearly_data_y[:, 2], interpolate=True, color='red', alpha=0.2)
 
-  AR1.plot(yearly_data_x, yearly_data_y[:, 4], color='blue', lw=1, label='pressure [%]')
-  AR1.fill_between(yearly_data_x, yearly_data_y[:, 3], yearly_data_y[:, 5], interpolate=True, color='blue', alpha=0.2)
-  AR1.set_ylabel(PLOT_Y2LABEL, color='blue')
+  AR1.plot(yearly_data_x, yearly_data_y[:, 4], color='green', lw=1, label=PLOT_Y2LABEL)
+  AR1.fill_between(yearly_data_x, yearly_data_y[:, 3], yearly_data_y[:, 5], interpolate=True, color='green', alpha=0.2)
+  AR1.set_ylabel(PLOT_Y2LABEL, color='green')
   AR1.tick_params('y', colors='blue')
 
 @timeme
