@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# daemon71d.py creates a graph.
+# again71d.py creates a graph of DS18B20 readings.
 
 import configparser
 import datetime
