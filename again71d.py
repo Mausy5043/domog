@@ -351,7 +351,7 @@ def update_year_graph(ymin, ymax):
   AX1.xaxis.set_minor_locator(LOCATEDMONDAYS)
   AX1.grid(which='minor', alpha=0.2)
 
-  AX1.plot(yearly_data_x, yearly_data_y[:, 1], color='red', lw=1, label='Temperature [degC]')
+  AX1.plot(yearly_data_x, yearly_data_y[:, 1], color='red', lw=1, label=PLOT_Y1LABEL)
   AX1.legend(loc='upper left', fontsize='x-small')
   AX1.fill_between(yearly_data_x, yearly_data_y[:, 0], yearly_data_y[:, 2], interpolate=True, color='red', alpha=0.2)
 

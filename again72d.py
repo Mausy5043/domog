@@ -377,13 +377,13 @@ def update_year_graph(ymin, ymax, y2min, y2max):
   AX1.grid(which='minor', alpha=0.2)
   AX1.tick_params('y', colors='red')
 
-  AX1.plot(yearly_data_x, yearly_data_y[:, 1], color='red', lw=1, label='Temperature [degC]')
+  AX1.plot(yearly_data_x, yearly_data_y[:, 1], color='red', lw=1, label=PLOT_Y1LABEL)
   AX1.legend(loc='upper left', fontsize='x-small')
   AX1.fill_between(yearly_data_x, yearly_data_y[:, 0], yearly_data_y[:, 2], interpolate=True, color='red', alpha=0.2)
 
-  AR1.plot(yearly_data_x, yearly_data_y[:, 4], color='blue', lw=1, label='Humidity [%]')
+  AR1.plot(yearly_data_x, yearly_data_y[:, 4], color='blue', lw=1, label=PLOT_Y2LABEL)
   AR1.fill_between(yearly_data_x, yearly_data_y[:, 3], yearly_data_y[:, 5], interpolate=True, color='blue', alpha=0.2)
-  AR1.set_ylabel('Humidity [%]', color='blue')
+  AR1.set_ylabel(PLOT_Y2LABEL, color='blue')
   AR1.tick_params('y', colors='blue')
 
 @timeme
