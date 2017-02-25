@@ -384,7 +384,7 @@ def update_year_graph(ymin, ymax, y2min, y2max):
   AR1.plot(yearly_data_x, yearly_data_y[:, 4], color='green', lw=1, label=PLOT_Y2LABEL)
   AR1.fill_between(yearly_data_x, yearly_data_y[:, 3], yearly_data_y[:, 5], interpolate=True, color='green', alpha=0.2)
   AR1.set_ylabel(PLOT_Y2LABEL, color='green')
-  AR1.tick_params('y', colors='blue')
+  AR1.tick_params('y', colors='green')
 
 @timeme
 def do_main(flock, nu, consql):
