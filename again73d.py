@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# daemon72d.py creates a graph of BMP183 readings.
+# daemon73d.py creates a graph of BMP183 readings.
 
 import configparser
 import datetime
