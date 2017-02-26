@@ -121,7 +121,7 @@ class Daemon:
         time.sleep(0.1)
 
     except OSError as err:
-      if err.errno == 3:
+      if err.errno == 3:                  # noqa
         if os.path.exists(self.pidfile):
           os.remove(self.pidfile)
       else:
