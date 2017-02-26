@@ -17,6 +17,7 @@ cd domog
 
 ## Execution
 After installation the daemons start up automagically. Data stored in the MySQL database by the data gatherers of [domod](https://github.com/Mausy5043/domod.git) is retrieved and graphed. The graphs and the accompanying webpage are pushed to the [Grav-based](https://getgrav.org/) website.
+This version still queries the MySQL database in batches on every update. Graphs are made with `pyplot`. Every minute the graph is fully redrawn.
 
 ## Attribution
 The python code for the daemons is based on previous work by
