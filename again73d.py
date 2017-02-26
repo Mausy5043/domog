@@ -21,7 +21,7 @@ mpl.use("Agg", warn=True)         # activate Anti-Grain Geometry library before 
 import matplotlib.pyplot as plt   # noqa
 
 # constants
-PLOT_TITLE      = "Pressure & Temperature BMP83"
+PLOT_TITLE      = "Pressure & Temperature BMP183"
 PLOT_Y1LABEL    = "Temperature [degC]"
 PLOT_Y2LABEL    = "Pressure [mbara]"
 
