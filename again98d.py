@@ -58,33 +58,34 @@ class MyDaemon(Daemon):
         raise
 
 def do_mv_data(flock, homedir, script):
+  minit = int(time.strftime('%M'))
   # wait for processes to finish
   unlock(flock)  # remove stale lock
   time.sleep(4)
 
   # Retrieve data from MySQL database
   getsqldata(homedir, False)
+  if (minit % 10) == 0:
+    # Graph the data
+    cmnd = homedir + '/' + MYAPP + '/mkgraphs.sh'
+    syslog_trace("...:  {0}".format(cmnd), False, DEBUG)
+    cmnd = subprocess.check_output(cmnd)
+    syslog_trace("...:  {0}".format(cmnd), False, DEBUG)
 
-  # Graph the data
-  cmnd = homedir + '/' + MYAPP + '/mkgraphs.sh'
-  syslog_trace("...:  {0}".format(cmnd), False, DEBUG)
-  cmnd = subprocess.check_output(cmnd)
-  syslog_trace("...:  {0}".format(cmnd), False, DEBUG)
-
-  try:
-    # Upload the webpage and graphs
-    if os.path.isfile('/tmp/' + MYAPP + '/site/default.md'):
-      write_lftp(script)
-      cmnd = ['lftp', '-f', script]
-      syslog_trace("...:  {0}".format(cmnd), False, DEBUG)
-      cmnd = subprocess.check_output(cmnd, timeout=20)
-      syslog_trace("...:  {0}".format(cmnd), False, DEBUG)
-  except subprocess.TimeoutExpired:
-    syslog_trace("***TIMEOUT***:  {0}".format(cmnd), syslog.LOG_ERR, DEBUG)
-    pass
-  except subprocess.CalledProcessError:
-    syslog_trace("*** ERROR ***:  {0}".format(cmnd), syslog.LOG_CRIT, DEBUG)
-    pass
+    try:
+      # Upload the webpage and graphs
+      if os.path.isfile('/tmp/' + MYAPP + '/site/default.md'):
+        write_lftp(script)
+        cmnd = ['lftp', '-f', script]
+        syslog_trace("...:  {0}".format(cmnd), False, DEBUG)
+        cmnd = subprocess.check_output(cmnd, timeout=20)
+        syslog_trace("...:  {0}".format(cmnd), False, DEBUG)
+    except subprocess.TimeoutExpired:
+      syslog_trace("***TIMEOUT***:  {0}".format(cmnd), syslog.LOG_ERR, DEBUG)
+      pass
+    except subprocess.CalledProcessError:
+      syslog_trace("*** ERROR ***:  {0}".format(cmnd), syslog.LOG_CRIT, DEBUG)
+      pass
 
 def getsqldata(homedir, nu):
   minit = int(time.strftime('%M'))
