@@ -1,6 +1,8 @@
 # domog
 Platform independent domotica data grapher.
 
+[![Code Issues](https://www.quantifiedcode.com/api/v1/project/62314a00c098411e8a1544d9e9dd272d/badge.svg)](https://www.quantifiedcode.com/app/project/62314a00c098411e8a1544d9e9dd272d)
+
 
 ## Installing
 
@@ -15,6 +17,7 @@ cd domog
 
 ## Execution
 After installation the daemons start up automagically. Data stored in the MySQL database by the data gatherers of [domod](https://github.com/Mausy5043/domod.git) is retrieved and graphed. The graphs and the accompanying webpage are pushed to the [Grav-based](https://getgrav.org/) website.
+This version still queries the MySQL database in batches on every update. Graphs are made with `pyplot`. Every minute the graph is fully redrawn.
 
 ## Attribution
 The python code for the daemons is based on previous work by
