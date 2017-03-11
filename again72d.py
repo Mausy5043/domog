@@ -277,8 +277,8 @@ def update_hour_graph(ymin, ymax, y2min, y2max):
   tenminutes = (1. / 6. / 24.)
   plt.suptitle(PLOT_TITLE + ' ( ' + datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S") + ' )')
   major_ticks = np.arange(np.ceil(hourly_data_x[1]/tenminutes)*tenminutes, hourly_data_x[-1], tenminutes)
-  # plt.sca(AR4)    # select axis AR4
-  plt.cla()       # clear axis AR4
+  # plt.sca(AR4)
+  plt.cla()
   AX4.set_ylim([ymin, ymax])
   AX4.set_yticklabels([])
   AX4.set_xlim([hourly_data_x[1], hourly_data_x[-1]])
