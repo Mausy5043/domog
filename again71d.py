@@ -275,7 +275,7 @@ def update_hour_graph(ymin, ymax):
   tenminutes = (1. / 6. / 24.)
   plt.suptitle(PLOT_TITLE + ' ( ' + datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S") + ' )')
   major_ticks = np.arange(np.ceil(hourly_data_x[1]/tenminutes)*tenminutes, hourly_data_x[-1], tenminutes)
-  plt.sca(AX4)
+  # plt.sca(AX4)
   plt.cla()
   AX4.set_ylim([ymin, ymax])
   AX4.set_yticklabels([])
@@ -296,7 +296,7 @@ def update_day_graph(ymin, ymax):
   syslog_trace("* (Re)draw graph for past day", False, DEBUG)
   fourhours  = (4. / 24.)
   major_ticks = np.arange(np.ceil(daily_data_x[1]/fourhours)*fourhours, daily_data_x[-1], fourhours)
-  plt.sca(AX3)
+  # plt.sca(AX3)
   plt.cla()
   AX3.set_ylim([ymin, ymax])
   AX3.set_yticklabels([])
@@ -318,7 +318,7 @@ def update_week_graph(ymin, ymax):
   syslog_trace("* (Re)draw graph for past week", False, DEBUG)
   fourhours  = (4. / 24.)
   minor_ticks = np.arange(np.ceil(weekly_data_x[1]/fourhours)*fourhours, weekly_data_x[-1], fourhours)
-  plt.sca(AX2)
+  # plt.sca(AX2)
   plt.cla()
   AX2.set_ylim([ymin, ymax])
   AX2.set_ylabel(PLOT_Y1LABEL)
@@ -338,7 +338,7 @@ def update_week_graph(ymin, ymax):
 def update_year_graph(ymin, ymax):
   """(Re)draw the axes of the year graph"""
   syslog_trace("* (Re)draw graph for past year", False, DEBUG)
-  plt.sca(AX1)
+  # plt.sca(AX1)
   plt.cla()
   # AX1 has no no ylim, we use autoscaling
   AX1.set_ylabel(PLOT_Y1LABEL)
