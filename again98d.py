@@ -21,9 +21,16 @@ MYAPP       = os.path.realpath(__file__).split('/')[-2]
 NODE        = os.uname()[1]
 SQLMNT      = rnd(0, 59)
 SQLHR       = rnd(0, 23)
+SQL_UPDATE_HOUR   = 3   # in minutes
+SQL_UPDATE_DAY    = 12  # in minutes
+SQL_UPDATE_WEEK   = 4   # in hours
+SQL_UPDATE_YEAR   = 8  # in hours
+GRAPH_UPDATE      = 3   # in minutes
 
 class MyDaemon(Daemon):
   def run(self):
+    global SQL_UPDATE_HOUR, SQL_UPDATE_DAY, SQL_UPDATE_WEEK, SQL_UPDATE_YEAR
+    global GRAPH_UPDATE
     iniconf         = configparser.ConfigParser()
     inisection      = MYID
     home            = os.path.expanduser('~')
@@ -39,6 +46,13 @@ class MyDaemon(Daemon):
     scriptname      = iniconf.get(inisection, "lftpscript")
 
     sampleTime      = reportTime/samplesperCycle         # time [s] between samples
+
+    SQL_UPDATE_HOUR   = sampleTime / 60       # in minutes
+    SQL_UPDATE_DAY    = sampleTime / 60 * 4   # in minutes
+    SQL_UPDATE_WEEK   = 4  # in hours
+    SQL_UPDATE_YEAR   = 8  # in hours
+    GRAPH_UPDATE      = sampleTime / 60       # in minutes
+
     getsqldata(home, True)
 
     while True:
@@ -58,6 +72,7 @@ class MyDaemon(Daemon):
         raise
 
 def do_mv_data(flock, homedir, script):
+  global GRAPH_UPDATE
   minit = int(time.strftime('%M'))
   nowur = int(time.strftime('%H'))
   # wait for processes to finish
@@ -66,7 +81,7 @@ def do_mv_data(flock, homedir, script):
 
   # Retrieve data from MySQL database
   getsqldata(homedir, minit, nowur, False)
-  if (minit % 10) == 0:
+  if (minit % GRAPH_UPDATE) == 0:
     # Graph the data
     cmnd = homedir + '/' + MYAPP + '/mkgraphs.sh'
     syslog_trace("...:  {0}".format(cmnd), False, DEBUG)
@@ -92,25 +107,25 @@ def getsqldata(homedir, minit, nowur, nu):
   # minit = int(time.strftime('%M'))
   # nowur = int(time.strftime('%H'))
   # data of last hour is updated every 10 minutes
-  if (minit % 10) == 0 or nu:
+  if (minit % SQL_UPDATE_HOUR) == 0 or nu:
     cmnd = homedir + '/' + MYAPP + '/getsqlhour.sh'
     syslog_trace("...:  {0}".format(cmnd), False, DEBUG)
     cmnd = subprocess.call(cmnd)
     syslog_trace("...:  {0}".format(cmnd), False, DEBUG)
   # data of the last day is updated every 30 minutes
-  if ((minit % 30) == (SQLMNT % 30)) or nu:
+  if ((minit % SQL_UPDATE_DAY) == (SQLMNT % SQL_UPDATE_DAY)) or nu:
     cmnd = homedir + '/' + MYAPP + '/getsqlday.sh'
     syslog_trace("...:  {0}".format(cmnd), False, DEBUG)
     cmnd = subprocess.call(cmnd)
     syslog_trace("...:  {0}".format(cmnd), False, DEBUG)
     # data of the last week is updated every 4 hours
-    if ((nowur % 4) == (SQLHR % 4)) or nu:
+    if ((nowur % SQL_UPDATE_WEEK) == (SQLHR % SQL_UPDATE_WEEK)) or nu:
       cmnd = homedir + '/' + MYAPP + '/getsqlweek.sh'
       syslog_trace("...:  {0}".format(cmnd), False, DEBUG)
       cmnd = subprocess.call(cmnd)
       syslog_trace("...:  {0}".format(cmnd), False, DEBUG)
     # data of the last year is updated at 01:xx
-    if (nowur == 1) or nu:
+    if (nowur == SQL_UPDATE_YEAR) or nu:
       cmnd = homedir + '/' + MYAPP + '/getsqlyear.sh'
       syslog_trace("...:  {0}".format(cmnd), True, DEBUG)  # temporary logging
       cmnd = subprocess.call(cmnd)
