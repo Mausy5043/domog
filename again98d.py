@@ -24,13 +24,11 @@ SQLHR       = rnd(0, 23)
 SQL_UPDATE_HOUR   = 3   # in minutes
 SQL_UPDATE_DAY    = 12  # in minutes
 SQL_UPDATE_WEEK   = 4   # in hours
-SQL_UPDATE_YEAR   = 8  # in hours
+SQL_UPDATE_YEAR   = 8   # in hours
 GRAPH_UPDATE      = 3   # in minutes
 
 class MyDaemon(Daemon):
   def run(self):
-    global SQL_UPDATE_HOUR, SQL_UPDATE_DAY, SQL_UPDATE_WEEK, SQL_UPDATE_YEAR
-    global GRAPH_UPDATE
     iniconf         = configparser.ConfigParser()
     inisection      = MYID
     home            = os.path.expanduser('~')
@@ -46,12 +44,6 @@ class MyDaemon(Daemon):
     scriptname      = iniconf.get(inisection, "lftpscript")
 
     sampleTime      = reportTime/samplesperCycle         # time [s] between samples
-
-    SQL_UPDATE_HOUR   = sampleTime / 60 * 3    # in minutes
-    SQL_UPDATE_DAY    = sampleTime / 60 * 12   # in minutes
-    SQL_UPDATE_WEEK   = 4  # in hours
-    SQL_UPDATE_YEAR   = 8  # in hours
-    GRAPH_UPDATE      = sampleTime / 60 * 3    # in minutes
 
     getsqldata(home, 0, 0, True)
 
