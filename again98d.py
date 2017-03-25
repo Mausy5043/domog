@@ -47,11 +47,11 @@ class MyDaemon(Daemon):
 
     sampleTime      = reportTime/samplesperCycle         # time [s] between samples
 
-    SQL_UPDATE_HOUR   = sampleTime / 60       # in minutes
-    SQL_UPDATE_DAY    = sampleTime / 60 * 4   # in minutes
+    SQL_UPDATE_HOUR   = sampleTime / 60 * 3    # in minutes
+    SQL_UPDATE_DAY    = sampleTime / 60 * 12   # in minutes
     SQL_UPDATE_WEEK   = 4  # in hours
     SQL_UPDATE_YEAR   = 8  # in hours
-    GRAPH_UPDATE      = sampleTime / 60       # in minutes
+    GRAPH_UPDATE      = sampleTime / 60 * 3    # in minutes
 
     getsqldata(home, 0, 0, True)
 
