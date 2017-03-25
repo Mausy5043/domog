@@ -21,11 +21,11 @@ MYAPP       = os.path.realpath(__file__).split('/')[-2]
 NODE        = os.uname()[1]
 SQLMNT      = rnd(0, 59)
 SQLHR       = rnd(0, 23)
-SQL_UPDATE_HOUR   = 3   # in minutes
+SQL_UPDATE_HOUR   = 6   # in minutes
 SQL_UPDATE_DAY    = 12  # in minutes
 SQL_UPDATE_WEEK   = 4   # in hours
 SQL_UPDATE_YEAR   = 8   # in hours
-GRAPH_UPDATE      = 3   # in minutes
+GRAPH_UPDATE      = 6   # in minutes
 
 class MyDaemon(Daemon):
   def run(self):
