@@ -59,12 +59,13 @@ class MyDaemon(Daemon):
 
 def do_mv_data(flock, homedir, script):
   minit = int(time.strftime('%M'))
+  nowur = int(time.strftime('%H'))
   # wait for processes to finish
   unlock(flock)  # remove stale lock
   time.sleep(4)
 
   # Retrieve data from MySQL database
-  getsqldata(homedir, False)
+  getsqldata(homedir, minit, nowur, False)
   if (minit % 10) == 0:
     # Graph the data
     cmnd = homedir + '/' + MYAPP + '/mkgraphs.sh'
@@ -87,9 +88,9 @@ def do_mv_data(flock, homedir, script):
       syslog_trace("*** ERROR ***:  {0}".format(cmnd), syslog.LOG_CRIT, DEBUG)
       pass
 
-def getsqldata(homedir, nu):
-  minit = int(time.strftime('%M'))
-  nowur = int(time.strftime('%H'))
+def getsqldata(homedir, minit, nowur, nu):
+  # minit = int(time.strftime('%M'))
+  # nowur = int(time.strftime('%H'))
   # data of last hour is updated every 10 minutes
   if (minit % 10) == 0 or nu:
     cmnd = homedir + '/' + MYAPP + '/getsqlhour.sh'
