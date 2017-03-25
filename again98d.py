@@ -53,7 +53,7 @@ class MyDaemon(Daemon):
     SQL_UPDATE_YEAR   = 8  # in hours
     GRAPH_UPDATE      = sampleTime / 60       # in minutes
 
-    getsqldata(home, True)
+    getsqldata(home, 0, 0, True)
 
     while True:
       try:
