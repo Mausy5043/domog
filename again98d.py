@@ -64,7 +64,6 @@ class MyDaemon(Daemon):
         raise
 
 def do_mv_data(flock, homedir, script):
-  global GRAPH_UPDATE
   minit = int(time.strftime('%M'))
   nowur = int(time.strftime('%H'))
   # wait for processes to finish
