@@ -1,0 +1,10 @@
+engines:
+  duplication:
+    enabled: true
+    checks:
+      Similar code:
+        enabled: false
+  radon:
+    enabled: true
+    config:
+      threshold: "C"
