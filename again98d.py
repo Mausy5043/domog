@@ -27,6 +27,9 @@ SQL_UPDATE_WEEK   = 4   # in hours
 SQL_UPDATE_YEAR   = 8   # in hours
 GRAPH_UPDATE      = 6   # in minutes
 
+# initialise logging
+syslog.openlog(ident=MYAPP, facility=syslog.LOG_LOCAL0)
+
 class MyDaemon(Daemon):
   def run(self):
     iniconf         = configparser.ConfigParser()
@@ -89,10 +92,11 @@ def do_mv_data(flock, homedir, script):
         syslog_trace("...:  {0}".format(cmnd), False, DEBUG)
     except subprocess.TimeoutExpired:
       syslog_trace("***TIMEOUT***:  {0}".format(cmnd), syslog.LOG_ERR, DEBUG)
+      time.sleep(17*60)             # wait 17 minutes
       pass
     except subprocess.CalledProcessError:
       syslog_trace("***ERROR***:    {0}".format(cmnd), syslog.LOG_ERR, DEBUG)
-      time.sleep(16*60)             # wait 16 minutes for the router to restart.
+      time.sleep(17*60)             # wait 17 minutes for the router to restart.
       pass
 
 def getsqldata(homedir, minit, nowur, nu):
@@ -119,7 +123,7 @@ def getsqldata(homedir, minit, nowur, nu):
     # data of the last year is updated at 01:xx
     if (nowur == SQL_UPDATE_YEAR) or nu:
       cmnd = homedir + '/' + MYAPP + '/getsqlyear.sh'
-      syslog_trace("...:  {0}".format(cmnd), True, DEBUG)  # temporary logging
+      syslog_trace("...:  {0}".format(cmnd), False, DEBUG)
       cmnd = subprocess.call(cmnd)
       syslog_trace("...:  {0}".format(cmnd), False, DEBUG)
 
