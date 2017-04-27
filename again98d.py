@@ -21,6 +21,7 @@ MYAPP       = os.path.realpath(__file__).split('/')[-2]
 NODE        = os.uname()[1]
 SQLMNT      = rnd(0, 59)
 SQLHR       = rnd(0, 23)
+SQLHRM      = rnd(0, 59)
 SQL_UPDATE_HOUR   = 3   # in minutes
 SQL_UPDATE_DAY    = 12  # in minutes
 SQL_UPDATE_WEEK   = 4   # in hours
@@ -114,18 +115,18 @@ def getsqldata(homedir, minit, nowur, nu):
     syslog_trace("...:  {0}".format(cmnd), False, DEBUG)
     cmnd = subprocess.call(cmnd)
     syslog_trace("...:  {0}".format(cmnd), False, DEBUG)
-    # data of the last week is updated every 4 hours
-    if ((nowur % SQL_UPDATE_WEEK) == (SQLHR % SQL_UPDATE_WEEK)) or nu:
-      cmnd = homedir + '/' + MYAPP + '/getsqlweek.sh'
-      syslog_trace("...:  {0}".format(cmnd), False, DEBUG)
-      cmnd = subprocess.call(cmnd)
-      syslog_trace("...:  {0}".format(cmnd), False, DEBUG)
-    # data of the last year is updated at 01:xx
-    if (nowur == SQL_UPDATE_YEAR) or nu:
-      cmnd = homedir + '/' + MYAPP + '/getsqlyear.sh'
-      syslog_trace("...:  {0}".format(cmnd), False, DEBUG)
-      cmnd = subprocess.call(cmnd)
-      syslog_trace("...:  {0}".format(cmnd), False, DEBUG)
+  # data of the last week is updated every <SQL_UPDATE_WEEK> hours
+  if ((nowur % SQL_UPDATE_WEEK) == (SQLHR % SQL_UPDATE_WEEK) and (minit == SQLHRM)) or nu:
+    cmnd = homedir + '/' + MYAPP + '/getsqlweek.sh'
+    syslog_trace("...:  {0}".format(cmnd), False, DEBUG)
+    cmnd = subprocess.call(cmnd)
+    syslog_trace("...:  {0}".format(cmnd), False, DEBUG)
+  # data of the last year is updated at 01:xx
+  if (nowur == SQL_UPDATE_YEAR and minit == SQL_UPDATE_DAY) or nu:
+    cmnd = homedir + '/' + MYAPP + '/getsqlyear.sh'
+    syslog_trace("...:  {0}".format(cmnd), True, DEBUG)  # temporary logging
+    cmnd = subprocess.call(cmnd)
+    syslog_trace("...:  {0}".format(cmnd), False, DEBUG)
 
 def write_lftp(script):
   with open(script, 'w') as f:
